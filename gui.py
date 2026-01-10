@@ -209,6 +209,30 @@ class AutoClickerGUI:
             
             time.sleep(1.0) # Wait for focus
 
+            # STEP 1: Click the "+" button using OCR
+            logger.info("Looking for '+' button to click...")
+            from core.ocr import scan_for_keywords
+            
+            # Scan for the "+" button
+            matches = scan_for_keywords(["+"], [])
+            
+            if matches:
+                # Click the first match (the + button)
+                plus_button = matches[0]
+                box = plus_button['box']
+                x, y, w, h = box
+                
+                # Click in the center of the button
+                click_x = x + w // 2
+                click_y = y + h // 2
+                
+                logger.info(f"Clicking '+' button at ({click_x}, {click_y})")
+                pyautogui.click(click_x, click_y)
+                time.sleep(0.5)  # Wait for any UI response
+            else:
+                logger.warning("Could not find '+' button, proceeding anyway...")
+
+            # STEP 2: Type the prompt and suffix
             # Combine prompt and suffix into one continuous string
             full_text = ""
             if prompt:

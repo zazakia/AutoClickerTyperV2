@@ -1,0 +1,141 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # Triggers on version tags like v1.0.0
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    
+    - name: Install Tesseract OCR
+      run: |
+        choco install tesseract -y
+        echo "C:\Program Files\Tesseract-OCR" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+      shell: powershell
+    
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -r requirements-dev.txt
+    
+    - name: Build executable with PyInstaller
+      run: |
+        python build.py
+      shell: powershell
+    
+    - name: Verify executable
+      run: |
+        if (Test-Path "dist\AutoClickerTyper.exe") {
+          Write-Host "✓ Executable built successfully"
+          $size = (Get-Item "dist\AutoClickerTyper.exe").Length / 1MB
+          Write-Host "  Size: $([math]::Round($size, 2)) MB"
+        } else {
+          Write-Error "❌ Executable not found!"
+          exit 1
+        }
+      shell: powershell
+    
+    - name: Install Inno Setup
+      run: |
+        choco install innosetup -y
+      shell: powershell
+    
+    - name: Build installer with Inno Setup
+      run: |
+        & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer.iss
+      shell: powershell
+    
+    - name: Verify installer
+      run: |
+        $installerPath = Get-ChildItem -Path "installer_output" -Filter "AutoClickerTyper_Setup_v*.exe" | Select-Object -First 1
+        if ($installerPath) {
+          Write-Host "✓ Installer built successfully: $($installerPath.Name)"
+          $size = $installerPath.Length / 1MB
+          Write-Host "  Size: $([math]::Round($size, 2)) MB"
+        } else {
+          Write-Error "❌ Installer not found!"
+          exit 1
+        }
+      shell: powershell
+    
+    - name: Extract version from tag
+      id: get_version
+      run: |
+        $version = "${{ github.ref_name }}" -replace '^v', ''
+        echo "VERSION=$version" >> $env:GITHUB_OUTPUT
+      shell: powershell
+    
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref_name }}
+        release_name: AutoClickerTyper ${{ github.ref_name }}
+        body: |
+          ## AutoClickerTyper Release ${{ github.ref_name }}
+          
+          ### 📥 Downloads
+          - **Installer (Recommended)**: `AutoClickerTyper_Setup_v${{ steps.get_version.outputs.VERSION }}.exe`
+            - Includes Tesseract OCR bundling
+            - Creates Start Menu shortcuts
+            - Easy uninstall
+          
+          - **Standalone Executable**: `AutoClickerTyper.exe`
+            - No installation required
+            - Requires Tesseract OCR installed separately
+          
+          ### 🔧 Requirements
+          - Windows 10/11
+          - Tesseract OCR (bundled in installer or install from [here](https://github.com/UB-Mannheim/tesseract/wiki))
+          
+          ### 📝 Changes
+          See commit history for detailed changes.
+          
+          ### ⚠️ Security Note
+          Windows Defender may show warnings for unsigned executables. This is normal for open-source software without code signing certificates.
+        draft: false
+        prerelease: false
+    
+    - name: Upload Standalone Executable
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./dist/AutoClickerTyper.exe
+        asset_name: AutoClickerTyper.exe
+        asset_content_type: application/vnd.microsoft.portable-executable
+    
+    - name: Upload Installer
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./installer_output/AutoClickerTyper_Setup_v${{ steps.get_version.outputs.VERSION }}.exe
+        asset_name: AutoClickerTyper_Setup_v${{ steps.get_version.outputs.VERSION }}.exe
+        asset_content_type: application/vnd.microsoft.portable-executable
+    
+    - name: Upload build artifacts (for debugging)
+      uses: actions/upload-artifact@v4
+      with:
+        name: windows-build-artifacts
+        path: |
+          dist/
+          installer_output/
+        retention-days: 7

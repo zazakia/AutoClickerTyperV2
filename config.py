@@ -23,7 +23,7 @@ SCAN_INTERVAL = 0.5            # Seconds between full scans
 MAX_RETRY_ATTEMPTS = 3         # Retries per keyword action
 ACTION_DELAY = 0.1             # Delay between moving and clicking/typing
 LOG_VERBOSITY = logging.INFO
-ALWAYS_ON_TOP = False
+ALWAYS_ON_TOP = True
 
 # ... settings ...
 
@@ -40,3 +40,15 @@ SHORTCUT_SEQUENCE = [
     {'keys': ['ctrl', 'b'], 'delay': 0.5},
     {'keys': ['ctrl', 'i'], 'delay': 0.5}
 ]
+
+# Color Detection Settings
+# Enable filtering to only click on buttons with blue backgrounds
+ENABLE_COLOR_FILTER = True
+
+# HSV color range for detecting blue buttons
+# HSV ranges: Hue (0-180), Saturation (0-255), Value (0-255)
+BLUE_HSV_LOWER = [100, 50, 50]   # Lower bound for blue color
+BLUE_HSV_UPPER = [130, 255, 255]  # Upper bound for blue color
+
+# Minimum overlap percentage between text box and blue region (0.0 to 1.0)
+COLOR_OVERLAP_THRESHOLD = 0.5
