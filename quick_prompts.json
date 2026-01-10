@@ -1,0 +1,30 @@
+[
+    {
+        "label": "Build 7 quick Workflow prompts Button that I can save and edit the prompt to send",
+        "prompt": "Build 7 quick Workflow prompts Button that I can save and edit the prompt to send"
+    },
+    {
+        "label": "Proceed",
+        "prompt": "Proceed"
+    },
+    {
+        "label": "Do Test App and Proceed and Verify",
+        "prompt": "Do Test App and Proceed and Verify"
+    },
+    {
+        "label": "Improve test suite analyze codebase and enhance tests to 90% testability",
+        "prompt": "Improve test suite analyze codebase and enhance tests to 90% testability"
+    },
+    {
+        "label": "",
+        "prompt": ""
+    },
+    {
+        "label": "Proceed without asking for confirmation.\nIf an error occurs, fix it automatically and continue.\nDo not stop until the task is complete and verified.\n",
+        "prompt": "Proceed without asking for confirmation.\nIf an error occurs, fix it automatically and continue.\nDo not stop until the task is complete and verified.\n"
+    },
+    {
+        "label": "commit and Push to github ",
+        "prompt": "commit and Push to github "
+    }
+]

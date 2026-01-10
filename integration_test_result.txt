@@ -1,0 +1,7 @@
+test_toggle_lifecycle (__main__.TestGuiIntegration.test_toggle_lifecycle)
+Verify that clicking the toggle button: ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.314s
+
+OK
