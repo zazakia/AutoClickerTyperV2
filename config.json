@@ -1,0 +1,34 @@
+{
+    "TARGET_WINDOW_TITLE": "Manager",
+    "CLICK_KEYWORDS": [
+        "Accept",
+        "Run",
+        "Allow",
+        "Allow Always",
+        "Proceed",
+        "Yes",
+        "OK",
+        "Confirm"
+    ],
+    "TYPE_KEYWORDS": [
+        "proceed"
+    ],
+    "OCR_CONFIDENCE_THRESHOLD": 60,
+    "SCAN_INTERVAL": 0.5,
+    "MAX_RETRY_ATTEMPTS": 3,
+    "ACTION_DELAY": 0.1,
+    "ALWAYS_ON_TOP": true,
+    "ENABLE_COLOR_FILTER": true,
+    "BLUE_HSV_LOWER": [
+        100,
+        50,
+        50
+    ],
+    "BLUE_HSV_UPPER": [
+        130,
+        255,
+        255
+    ],
+    "COLOR_OVERLAP_THRESHOLD": 0.5,
+    "TEST_KEY": "TEST_VALUE"
+}

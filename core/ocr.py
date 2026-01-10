@@ -3,15 +3,28 @@ import numpy as np
 import pyautogui
 import pytesseract
 from PIL import Image
-import config
+import cv2
+import numpy as np
+import pyautogui
+import pytesseract
+from PIL import Image
+from core.config_manager import config_manager
 from utils.logger import logger
 import os
+from contextlib import suppress
+# Try importing thefuzz, handle if not installed (though it should be)
+try:
+    from thefuzz import fuzz
+except ImportError:
+    logger.warning("thefuzz library not found. Fuzzy matching disabled.")
+    fuzz = None
 
 # Set Tesseract Command
-if os.path.exists(config.TESSERACT_CMD_PATH):
-    pytesseract.pytesseract.tesseract_cmd = config.TESSERACT_CMD_PATH
+tesseract_cmd = config_manager.get("TESSERACT_CMD_PATH", r'C:\Program Files\Tesseract-OCR\tesseract.exe')
+if os.path.exists(tesseract_cmd):
+    pytesseract.pytesseract.tesseract_cmd = tesseract_cmd
 else:
-    logger.warning(f"Tesseract not found at configured path: {config.TESSERACT_CMD_PATH}. Assuming it is in PATH.")
+    logger.warning(f"Tesseract not found at configured path: {tesseract_cmd}. Assuming it is in PATH.")
 
 import pygetwindow as gw
 
@@ -24,10 +37,11 @@ def get_target_region():
     Returns the (x, y, w, h) of the target window if configured and found.
     Returns None if full screen should be used.
     """
-    if config.TARGET_WINDOW_TITLE:
+    target_title = config_manager.get("TARGET_WINDOW_TITLE")
+    if target_title:
         try:
             # Filter windows by title
-            windows = gw.getWindowsWithTitle(config.TARGET_WINDOW_TITLE)
+            windows = gw.getWindowsWithTitle(target_title)
             if windows:
                 # Pick the first matching window
                 win = windows[0]
@@ -35,7 +49,7 @@ def get_target_region():
                 if win.width > 0 and win.height > 0:
                      return (win.left, win.top, win.width, win.height)
             else:
-                logger.warning(f"Target window '{config.TARGET_WINDOW_TITLE}' not found. Skipping scan.")
+                logger.warning(f"Target window '{target_title}' not found. Skipping scan.")
                 # We return a 0-size rect to indicate 'do not scan' or special sentinel
                 # For safety, if user WANTS restriction, we shouldn't fail-open to full screen.
                 return (0, 0, 0, 0) 
@@ -49,7 +63,7 @@ def detect_blue_regions(screenshot):
     Detects blue-colored regions in the screenshot using HSV color space.
     Returns a binary mask where blue regions are white (255) and others are black (0).
     """
-    if not config.ENABLE_COLOR_FILTER:
+    if not config_manager.get("ENABLE_COLOR_FILTER", True):
         return None
     
     try:
@@ -60,8 +74,8 @@ def detect_blue_regions(screenshot):
         hsv = cv2.cvtColor(img_cv, cv2.COLOR_BGR2HSV)
         
         # Create mask for blue color range
-        lower_blue = np.array(config.BLUE_HSV_LOWER)
-        upper_blue = np.array(config.BLUE_HSV_UPPER)
+        lower_blue = np.array(config_manager.get("BLUE_HSV_LOWER", [100, 50, 50]))
+        upper_blue = np.array(config_manager.get("BLUE_HSV_UPPER", [130, 255, 255]))
         mask = cv2.inRange(hsv, lower_blue, upper_blue)
         
         # Apply morphological operations to reduce noise
@@ -115,7 +129,8 @@ def is_on_blue_background(box, blue_mask, region_offset=(0, 0)):
         overlap_ratio = blue_pixels / total_pixels
         
         # Check if overlap meets threshold
-        return overlap_ratio >= config.COLOR_OVERLAP_THRESHOLD
+        threshold = config_manager.get("COLOR_OVERLAP_THRESHOLD", 0.5)
+        return overlap_ratio >= threshold
     except Exception as e:
         logger.error(f"Error checking blue background: {e}")
         return False
@@ -137,8 +152,9 @@ def scan_for_keywords(target_keywords_click, target_keywords_type):
     offset_x, offset_y = region[0], region[1] if region else (0, 0)
     
     # Detect blue regions if color filtering is enabled
+    enable_color = config_manager.get("ENABLE_COLOR_FILTER", True)
     blue_mask = detect_blue_regions(screenshot)
-    if config.ENABLE_COLOR_FILTER and blue_mask is not None:
+    if enable_color and blue_mask is not None:
         logger.debug("Blue region detection enabled")
 
     # Get detailed data including boxes and confidence
@@ -158,7 +174,7 @@ def scan_for_keywords(target_keywords_click, target_keywords_type):
         if not text:
             continue
 
-        if conf < config.OCR_CONFIDENCE_THRESHOLD:
+        if conf < config_manager.get("OCR_CONFIDENCE_THRESHOLD", 60):
             continue
         
         text_lower = text.lower()
@@ -175,13 +191,23 @@ def scan_for_keywords(target_keywords_click, target_keywords_type):
         # Check if text is on a blue background (if filtering is enabled)
         on_blue = is_on_blue_background(abs_box, blue_mask, (offset_x, offset_y))
         
-        if not on_blue and config.ENABLE_COLOR_FILTER:
+        if not on_blue and enable_color:
             # Skip this match if it's not on a blue background
             continue
         
         # Check CLICK keywords
         for k in target_keywords_click:
-            if text_lower == k.lower():
+            match_found = False
+            if fuzz:
+                # Fuzzy match
+                ratio = fuzz.ratio(text_lower, k.lower())
+                if ratio > 90: # High threshold
+                    match_found = True
+            else:
+                 if text_lower == k.lower():
+                     match_found = True
+
+            if match_found:
                 matches.append({
                     'keyword': k,
                     'found_text': text,
@@ -189,11 +215,20 @@ def scan_for_keywords(target_keywords_click, target_keywords_type):
                     'box': abs_box,
                     'conf': conf
                 })
-                logger.debug(f"Found '{k}' on blue background at {abs_box}")
+                logger.debug(f"Found '{k}' (text='{text}') on blue background at {abs_box}")
         
         # Check TYPE keywords
         for k in target_keywords_type:
-            if text_lower == k.lower():
+            match_found = False
+            if fuzz:
+                ratio = fuzz.ratio(text_lower, k.lower())
+                if ratio > 90:
+                    match_found = True
+            else:
+                if text_lower == k.lower():
+                    match_found = True
+            
+            if match_found:
                 matches.append({
                     'keyword': k,
                     'found_text': text,
@@ -201,6 +236,6 @@ def scan_for_keywords(target_keywords_click, target_keywords_type):
                     'box': abs_box,
                     'conf': conf
                 })
-                logger.debug(f"Found '{k}' on blue background at {abs_box}")
+                logger.debug(f"Found '{k}' (text='{text}') on blue background at {abs_box}")
 
     return matches

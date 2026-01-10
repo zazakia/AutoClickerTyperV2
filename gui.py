@@ -1,5 +1,5 @@
+import customtkinter as ctk
 import tkinter as tk
-from tkinter import scrolledtext, simpledialog, messagebox
 import threading
 import logging
 import time
@@ -7,13 +7,16 @@ import pyautogui
 import pygetwindow as gw
 import json
 import os
-from config import TARGET_WINDOW_TITLE, SHORTCUT_SEQUENCE, ALWAYS_ON_TOP
-import config
 import main
+from core.config_manager import config_manager
 from utils.logger import logger
+from core.ocr import scan_for_keywords
+
+ctk.set_appearance_mode("Dark")
+ctk.set_default_color_theme("blue")
 
 class TextHandler(logging.Handler):
-    """This class allows you to log to a Tkinter Text or ScrolledText widget"""
+    """Allows logging to a CustomTkinter Text widget"""
     def __init__(self, text_widget):
         logging.Handler.__init__(self)
         self.text_widget = text_widget
@@ -24,288 +27,262 @@ class TextHandler(logging.Handler):
             self.text_widget.configure(state='normal')
             self.text_widget.insert(tk.END, msg + '\n')
             self.text_widget.configure(state='disabled')
-            self.text_widget.yview(tk.END)
-        # Schedule the update in the main GUI thread
+            self.text_widget.see(tk.END)
         self.text_widget.after(0, append)
 
-class AutoClickerGUI:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("AutoClicker Controller")
-        self.root.geometry("600x950")
+class App(ctk.CTk):
+    def __init__(self):
+        super().__init__()
 
-        # --- Controls Area ---
-        control_frame = tk.Frame(root)
-        control_frame.pack(fill='x', padx=10, pady=10)
+        self.title("AutoClicker Pro")
+        self.geometry("900x700")
 
-        # Output Window Target
-        tk.Label(control_frame, text="Target Project Name (Window Title):").pack(anchor='w')
-        self.project_name_var = tk.StringVar(value="Manager")
-        self.entered_project_name = tk.Entry(control_frame, textvariable=self.project_name_var, width=50)
-        self.entered_project_name.pack(fill='x', pady=(0, 10))
+        # Grid Layout
+        self.grid_columnconfigure(1, weight=1)
+        self.grid_rowconfigure(0, weight=1)
 
-        # Prompt Input
-        tk.Label(control_frame, text="Workflow Prompt:").pack(anchor='w')
-        self.prompt_text = tk.Text(control_frame, height=5, width=50)
-        self.prompt_text.pack(fill='x', pady=(0, 10))
-
-        # Suffix Input
-        tk.Label(control_frame, text="Suffix Command:").pack(anchor='w')
-        self.suffix_var = tk.StringVar(value="Proceed")
-        self.suffix_entry = tk.Entry(control_frame, textvariable=self.suffix_var, width=50)
-        self.suffix_entry.pack(fill='x', pady=(0, 10))
-
-        # Workflow Button
-        self.workflow_btn = tk.Button(control_frame, text="Run Workflow\n(Focus -> Type Prompt -> Suffix -> Send)", 
-                                      command=self.start_workflow_thread, bg="#ddddff")
-        self.workflow_btn.pack(fill='x', pady=5)
-
-        # Always on Top
-        self.always_on_top_var = tk.BooleanVar(value=ALWAYS_ON_TOP)
-        self.always_on_top_chk = tk.Checkbutton(control_frame, text="Always on Top", 
-                                                variable=self.always_on_top_var, 
-                                                command=self.toggle_always_on_top)
-        self.always_on_top_chk.pack(anchor='w')
+        # Sidebar
+        self.sidebar_frame = ctk.CTkFrame(self, width=140, corner_radius=0)
+        self.sidebar_frame.grid(row=0, column=0, rowspan=4, sticky="nsew")
+        self.sidebar_frame.grid_rowconfigure(4, weight=1)
         
-        # Apply initial state
+        self.logo_label = ctk.CTkLabel(self.sidebar_frame, text="AutoClicker", font=ctk.CTkFont(size=20, weight="bold"))
+        self.logo_label.grid(row=0, column=0, padx=20, pady=(20, 10))
+        
+        self.start_btn = ctk.CTkButton(self.sidebar_frame, text="Start Loops", command=self.toggle_autoclicker, fg_color="green")
+        self.start_btn.grid(row=1, column=0, padx=20, pady=10)
+        
+        self.always_on_top_switch = ctk.CTkSwitch(self.sidebar_frame, text="Always on Top", command=self.toggle_always_on_top)
+        self.always_on_top_switch.grid(row=2, column=0, padx=20, pady=10)
+        if config_manager.get("ALWAYS_ON_TOP"):
+            self.always_on_top_switch.select()
         self.toggle_always_on_top()
 
-        # Separator
-        tk.Frame(control_frame, height=2, bd=1, relief="sunken").pack(fill='x', pady=10)
-
-        # AutoClicker Controls
-        self.toggle_btn = tk.Button(control_frame, text="Start AutoClicker Loops", 
-                                    command=self.toggle_autoclicker, bg="#ddffdd", height=2)
-        self.toggle_btn.pack(fill='x', pady=5)
-
-        # --- Quick Prompts ---
-        tk.Frame(control_frame, height=2, bd=1, relief="sunken").pack(fill='x', pady=10)
-        tk.Label(control_frame, text="Quick Prompts:").pack(anchor='w')
+        # Tabs
+        self.tabview = ctk.CTkTabview(self)
+        self.tabview.grid(row=0, column=1, px=20, pady=0, sticky="nsew")
+        self.tabview.add("Dashboard")
+        self.tabview.add("Settings")
         
-        self.quick_prompts = self.load_quick_prompts()
-        self.prompt_buttons = []
-        
-        qp_frame = tk.Frame(control_frame)
-        qp_frame.pack(fill='x', pady=5)
-        
-        for i in range(7):
-            row = tk.Frame(qp_frame)
-            row.pack(fill='x', pady=2)
-            
-            p_data = self.quick_prompts[i]
-            
-            btn = tk.Button(row, text=f"Send {p_data['label']}", 
-                           command=lambda idx=i: self.send_quick_prompt(idx),
-                           bg="#e6f2ff", width=40, anchor='w')
-            btn.pack(side='left', fill='x', expand=True)
-            self.prompt_buttons.append(btn)
-            
-            edit_btn = tk.Button(row, text="Edit", width=6,
-                                command=lambda idx=i: self.edit_prompt(idx))
-            edit_btn.pack(side='right', padx=(5,0))
-
-        # --- Logs Area ---
-        log_frame = tk.Frame(root)
-        log_frame.pack(fill='both', expand=True, padx=10, pady=(0, 10))
-        tk.Label(log_frame, text="Execution Logs:").pack(anchor='w')
-        
-        self.log_area = scrolledtext.ScrolledText(log_frame, state='disabled', height=15)
-        self.log_area.pack(fill='both', expand=True)
-
-        # Setup Logging
-        text_handler = TextHandler(self.log_area)
-        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-        text_handler.setFormatter(formatter)
-        logger.addHandler(text_handler)
+        self.setup_dashboard()
+        self.setup_settings()
 
         # State
         self.autoclicker_thread = None
+        self.running = False
+
+    def setup_dashboard(self):
+        dash = self.tabview.tab("Dashboard")
+        dash.grid_columnconfigure(0, weight=1)
+        
+        # --- Workflow Section ---
+        wf_frame = ctk.CTkFrame(dash)
+        wf_frame.grid(row=0, column=0, padx=10, pady=10, sticky="ew")
+        wf_frame.grid_columnconfigure(1, weight=1)
+        
+        ctk.CTkLabel(wf_frame, text="Target Window:", font=ctk.CTkFont(weight="bold")).grid(row=0, column=0, px=10, py=5, sticky="w")
+        self.target_entry = ctk.CTkEntry(wf_frame)
+        self.target_entry.grid(row=0, column=1, px=10, py=5, sticky="ew")
+        self.target_entry.insert(0, config_manager.get("TARGET_WINDOW_TITLE", "Manager"))
+        self.target_entry.bind("<FocusOut>", self.save_target_window)
+        
+        ctk.CTkLabel(wf_frame, text="Prompt:", font=ctk.CTkFont(weight="bold")).grid(row=1, column=0, px=10, py=5, sticky="nw")
+        self.prompt_text = ctk.CTkTextbox(wf_frame, height=80)
+        self.prompt_text.grid(row=1, column=1, px=10, py=5, sticky="ew")
+        
+        ctk.CTkLabel(wf_frame, text="Suffix:", font=ctk.CTkFont(weight="bold")).grid(row=2, column=0, px=10, py=5, sticky="w")
+        self.suffix_entry = ctk.CTkEntry(wf_frame)
+        self.suffix_entry.grid(row=2, column=1, px=10, py=5, sticky="ew")
+        self.suffix_entry.insert(0, "Proceed")
+        
+        self.run_wf_btn = ctk.CTkButton(wf_frame, text="Run Workflow (Focus -> Type -> Send)", command=self.start_workflow_thread)
+        self.run_wf_btn.grid(row=3, column=1, px=10, py=10, sticky="ew")
+        
+        # --- Quick Prompts ---
+        qp_frame = ctk.CTkFrame(dash)
+        qp_frame.grid(row=1, column=0, padx=10, pady=10, sticky="ew")
+        ctk.CTkLabel(qp_frame, text="Quick Prompts", font=ctk.CTkFont(size=14, weight="bold")).pack(pady=5)
+        
+        self.quick_prompts = self.load_quick_prompts()
+        self.qp_buttons = []
+        
+        grid_f = ctk.CTkFrame(qp_frame, fg_color="transparent")
+        grid_f.pack(fill="x", padx=5)
+        
+        for i in range(7):
+            f = ctk.CTkFrame(grid_f, fg_color="transparent")
+            f.pack(fill="x", pady=2)
+            
+            p_label = self.quick_prompts[i]['label']
+            btn = ctk.CTkButton(f, text=f"Send {p_label}", command=lambda idx=i: self.send_quick_prompt(idx))
+            btn.pack(side="left", fill="x", expand=True, padx=(0, 5))
+            self.qp_buttons.append(btn)
+            
+            edit_btn = ctk.CTkButton(f, text="Edit", width=60, command=lambda idx=i: self.edit_prompt(idx), fg_color="gray")
+            edit_btn.pack(side="right")
+
+        # --- Logs ---
+        log_frame = ctk.CTkFrame(dash)
+        log_frame.grid(row=2, column=0, padx=10, pady=10, sticky="nsew")
+        dash.grid_rowconfigure(2, weight=1)
+        
+        ctk.CTkLabel(log_frame, text="Execution Logs").pack(anchor="w", px=5)
+        self.log_area = ctk.CTkTextbox(log_frame, state="disabled")
+        self.log_area.pack(fill="both", expand=True, px=5, py=5)
+        
+        # Logging Handler
+        handler = TextHandler(self.log_area)
+        handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+        logger.addHandler(handler)
+
+    def setup_settings(self):
+        sett = self.tabview.tab("Settings")
+        sett.grid_columnconfigure(0, weight=1)
+        
+        # OCR Confidence
+        c_frame = ctk.CTkFrame(sett)
+        c_frame.pack(fill="x", px=10, py=5)
+        ctk.CTkLabel(c_frame, text="OCR Confidence Threshold").pack(side="left", px=10)
+        self.conf_slider = ctk.CTkSlider(c_frame, from_=0, to=100, command=self.update_conf)
+        self.conf_slider.set(config_manager.get("OCR_CONFIDENCE_THRESHOLD"))
+        self.conf_slider.pack(side="right", px=10, fill="x", expand=True)
+        
+        # Scan Interval
+        s_frame = ctk.CTkFrame(sett)
+        s_frame.pack(fill="x", px=10, py=5)
+        ctk.CTkLabel(s_frame, text="Scan Interval (s)").pack(side="left", px=10)
+        self.scan_slider = ctk.CTkSlider(s_frame, from_=0.1, to=5.0, command=self.update_scan)
+        self.scan_slider.set(config_manager.get("SCAN_INTERVAL"))
+        self.scan_slider.pack(side="right", px=10, fill="x", expand=True)
+        
+        # Keywords
+        k_frame = ctk.CTkFrame(sett)
+        k_frame.pack(fill="both", px=10, py=5, expand=True)
+        ctk.CTkLabel(k_frame, text="Click Keywords (comma separated)").pack(anchor="w", px=10)
+        self.click_kw_entry = ctk.CTkEntry(k_frame)
+        self.click_kw_entry.pack(fill="x", px=10, py=5)
+        self.click_kw_entry.insert(0, ", ".join(config_manager.get("CLICK_KEYWORDS")))
+        
+        ctk.CTkButton(k_frame, text="Save Keywords", command=self.save_keywords).pack(pady=10)
+
+    def update_conf(self, val):
+        config_manager.set("OCR_CONFIDENCE_THRESHOLD", int(val))
+
+    def update_scan(self, val):
+        config_manager.set("SCAN_INTERVAL", float(val))
+
+    def save_keywords(self):
+        text = self.click_kw_entry.get()
+        kws = [k.strip() for k in text.split(",") if k.strip()]
+        config_manager.set("CLICK_KEYWORDS", kws)
+        logger.info("Keywords saved successfully.")
+
+    def save_target_window(self, event=None):
+        val = self.target_entry.get()
+        config_manager.set("TARGET_WINDOW_TITLE", val)
+        logger.info(f"Target window updated to: {val}")
+
+    def toggle_always_on_top(self):
+        val = self.always_on_top_switch.get()
+        self.attributes('-topmost', val)
+        config_manager.set("ALWAYS_ON_TOP", bool(val))
+
+    def toggle_autoclicker(self):
+        if self.running:
+            logger.info("Stopping AutoClicker...")
+            main.stop_event.set()
+            self.running = False
+            self.start_btn.configure(text="Start Loops", fg_color="green")
+        else:
+            logger.info("Starting AutoClicker...")
+            main.stop_event.clear()
+            self.autoclicker_thread = threading.Thread(target=main.main, daemon=True)
+            self.autoclicker_thread.start()
+            self.running = True
+            self.start_btn.configure(text="Stop Loops", fg_color="red")
 
     def load_quick_prompts(self):
-        default_prompts = [{"label": f"Prompt {i+1}", "prompt": ""} for i in range(7)]
-        if not os.path.exists('quick_prompts.json'):
-            return default_prompts
+        default = [{"label": f"Prompt {i+1}", "prompt": ""} for i in range(7)]
+        if not os.path.exists('quick_prompts.json'): return default
         try:
             with open('quick_prompts.json', 'r') as f:
                 data = json.load(f)
-                # Ensure we have at least 7
-                if len(data) < 7:
-                    data.extend([{"label": f"Prompt {i+1}", "prompt": ""} for i in range(len(data), 7)])
+                if len(data) < 7: data += default[len(data):]
                 return data[:7]
-        except Exception as e:
-            logger.error(f"Failed to load quick prompts: {e}")
-            return default_prompts
+        except: return default
 
     def save_quick_prompts(self):
-        try:
-            with open('quick_prompts.json', 'w') as f:
-                json.dump(self.quick_prompts, f, indent=4)
-        except Exception as e:
-            logger.error(f"Failed to save quick prompts: {e}")
+        with open('quick_prompts.json', 'w') as f:
+            json.dump(self.quick_prompts, f, indent=4)
 
     def edit_prompt(self, index):
-        current = self.quick_prompts[index]
-        new_label = simpledialog.askstring("Edit Prompt Label", f"Enter label for button {index+1}:", initialvalue=current['label'], parent=self.root)
-        if new_label is None: return
+        dialog = ctk.CTkInputDialog(text="Enter new label:", title="Edit Label")
+        new_label = dialog.get_input()
+        if not new_label: return
         
-        new_prompt = simpledialog.askstring("Edit Prompt Text", "Enter the workflow prompt:", initialvalue=current['prompt'], parent=self.root)
+        dialog2 = ctk.CTkInputDialog(text="Enter new prompt content:", title="Edit Content")
+        new_prompt = dialog2.get_input()
         if new_prompt is None: return
         
         self.quick_prompts[index] = {"label": new_label, "prompt": new_prompt}
         self.save_quick_prompts()
-        
-        # Update Button Text
-        self.prompt_buttons[index].config(text=f"Send {new_label}")
+        self.qp_buttons[index].configure(text=f"Send {new_label}")
 
     def send_quick_prompt(self, index):
-        prompt_text = self.quick_prompts[index]['prompt']
-        if not prompt_text:
-            messagebox.showwarning("Empty Prompt", "This quick prompt is empty. Click Edit to set a prompt.")
+        prompt = self.quick_prompts[index]['prompt']
+        if not prompt:
+            logger.warning("Empty prompt!")
             return
-        
-        # Start workflow with override
-        threading.Thread(target=self.run_workflow, args=(prompt_text,), daemon=True).start()
+        threading.Thread(target=self.run_workflow, args=(prompt,), daemon=True).start()
 
     def start_workflow_thread(self):
-        threading.Thread(target=self.run_workflow, daemon=True).start()
+        prompt = self.prompt_text.get("1.0", "end-1c")
+        threading.Thread(target=self.run_workflow, args=(prompt,), daemon=True).start()
 
-    def run_workflow(self, override_prompt=None):
-        target = self.project_name_var.get()
-        if override_prompt is not None:
-            # Replace newlines in quick prompts to send as one line
-            prompt = override_prompt.replace("\n", " ").replace("\r", " ").strip()
-        else:
-            # Replace newlines in textbox prompt to send as one line
-            prompt = self.prompt_text.get("1.0", tk.END).replace("\n", " ").replace("\r", " ").strip()
-        suffix = self.suffix_var.get().strip()
-
+    def run_workflow(self, prompt_text):
+        target = self.target_entry.get()
+        suffix = self.suffix_entry.get()
+        
         if not target:
-            logger.error("No Target Project Name specified!")
+            logger.error("No target window set.")
             return
 
-        logger.info(f"Looking for window: {target}")
-        
+        logger.info(f"Targeting '{target}'...")
         try:
-            windows = gw.getWindowsWithTitle(target)
-            if not windows:
-                logger.error(f"Could not find window containing '{target}'")
-                # Log all available titles to help the user debug
-                all_titles = gw.getAllTitles()
-                logger.info(f"Available Windows: {all_titles}")
+            wins = gw.getWindowsWithTitle(target)
+            if not wins:
+                logger.error("Window not found.")
                 return
-            
-            # Find the best match (sometimes getWindowsWithTitle returns partial matches)
-            # We'll just take the first one but log what we found
-            win = windows[0]
-            logger.info(f"Focusing window: '{win.title}'")
-            
-            # Minimize and Maximize to force focus sometimes helps on Windows
+            win = wins[0]
             if not win.isActive:
-                try:
-                    win.activate()
-                except Exception:
-                    win.minimize()
-                    win.restore()
+                try: win.activate()
+                except: win.minimize(); win.restore()
+            time.sleep(1)
             
-            time.sleep(1.0) # Wait for focus
-
-            # STEP 1: Click the "+" button using OCR
-            logger.info("Looking for '+' button to click...")
-            from core.ocr import scan_for_keywords
-            
-            # Scan for the "+" button
+            # Click Plus
             matches = scan_for_keywords(["+"], [])
-            
             if matches:
-                # Click the first match (the + button)
-                plus_button = matches[0]
-                box = plus_button['box']
+                box = matches[0]['box']
                 x, y, w, h = box
-                
-                # Click in the center of the button
-                click_x = x + w // 2
-                click_y = y + h // 2
-                
-                logger.info(f"Clicking '+' button at ({click_x}, {click_y})")
-                pyautogui.click(click_x, click_y)
-                time.sleep(0.5)  # Wait for any UI response
-            else:
-                logger.warning("Could not find '+' button, proceeding anyway...")
-
-            # STEP 2: Type the prompt and suffix
-            # Combine prompt and suffix into one continuous string
-            full_text = ""
-            if prompt:
-                full_text = prompt
-            
-            if suffix:
-                if full_text:
-                    full_text += " " + suffix
-                else:
-                    full_text = suffix
-            
-            if full_text:
-                logger.info(f"Typing complete prompt: {full_text[:50]}...")
-                # Type the entire combined text as one prompt
-                pyautogui.write(full_text, interval=0.01)
+                pyautogui.click(x + w//2, y + h//2)
                 time.sleep(0.5)
-                logger.info("Sending...")
+            
+            # Type
+            full = prompt_text.replace("\n", " ").strip()
+            if suffix: full += " " + suffix
+            
+            if full:
+                logger.info(f"Typing: {full[:30]}...")
+                pyautogui.write(full, interval=0.01)
+                time.sleep(0.5)
                 pyautogui.press('enter')
+                logger.info("Sent.")
             else:
-                logger.warning("No prompt or suffix to send!")
-            
-            logger.info("Workflow Complete.")
-
+                logger.warning("Nothing to send.")
+                
         except Exception as e:
-            logger.error(f"Workflow failed: {e}")
-
-    def toggle_always_on_top(self):
-        is_top = self.always_on_top_var.get()
-        self.root.attributes('-topmost', is_top)
-        logger.info(f"Always on Top set to: {is_top}")
-
-    def toggle_autoclicker(self):
-        if self.autoclicker_thread and self.autoclicker_thread.is_alive():
-            # Stop it
-            logger.info("Stopping AutoClicker...")
-            main.stop_event.set()
-            self.toggle_btn.config(text="Stopping...", state='disabled')
-            
-            # Start polling for stop
-            self.check_stop_complete()
-            
-        else:
-            # Start it
-            logger.info("Starting AutoClicker...")
-            main.stop_event.clear()
-            
-            # Update config with current target if changed (though main reads config global)
-            config.TARGET_WINDOW_TITLE = self.project_name_var.get()
-            
-            self.autoclicker_thread = threading.Thread(target=main.main, daemon=True)
-            self.autoclicker_thread.start()
-            self.reset_btn_state(stopped=False)
-
-    def check_stop_complete(self):
-        if self.autoclicker_thread.is_alive():
-            # Check again in 100ms
-            self.root.after(100, self.check_stop_complete)
-        else:
-            self.reset_btn_state(stopped=True)
-
-    def reset_btn_state(self, stopped):
-        if stopped:
-            self.toggle_btn.config(text="Start AutoClicker Loops", bg="#ddffdd", state='normal')
-        else:
-            self.toggle_btn.config(text="Stop AutoClicker Loops", bg="#ffdddd", state='normal')
+            logger.error(f"Workflow Error: {e}")
 
 if __name__ == "__main__":
-    try:
-        root = tk.Tk()
-        app = AutoClickerGUI(root)
-        root.mainloop()
-    except Exception as e:
-        # Fallback logging if GUI fails
-        print(f"Failed to start GUI: {e}")
-        import traceback
-        traceback.print_exc()
+    app = App()
+    app.mainloop()

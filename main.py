@@ -1,7 +1,7 @@
 import time
 import sys
 import pyautogui
-import config
+from core.config_manager import config_manager
 from core.ocr import scan_for_keywords
 from core.actions import perform_click, perform_type, perform_shortcut
 from core.verification import verify_action
@@ -16,7 +16,9 @@ def self_test():
     logger.info("Running Self-Tests...")
     
     # Test 1: configuration
-    if not config.CLICK_KEYWORDS and not config.TYPE_KEYWORDS:
+    click_kw = config_manager.get("CLICK_KEYWORDS", [])
+    type_kw = config_manager.get("TYPE_KEYWORDS", [])
+    if not click_kw and not type_kw:
         # It's okay if lists are empty if we are just running shortcuts, but warning is good
         logger.warning("Keywords empty. Bot will only run shortcuts if configured.")
         
@@ -57,9 +59,10 @@ def main():
             # The prompt implies "Press Ctrl+B... check for keywords". 
             # We'll do this if we haven't done it recently to "refresh" the inbox state.
             if time.time() - last_shortcut_time > SHORTCUT_INTERVAL:
-                if hasattr(config, 'SHORTCUT_SEQUENCE'):
+                shortcuts = config_manager.get("SHORTCUT_SEQUENCE")
+                if shortcuts:
                     logger.info("Running Workflow Shortcuts...")
-                    for step in config.SHORTCUT_SEQUENCE:
+                    for step in shortcuts:
                         perform_shortcut(step['keys'])
                         time.sleep(step['delay'])
                     last_shortcut_time = time.time()
@@ -67,11 +70,11 @@ def main():
 
             # 1. Scan
             logger.debug("Scanning screen...")
-            matches = scan_for_keywords(config.CLICK_KEYWORDS, config.TYPE_KEYWORDS)
+            matches = scan_for_keywords(config_manager.get("CLICK_KEYWORDS", []), config_manager.get("TYPE_KEYWORDS", []))
             
             if not matches:
-                logger.info("No target keywords detected. Waiting...")
-                time.sleep(config.SCAN_INTERVAL)
+                logger.debug("No target keywords detected. Waiting...")
+                time.sleep(config_manager.get("SCAN_INTERVAL", 0.5))
                 continue
 
             logger.info(f"Detected {len(matches)} potential targets.")
@@ -88,11 +91,11 @@ def main():
             
             # Check Retry Limits
             current_retries = retry_map.get(keyword, 0)
-            if current_retries >= config.MAX_RETRY_ATTEMPTS:
+            if current_retries >= config_manager.get("MAX_RETRY_ATTEMPTS", 3):
                 logger.warning(f"Max retries reached for '{keyword}'. Skipping temporarily.")
                 # In a real sophisticated system, we'd blacklist this specific region
                 # For now, we wait a bit longer to see if state changes externally
-                time.sleep(config.SCAN_INTERVAL * 2)
+                time.sleep(config_manager.get("SCAN_INTERVAL", 0.5) * 2)
                 continue
 
             logger.info(f"Engaging Target: {keyword} ({action_type})")
@@ -132,7 +135,7 @@ def main():
                 # "Re-focus active window" - clicking usually does this
                 # "Increase delay" - handled in next loop implicitly by processing time
             
-            time.sleep(config.SCAN_INTERVAL)
+            time.sleep(config_manager.get("SCAN_INTERVAL", 0.5))
             
     except KeyboardInterrupt:
         logger.info("User stopped execution.")

@@ -1,7 +1,10 @@
 import pyautogui
 import time
 import random
-import config
+import pyautogui
+import time
+import random
+from core.config_manager import config_manager
 from utils.logger import logger
 
 def smooth_move(x, y):
@@ -26,7 +29,7 @@ def perform_click(box):
     
     time.sleep(random.uniform(0.05, 0.15)) # Pre-click delay
     pyautogui.click()
-    time.sleep(config.ACTION_DELAY)
+    time.sleep(config_manager.get("ACTION_DELAY", 0.1))
     
     return (target_x, target_y)
 
@@ -42,7 +45,7 @@ def perform_type(keyword, box):
         
         time.sleep(0.2)
         pyautogui.press('enter')
-        time.sleep(config.ACTION_DELAY)
+        time.sleep(config_manager.get("ACTION_DELAY", 0.1))
         return True
     except Exception as e:
         logger.error(f"Typing failed: {e}")
