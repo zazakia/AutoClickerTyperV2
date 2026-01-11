@@ -138,6 +138,7 @@ def is_on_blue_background(box, blue_mask, region_offset=(0, 0)):
 def scan_for_keywords(target_keywords_click, target_keywords_type):
     """
     Scans the screen (or target window) for keywords.
+    Optimized: If blue filter is enabled, it scans blue regions individually for better speed.
     Returns a list of dicts: {'keyword': str, 'type': 'CLICK'|'TYPE', 'box': (x, y, w, h), 'conf': float}
     """
     region = get_target_region()
@@ -147,95 +148,133 @@ def scan_for_keywords(target_keywords_click, target_keywords_type):
         return []
 
     screenshot = capture_screen(region=region)
+    img_np = np.array(screenshot)
     
     # Region offset for coordinate mapping (0,0 if full screen)
-    offset_x, offset_y = region[0], region[1] if region else (0, 0)
+    offset_x, offset_y = (region[0], region[1]) if region else (0, 0)
     
     # Detect blue regions if color filtering is enabled
     enable_color = config_manager.get("ENABLE_COLOR_FILTER", True)
     blue_mask = detect_blue_regions(screenshot)
-    if enable_color and blue_mask is not None:
-        logger.debug("Blue region detection enabled")
-
-    # Get detailed data including boxes and confidence
-    try:
-        data = pytesseract.image_to_data(screenshot, output_type=pytesseract.Output.DICT)
-    except Exception as e:
-        logger.error(f"OCR Failed: {e}")
-        return []
-
-    matches = []
     
-    n_boxes = len(data['text'])
-    for i in range(n_boxes):
-        text = data['text'][i].strip()
-        conf = int(data['conf'][i])
-        
-        if not text:
-            continue
+    matches = []
 
-        if conf < config_manager.get("OCR_CONFIDENCE_THRESHOLD", 60):
-            continue
+    if enable_color and blue_mask is not None:
+        logger.debug("Running targeted scan on blue regions...")
+        # Find contours of blue regions
+        contours, _ = cv2.findContours(blue_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         
-        text_lower = text.lower()
-        
-        # Calculate ABSOLUTE screen coordinates
-        # Tesseract gives x,y relative to the screenshot image
-        # box = (x, y, w, h)
-        abs_x = offset_x + data['left'][i]
-        abs_y = offset_y + data['top'][i]
-        abs_w = data['width'][i]
-        abs_h = data['height'][i]
-        abs_box = (abs_x, abs_y, abs_w, abs_h)
-        
-        # Check if text is on a blue background (if filtering is enabled)
-        on_blue = is_on_blue_background(abs_box, blue_mask, (offset_x, offset_y))
-        
-        if not on_blue and enable_color:
-            # Skip this match if it's not on a blue background
-            continue
-        
-        # Check CLICK keywords
-        for k in target_keywords_click:
-            match_found = False
-            if fuzz:
-                # Fuzzy match
-                ratio = fuzz.ratio(text_lower, k.lower())
-                if ratio > 90: # High threshold
-                    match_found = True
-            else:
-                 if text_lower == k.lower():
-                     match_found = True
-
-            if match_found:
-                matches.append({
-                    'keyword': k,
-                    'found_text': text,
-                    'type': 'CLICK',
-                    'box': abs_box,
-                    'conf': conf
-                })
-                logger.debug(f"Found '{k}' (text='{text}') on blue background at {abs_box}")
-        
-        # Check TYPE keywords
-        for k in target_keywords_type:
-            match_found = False
-            if fuzz:
-                ratio = fuzz.ratio(text_lower, k.lower())
-                if ratio > 90:
-                    match_found = True
-            else:
-                if text_lower == k.lower():
-                    match_found = True
+        for cnt in contours:
+            x, y, w, h = cv2.boundingRect(cnt)
+            # Skip noise or tiny regions
+            if w < 10 or h < 5:
+                continue
             
-            if match_found:
-                matches.append({
-                    'keyword': k,
-                    'found_text': text,
-                    'type': 'TYPE',
-                    'box': abs_box,
-                    'conf': conf
-                })
-                logger.debug(f"Found '{k}' (text='{text}') on blue background at {abs_box}")
+            # Add padding to the crop to help Tesseract
+            pad = 5
+            x_pad = max(0, x - pad)
+            y_pad = max(0, y - pad)
+            w_pad = min(img_np.shape[1] - x_pad, w + pad * 2)
+            h_pad = min(img_np.shape[0] - y_pad, h + pad * 2)
+            
+            crop = img_np[y_pad:y_pad+h_pad, x_pad:x_pad+w_pad]
+            
+            try:
+                # Run OCR on the crop
+                data = pytesseract.image_to_data(crop, output_type=pytesseract.Output.DICT)
+            except Exception as e:
+                logger.error(f"OCR Failed on region: {e}")
+                continue
+
+            n_boxes = len(data['text'])
+            for i in range(n_boxes):
+                text = data['text'][i].strip()
+                conf = int(data['conf'][i])
+                
+                if not text or conf < config_manager.get("OCR_CONFIDENCE_THRESHOLD", 60):
+                    continue
+                
+                text_lower = text.lower()
+                
+                # Calculate ABSOLUTE screen coordinates
+                # Crop relative -> Screenshot relative -> Absolute Screen relative
+                abs_x = offset_x + x_pad + data['left'][i]
+                abs_y = offset_y + y_pad + data['top'][i]
+                abs_w = data['width'][i]
+                abs_h = data['height'][i]
+                abs_box = (abs_x, abs_y, abs_w, abs_h)
+                
+                # Check keywords
+                process_text_match(text, text_lower, conf, abs_box, target_keywords_click, target_keywords_type, matches)
+    else:
+        # Fallback to full screen scan if color filter disabled or failed
+        logger.debug("Falling back to full screenshot OCR scan...")
+        try:
+            data = pytesseract.image_to_data(screenshot, output_type=pytesseract.Output.DICT)
+        except Exception as e:
+            logger.error(f"OCR Failed: {e}")
+            return []
+
+        n_boxes = len(data['text'])
+        for i in range(n_boxes):
+            text = data['text'][i].strip()
+            conf = int(data['conf'][i])
+            
+            if not text or conf < config_manager.get("OCR_CONFIDENCE_THRESHOLD", 60):
+                continue
+            
+            text_lower = text.lower()
+            abs_x = offset_x + data['left'][i]
+            abs_y = offset_y + data['top'][i]
+            abs_w = data['width'][i]
+            abs_h = data['height'][i]
+            abs_box = (abs_x, abs_y, abs_w, abs_h)
+            
+            process_text_match(text, text_lower, conf, abs_box, target_keywords_click, target_keywords_type, matches)
+
+    return matches
+
+def process_text_match(text, text_lower, conf, abs_box, target_keywords_click, target_keywords_type, matches):
+    """Refactored matching logic used by both scan paths."""
+    # Check CLICK keywords
+    for k in target_keywords_click:
+        match_found = False
+        if fuzz:
+            ratio = fuzz.ratio(text_lower, k.lower())
+            if ratio > 90:
+                match_found = True
+        elif text_lower == k.lower():
+            match_found = True
+
+        if match_found:
+            matches.append({
+                'keyword': k,
+                'found_text': text,
+                'type': 'CLICK',
+                'box': abs_box,
+                'conf': conf
+            })
+            logger.debug(f"Found '{k}' (text='{text}') at {abs_box}")
+    
+    # Check TYPE keywords
+    for k in target_keywords_type:
+        match_found = False
+        if fuzz:
+            ratio = fuzz.ratio(text_lower, k.lower())
+            if ratio > 90:
+                match_found = True
+        elif text_lower == k.lower():
+            match_found = True
+        
+        if match_found:
+            matches.append({
+                'keyword': k,
+                'found_text': text,
+                'type': 'TYPE',
+                'box': abs_box,
+                'conf': conf
+            })
+            logger.debug(f"Found '{k}' (text='{text}') at {abs_box}")
+
 
     return matches
