@@ -180,8 +180,17 @@ def scan_for_keywords(target_keywords_click, target_keywords_type):
             crop = img_np[y_pad:y_pad+h_pad, x_pad:x_pad+w_pad]
             
             try:
-                # Run OCR on the crop
-                data = pytesseract.image_to_data(crop, output_type=pytesseract.Output.DICT)
+                # --- Preprocessing for better OCR ---
+                # 1. Grayscale
+                gray = cv2.cvtColor(crop, cv2.COLOR_RGB2GRAY)
+                # 2. Binarization (Assume white text on dark background -> Invert to get black on white)
+                # We'll use Otsu thresholding with inversion
+                _, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+                # 3. Upscale 2x
+                upscaled = cv2.resize(thresh, (0,0), fx=2, fy=2, interpolation=cv2.INTER_CUBIC)
+                
+                # Run OCR on the upscaled crop
+                data = pytesseract.image_to_data(upscaled, output_type=pytesseract.Output.DICT)
             except Exception as e:
                 logger.error(f"OCR Failed on region: {e}")
                 continue
@@ -197,11 +206,11 @@ def scan_for_keywords(target_keywords_click, target_keywords_type):
                 text_lower = text.lower()
                 
                 # Calculate ABSOLUTE screen coordinates
-                # Crop relative -> Screenshot relative -> Absolute Screen relative
-                abs_x = offset_x + x_pad + data['left'][i]
-                abs_y = offset_y + y_pad + data['top'][i]
-                abs_w = data['width'][i]
-                abs_h = data['height'][i]
+                # Adjusted for 2x upscale: data['left'][i] / 2
+                abs_x = offset_x + x_pad + (data['left'][i] // 2)
+                abs_y = offset_y + y_pad + (data['top'][i] // 2)
+                abs_w = data['width'][i] // 2
+                abs_h = data['height'][i] // 2
                 abs_box = (abs_x, abs_y, abs_w, abs_h)
                 
                 # Check keywords

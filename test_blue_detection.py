@@ -20,11 +20,11 @@ def test_blue_detection():
     test_img = np.zeros((300, 400, 3), dtype=np.uint8)
     
     # Blue button (left side)
-    cv2.rectangle(test_img, (50, 100), (150, 150), (0, 0, 255), -1)  # BGR: Blue
+    cv2.rectangle(test_img, (50, 100), (150, 150), (255, 0, 0), -1)  # BGR: Blue
     cv2.putText(test_img, "Accept", (60, 130), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
     
     # Red button (right side)
-    cv2.rectangle(test_img, (250, 100), (350, 150), (0, 0, 128), -1)  # BGR: Dark Red
+    cv2.rectangle(test_img, (250, 100), (350, 150), (0, 0, 255), -1)  # BGR: Red
     cv2.putText(test_img, "Accept", (260, 130), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
     
     # Convert to PIL Image

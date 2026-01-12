@@ -2,6 +2,7 @@ import json
 import os
 import logging
 from typing import Dict, Any, List
+from contextlib import suppress
 
 logger = logging.getLogger(__name__)
 
@@ -56,7 +57,18 @@ class ConfigManager:
             logger.error(f"Failed to save config: {e}")
 
     def get(self, key: str, default: Any = None) -> Any:
-        """Retrieves a configuration value."""
+        """Retrieves a configuration value, checking environment variables first."""
+        # Check environment variable first
+        env_val = os.getenv(key)
+        if env_val is not None:
+            # Try to convert to appropriate type if it looks like a number or boolean
+            if env_val.lower() == 'true': return True
+            if env_val.lower() == 'false': return False
+            with suppress(ValueError):
+                if '.' in env_val: return float(env_val)
+                return int(env_val)
+            return env_val
+            
         return self._config.get(key, default)
 
     def set(self, key: str, value: Any):
