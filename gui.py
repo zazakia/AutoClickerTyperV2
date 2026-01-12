@@ -60,7 +60,7 @@ class App(ctk.CTk):
 
         # Tabs
         self.tabview = ctk.CTkTabview(self)
-        self.tabview.grid(row=0, column=1, px=20, pady=0, sticky="nsew")
+        self.tabview.grid(row=0, column=1, padx=20, pady=0, sticky="nsew")
         self.tabview.add("Dashboard")
         self.tabview.add("Settings")
         
@@ -80,23 +80,23 @@ class App(ctk.CTk):
         wf_frame.grid(row=0, column=0, padx=10, pady=10, sticky="ew")
         wf_frame.grid_columnconfigure(1, weight=1)
         
-        ctk.CTkLabel(wf_frame, text="Target Window:", font=ctk.CTkFont(weight="bold")).grid(row=0, column=0, px=10, py=5, sticky="w")
+        ctk.CTkLabel(wf_frame, text="Target Window:", font=ctk.CTkFont(weight="bold")).grid(row=0, column=0, padx=10, pady=5, sticky="w")
         self.target_entry = ctk.CTkEntry(wf_frame)
-        self.target_entry.grid(row=0, column=1, px=10, py=5, sticky="ew")
+        self.target_entry.grid(row=0, column=1, padx=10, pady=5, sticky="ew")
         self.target_entry.insert(0, config_manager.get("TARGET_WINDOW_TITLE", "Manager"))
         self.target_entry.bind("<FocusOut>", self.save_target_window)
         
-        ctk.CTkLabel(wf_frame, text="Prompt:", font=ctk.CTkFont(weight="bold")).grid(row=1, column=0, px=10, py=5, sticky="nw")
+        ctk.CTkLabel(wf_frame, text="Prompt:", font=ctk.CTkFont(weight="bold")).grid(row=1, column=0, padx=10, pady=5, sticky="nw")
         self.prompt_text = ctk.CTkTextbox(wf_frame, height=80)
-        self.prompt_text.grid(row=1, column=1, px=10, py=5, sticky="ew")
+        self.prompt_text.grid(row=1, column=1, padx=10, pady=5, sticky="ew")
         
-        ctk.CTkLabel(wf_frame, text="Suffix:", font=ctk.CTkFont(weight="bold")).grid(row=2, column=0, px=10, py=5, sticky="w")
+        ctk.CTkLabel(wf_frame, text="Suffix:", font=ctk.CTkFont(weight="bold")).grid(row=2, column=0, padx=10, pady=5, sticky="w")
         self.suffix_entry = ctk.CTkEntry(wf_frame)
-        self.suffix_entry.grid(row=2, column=1, px=10, py=5, sticky="ew")
+        self.suffix_entry.grid(row=2, column=1, padx=10, pady=5, sticky="ew")
         self.suffix_entry.insert(0, "Proceed")
         
         self.run_wf_btn = ctk.CTkButton(wf_frame, text="Run Workflow (Focus -> Type -> Send)", command=self.start_workflow_thread)
-        self.run_wf_btn.grid(row=3, column=1, px=10, py=10, sticky="ew")
+        self.run_wf_btn.grid(row=3, column=1, padx=10, pady=10, sticky="ew")
         
         # --- Quick Prompts ---
         qp_frame = ctk.CTkFrame(dash)
@@ -126,9 +126,9 @@ class App(ctk.CTk):
         log_frame.grid(row=2, column=0, padx=10, pady=10, sticky="nsew")
         dash.grid_rowconfigure(2, weight=1)
         
-        ctk.CTkLabel(log_frame, text="Execution Logs").pack(anchor="w", px=5)
+        ctk.CTkLabel(log_frame, text="Execution Logs").pack(anchor="w", padx=5)
         self.log_area = ctk.CTkTextbox(log_frame, state="disabled")
-        self.log_area.pack(fill="both", expand=True, px=5, py=5)
+        self.log_area.pack(fill="both", expand=True, padx=5, pady=5)
         
         # Logging Handler
         handler = TextHandler(self.log_area)
@@ -141,26 +141,26 @@ class App(ctk.CTk):
         
         # OCR Confidence
         c_frame = ctk.CTkFrame(sett)
-        c_frame.pack(fill="x", px=10, py=5)
-        ctk.CTkLabel(c_frame, text="OCR Confidence Threshold").pack(side="left", px=10)
+        c_frame.pack(fill="x", padx=10, pady=5)
+        ctk.CTkLabel(c_frame, text="OCR Confidence Threshold").pack(side="left", padx=10)
         self.conf_slider = ctk.CTkSlider(c_frame, from_=0, to=100, command=self.update_conf)
         self.conf_slider.set(config_manager.get("OCR_CONFIDENCE_THRESHOLD"))
-        self.conf_slider.pack(side="right", px=10, fill="x", expand=True)
+        self.conf_slider.pack(side="right", padx=10, fill="x", expand=True)
         
         # Scan Interval
         s_frame = ctk.CTkFrame(sett)
-        s_frame.pack(fill="x", px=10, py=5)
-        ctk.CTkLabel(s_frame, text="Scan Interval (s)").pack(side="left", px=10)
+        s_frame.pack(fill="x", padx=10, pady=5)
+        ctk.CTkLabel(s_frame, text="Scan Interval (s)").pack(side="left", padx=10)
         self.scan_slider = ctk.CTkSlider(s_frame, from_=0.1, to=5.0, command=self.update_scan)
         self.scan_slider.set(config_manager.get("SCAN_INTERVAL"))
-        self.scan_slider.pack(side="right", px=10, fill="x", expand=True)
+        self.scan_slider.pack(side="right", padx=10, fill="x", expand=True)
         
         # Keywords
         k_frame = ctk.CTkFrame(sett)
-        k_frame.pack(fill="both", px=10, py=5, expand=True)
-        ctk.CTkLabel(k_frame, text="Click Keywords (comma separated)").pack(anchor="w", px=10)
+        k_frame.pack(fill="both", padx=10, pady=5, expand=True)
+        ctk.CTkLabel(k_frame, text="Click Keywords (comma separated)").pack(anchor="w", padx=10)
         self.click_kw_entry = ctk.CTkEntry(k_frame)
-        self.click_kw_entry.pack(fill="x", px=10, py=5)
+        self.click_kw_entry.pack(fill="x", padx=10, pady=5)
         self.click_kw_entry.insert(0, ", ".join(config_manager.get("CLICK_KEYWORDS")))
         
         ctk.CTkButton(k_frame, text="Save Keywords", command=self.save_keywords).pack(pady=10)

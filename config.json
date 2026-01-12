@@ -8,17 +8,19 @@
         "Proceed",
         "Yes",
         "OK",
-        "Confirm"
+        "Confirm",
+        "Continue",
+        "Expand"
     ],
     "TYPE_KEYWORDS": [
         "proceed"
     ],
     "OCR_CONFIDENCE_THRESHOLD": 60,
-    "SCAN_INTERVAL": 0.5,
+    "SCAN_INTERVAL": 0.2,
     "MAX_RETRY_ATTEMPTS": 3,
-    "ACTION_DELAY": 0.1,
+    "ACTION_DELAY": 0.05,
     "ALWAYS_ON_TOP": true,
-    "ENABLE_COLOR_FILTER": false,
+    "ENABLE_COLOR_FILTER": true,
     "BLUE_HSV_LOWER": [
         100,
         50,

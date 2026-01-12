@@ -16,9 +16,7 @@ class TestGuiIntegration(unittest.TestCase):
         import importlib
         importlib.reload(gui)
         
-        self.root = tk.Tk()
-        self.root.withdraw()
-        self.app = gui.AutoClickerGUI(self.root)
+        self.app = gui.App()
         
         # Ensure stop event is set initially so we don't accidentally run
         main.stop_event.set()
@@ -28,7 +26,7 @@ class TestGuiIntegration(unittest.TestCase):
         if self.app.autoclicker_thread and self.app.autoclicker_thread.is_alive():
             main.stop_event.set()
             self.app.autoclicker_thread.join(timeout=2)
-        self.root.destroy()
+        self.app.destroy()
 
     @patch('main.main')
     def test_toggle_lifecycle(self, mock_main):
@@ -59,8 +57,8 @@ class TestGuiIntegration(unittest.TestCase):
         
         # Verify Button Update (Start -> Stop)
         # Note: We need to update idle tasks to ensure config was applied, though usually instant in unit test
-        self.root.update_idletasks() 
-        self.assertIn("Stop", self.app.toggle_btn.cget('text'))
+        self.app.update_idletasks() 
+        self.assertIn("Stop", self.app.start_btn.cget('text'))
 
         # --- PHASE 2: STOP ---
         
@@ -78,13 +76,13 @@ class TestGuiIntegration(unittest.TestCase):
         # The GUI update happens in root.after, let's process it
         # Poll for the button text update
         for _ in range(10):
-            self.root.update()
-            if "Start" in self.app.toggle_btn.cget('text'):
+            self.app.update()
+            if "Start" in self.app.start_btn.cget('text'):
                 break
             time.sleep(0.1)
         
         # Verify Button Reset (Stop -> Start)
-        self.assertIn("Start", self.app.toggle_btn.cget('text'))
+        self.assertIn("Start", self.app.start_btn.cget('text'))
 
 if __name__ == "__main__":
     import sys

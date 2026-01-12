@@ -10,7 +10,7 @@ from utils.logger import logger
 def smooth_move(x, y):
     """Moves mouse smoothly to x, y."""
     # PyAutoGUI has built-in tweening, but we can just use a simple duration
-    pyautogui.moveTo(x, y, duration=random.uniform(0.1, 0.3))
+    pyautogui.moveTo(x, y, duration=random.uniform(0.05, 0.15))
 
 def apply_random_offset(x, y, w, h):
     """Calculates a random point within the bounding box."""
@@ -27,7 +27,7 @@ def perform_click(box):
     logger.debug(f"Moving to click at ({target_x}, {target_y})")
     smooth_move(target_x, target_y)
     
-    time.sleep(random.uniform(0.05, 0.15)) # Pre-click delay
+    time.sleep(random.uniform(0.02, 0.08)) # Pre-click delay
     pyautogui.click()
     time.sleep(config_manager.get("ACTION_DELAY", 0.1))
     

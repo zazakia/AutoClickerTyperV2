@@ -17,7 +17,7 @@ class TestApp:
         self.frame.pack(expand=True, fill='both')
 
         # Keywords from config
-        self.click_keywords = ["Accept", "Run", "Allow", "Proceed", "Confirm"]
+        self.click_keywords = ["Accept", "Run", "Allow", "Proceed", "Confirm", "Continue", "Expand"]
         self.type_keywords = ["Type Here"] # Modified for visual clarity vs typing content
 
         self.widgets = []
@@ -47,6 +47,7 @@ class TestApp:
 
     def create_button(self, text):
         btn = tk.Button(self.frame, text=text, font=("Arial", 12),
+                        bg="#0000FF", fg="white",
                         command=lambda t=text: self.on_click(t))
         # Place randomly
         x = random.randint(50, 400)
