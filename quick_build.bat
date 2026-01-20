@@ -62,9 +62,9 @@ echo ============================================================
 echo BUILD COMPLETE!
 echo ============================================================
 echo.
-echo Executable: dist\AutoClickerTyper.exe
+echo Executable: dist\ZapwebPromptAssist.exe
 if exist installer_output (
-    echo Installer:  installer_output\AutoClickerTyper_Setup_v*.exe
+    echo Installer:  installer_output\ZapwebPromptAssist_Setup_v*.exe
 )
 echo.
 pause

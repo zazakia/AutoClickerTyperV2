@@ -1,4 +1,4 @@
-# Autonomous Auto Clicker & Typing Tool
+# Zapweb.app Prompt Assist and AutoClicker
 
 ## Overview
 This tool is an autonomous agent designed to visually scan your screen, detect specific keywords using OCR, and perform actions (Click or Type) to automate workflows like software installation, bulk acceptance of dialogs, or routine form entry.
@@ -13,13 +13,13 @@ This tool is an autonomous agent designed to visually scan your screen, detect s
 ## 📥 Installation (End Users)
 
 ### Option 1: Download Installer (Recommended)
-1. Download the latest `AutoClickerTyper_Setup_v*.exe` from [Releases](https://github.com/yourusername/AutoClickerTyperV2/releases)
+1. Download the latest `ZapwebPromptAssist_Setup_v*.exe` from [Releases](https://github.com/yourusername/AutoClickerTyperV2/releases)
 2. Run the installer
 3. The installer will bundle Tesseract OCR if found on your system
 4. Launch from Start Menu or Desktop shortcut
 
 ### Option 2: Download Standalone Executable
-1. Download `AutoClickerTyper.exe` from [Releases](https://github.com/yourusername/AutoClickerTyperV2/releases)
+1. Download `ZapwebPromptAssist.exe` from [Releases](https://github.com/yourusername/AutoClickerTyperV2/releases)
 2. Install Tesseract OCR separately: https://github.com/UB-Mannheim/tesseract/wiki
 3. Run the executable
 
@@ -85,7 +85,7 @@ Edit `config.py` to customize:
    python build.py
    ```
 
-3. Find your executable at `dist/AutoClickerTyper.exe`
+3. Find your executable at `dist/ZapwebPromptAssist.exe`
 
 ### Create Windows Installer
 
@@ -98,7 +98,7 @@ Edit `config.py` to customize:
    iscc installer.iss
    ```
 
-4. Find your installer at `installer_output/AutoClickerTyper_Setup_v*.exe`
+4. Find your installer at `installer_output/ZapwebPromptAssist_Setup_v*.exe`
 
 **Note**: The installer will bundle Tesseract OCR if found at `C:\Program Files\Tesseract-OCR\`
 

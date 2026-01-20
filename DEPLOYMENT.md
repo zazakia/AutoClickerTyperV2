@@ -1,6 +1,6 @@
 # Deployment Guide
 
-This guide provides step-by-step instructions for building and deploying the AutoClickerTyper application.
+This guide provides step-by-step instructions for building and deploying the Zapweb.app Prompt Assist and AutoClicker application.
 
 ## Prerequisites
 
@@ -26,7 +26,7 @@ pip install -r requirements-dev.txt
 python build.py
 ```
 
-The executable will be created at `dist/AutoClickerTyper.exe`
+The executable will be created at `dist/ZapwebPromptAssist.exe`
 
 ### 2. Create Windows Installer
 
@@ -38,7 +38,7 @@ python build.py
 iscc installer.iss
 ```
 
-The installer will be created at `installer_output/AutoClickerTyper_Setup_v1.0.0.exe`
+The installer will be created at `installer_output/ZapwebPromptAssist_Setup_v1.0.0.exe`
 
 ## Manual Build Process
 
@@ -124,8 +124,8 @@ Edit `installer.iss` to customize:
    - Create new tag (e.g., `v1.0.0`)
    - Add release title and description
    - Upload both files:
-     - `AutoClickerTyper.exe`
-     - `AutoClickerTyper_Setup_v1.0.0.exe`
+     - `ZapwebPromptAssist.exe`
+     - `ZapwebPromptAssist_Setup_v1.0.0.exe`
 
 ## Troubleshooting
 
@@ -148,7 +148,7 @@ Edit `installer.iss` to customize:
 
 **Installer fails to compile**
 - Ensure Inno Setup 6.0+ is installed
-- Check that `dist/AutoClickerTyper.exe` exists
+- Check that `dist/ZapwebPromptAssist.exe` exists
 - Verify all referenced files exist
 
 ### Runtime Issues
@@ -170,7 +170,7 @@ For production distribution, consider code signing to avoid Windows Defender war
 1. Obtain a code signing certificate
 2. Sign the executable:
    ```powershell
-   signtool sign /f certificate.pfx /p password /t http://timestamp.digicert.com dist/AutoClickerTyper.exe
+   signtool sign /f certificate.pfx /p password /t http://timestamp.digicert.com dist/ZapwebPromptAssist.exe
    ```
 3. Sign the installer similarly
 

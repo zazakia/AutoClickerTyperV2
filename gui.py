@@ -34,7 +34,7 @@ class App(ctk.CTk):
     def __init__(self):
         super().__init__()
 
-        self.title("AutoClicker Pro")
+        self.title("Zapweb.app Prompt Assist and AutoClicker")
         self.geometry("900x700")
 
         # Grid Layout
@@ -46,7 +46,7 @@ class App(ctk.CTk):
         self.sidebar_frame.grid(row=0, column=0, rowspan=4, sticky="nsew")
         self.sidebar_frame.grid_rowconfigure(4, weight=1)
         
-        self.logo_label = ctk.CTkLabel(self.sidebar_frame, text="AutoClicker", font=ctk.CTkFont(size=20, weight="bold"))
+        self.logo_label = ctk.CTkLabel(self.sidebar_frame, text="Zapweb.app", font=ctk.CTkFont(size=20, weight="bold"))
         self.logo_label.grid(row=0, column=0, padx=20, pady=(20, 10))
         
         self.start_btn = ctk.CTkButton(self.sidebar_frame, text="Start Loops", command=self.toggle_autoclicker, fg_color="green")

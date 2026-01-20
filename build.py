@@ -86,7 +86,7 @@ def verify_build():
     """Verify the build output"""
     print("\nVerifying build output...")
     
-    exe_path = Path('dist/AutoClickerTyper.exe')
+    exe_path = Path('dist/ZapwebPromptAssist.exe')
     
     if not exe_path.exists():
         print("❌ Executable not found in dist/")
@@ -125,7 +125,7 @@ def main():
     print("\n" + "=" * 60)
     print("✓ BUILD COMPLETE!")
     print("=" * 60)
-    print("\nYour executable is ready at: dist/AutoClickerTyper.exe")
+    print("\nYour executable is ready at: dist/ZapwebPromptAssist.exe")
     print("\nNext steps:")
     print("  1. Test the executable on this machine")
     print("  2. Create installer with Inno Setup (see installer.iss)")
