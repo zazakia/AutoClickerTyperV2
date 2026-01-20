@@ -9,7 +9,9 @@ CLICK_KEYWORDS = [
     "Proceed",
     "Yes",
     "OK",
-    "Confirm"
+    "Confirm",
+    "Continue",
+    "Expand"
 ]
 
 # Keywords to TYPE

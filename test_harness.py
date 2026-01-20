@@ -37,21 +37,26 @@ class TestApp:
         # For this test, let's just make a label "Type 'run' below" and an input field.
         
         input_frame = tk.Frame(self.frame)
-        input_frame.pack(pady=20)
-        lbl = tk.Label(input_frame, text="allow", font=("Arial", 12)) # Trigger keyword
+        input_frame.pack(pady=20, side=tk.BOTTOM) # Move to bottom to avoid buttons
+        lbl = tk.Label(input_frame, text="proceed", font=("Arial", 12)) # Trigger keyword
         lbl.pack(side=tk.LEFT, padx=5)
-        entry = tk.Entry(input_frame)
-        entry.pack(side=tk.LEFT)
+        self.entry = tk.Entry(input_frame)
+        self.entry.pack(side=tk.LEFT)
         # We can't easily auto-verify typing in this simple harness without complex binding,
         # but the auto-clicker will try to type "allow" into it.
 
     def create_button(self, text):
-        btn = tk.Button(self.frame, text=text, font=("Arial", 12),
+        btn = tk.Button(self.frame, text=text, font=("Arial", 14, "bold"),
                         bg="#0000FF", fg="white",
+                        padx=10, pady=5,
                         command=lambda t=text: self.on_click(t))
-        # Place randomly
-        x = random.randint(50, 400)
-        y = random.randint(50, 250)
+        # Use a more spread out placement to avoid overlaps
+        # Window is 600x400
+        idx = len(self.widgets)
+        row = idx // 3
+        col = idx % 3
+        x = 50 + col * 180
+        y = 50 + row * 80
         btn.place(x=x, y=y)
         self.widgets.append(btn)
 

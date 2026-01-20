@@ -1,33 +1,37 @@
 import unittest
 from unittest.mock import MagicMock, patch, call
-import tkinter as tk
+import customtkinter as ctk
 import gui
 import logging
+import threading
 
 class TestAutoClickerGUI(unittest.TestCase):
     def setUp(self):
         # Suppress logging during tests
         logging.getLogger("AutoClicker").setLevel(logging.CRITICAL)
         
-        # Setup headless root
-        self.root = tk.Tk()
-        self.root.withdraw()
-        self.app = gui.AutoClickerGUI(self.root)
+        # Setup App
+        # We need to ensure we don't actually start the mainloop or show windows if possible
+        self.app = gui.App()
+        self.app.withdraw() # Hide window
 
     def tearDown(self):
-        self.root.destroy()
+        self.app.destroy()
 
     @patch('gui.gw.getWindowsWithTitle')
     @patch('gui.pyautogui.write')
     @patch('gui.pyautogui.press')
     @patch('gui.time.sleep')
-    def test_workflow_execution(self, mock_sleep, mock_press, mock_write, mock_get_win):
+    @patch('gui.scan_for_keywords')
+    def test_workflow_execution(self, mock_scan, mock_sleep, mock_press, mock_write, mock_get_win):
         """Verify that inputs are correctly passed to pyautogui functions"""
         
         # Setup inputs
-        self.app.project_name_var.set("TestApp")
-        self.app.prompt_text.insert("1.0", "Hello World")
-        self.app.suffix_var.set("SUFFIX_CMD")
+        self.app.target_entry.delete(0, 'end')
+        self.app.target_entry.insert(0, "TestApp")
+        
+        self.app.suffix_entry.delete(0, 'end')
+        self.app.suffix_entry.insert(0, "SUFFIX_CMD")
         
         # Setup Mock Window
         mock_win = MagicMock()
@@ -35,8 +39,12 @@ class TestAutoClickerGUI(unittest.TestCase):
         mock_win.isActive = False
         mock_get_win.return_value = [mock_win]
         
+        # Mock Scan (Avoid OCR)
+        mock_scan.return_value = [] 
+        
         # Run
-        self.app.run_workflow()
+        # gui.run_workflow takes prompt_text
+        self.app.run_workflow("Hello World")
         
         # Verify Window Finding
         mock_get_win.assert_called_with("TestApp")
@@ -47,14 +55,14 @@ class TestAutoClickerGUI(unittest.TestCase):
         
         # Verify Typing Sequence
         # 1. Prompt "Hello World"
-        # 2. Space " "
-        # 3. Suffix "SUFFIX_CMD"
-        expected_calls = [
-            call("Hello World", interval=0.01),
-            call(" "),
-            call("SUFFIX_CMD", interval=0.05)
-        ]
-        mock_write.assert_has_calls(expected_calls)
+        # 2. Suffix "SUFFIX_CMD" (appended in local var 'full')
+        # Logic in gui.py: 
+        # full = prompt_text + " " + suffix
+        # pyautogui.write(full)
+        
+        expected_text = "Hello World SUFFIX_CMD"
+        
+        mock_write.assert_called_with(expected_text, interval=0.01)
         
         # Verify Send
         mock_press.assert_called_with('enter')
@@ -64,8 +72,10 @@ class TestAutoClickerGUI(unittest.TestCase):
         """Verify that nothing happens if window is not found"""
         mock_get_win.return_value = []
         
-        self.app.project_name_var.set("MissingApp")
-        self.app.run_workflow()
+        self.app.target_entry.delete(0, 'end')
+        self.app.target_entry.insert(0, "MissingApp")
+        
+        self.app.run_workflow("Test")
         
         mock_get_win.assert_called_with("MissingApp")
         # Ensure no crash

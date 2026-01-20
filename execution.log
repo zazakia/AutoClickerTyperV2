@@ -6434,3 +6434,572 @@ pyautogui.FailSafeException: PyAutoGUI fail-safe triggered from mouse moving to 
 2026-01-12 21:59:07,335 - INFO - Action Verified: Keyword disappeared from target location
 2026-01-12 22:00:33,807 - INFO - Detected 5 potential targets.
 2026-01-12 22:00:33,811 - INFO - Engaging Target: Proceed (CLICK)
+2026-01-20 01:03:37,583 - WARNING - thefuzz library not found. Fuzzy matching disabled.
+2026-01-20 06:48:02,677 - INFO - Starting Test Scenario...
+2026-01-20 06:48:02,677 - INFO - Starting Test Scenario...
+2026-01-20 06:48:02,687 - INFO - Launching Test Harness...
+2026-01-20 06:48:02,687 - INFO - Launching Test Harness...
+2026-01-20 06:48:05,805 - INFO - Captured initial state screenshot.
+2026-01-20 06:48:05,805 - INFO - Captured initial state screenshot.
+2026-01-20 06:48:05,805 - INFO - Launching Auto Clicker Bot...
+2026-01-20 06:48:05,805 - INFO - Launching Auto Clicker Bot...
+2026-01-20 06:48:05,810 - INFO - Monitoring for 30 seconds...
+2026-01-20 06:48:05,810 - INFO - Monitoring for 30 seconds...
+2026-01-20 06:48:06,098 - INFO - Initializing Autonomous Auto Clicker...
+2026-01-20 06:48:06,098 - INFO - Running Self-Tests...
+2026-01-20 06:48:06,811 - INFO - Test running... 0s
+2026-01-20 06:48:06,811 - INFO - Test running... 0s
+2026-01-20 06:48:07,187 - INFO - TEST PASS: OCR System functional.
+2026-01-20 06:48:07,188 - INFO - Self-Tests Passed.
+2026-01-20 06:48:07,188 - INFO - Starting Continuous Execution Loop...
+2026-01-20 06:48:07,621 - INFO - Detected 2 potential targets.
+2026-01-20 06:48:07,621 - INFO - Engaging Target: Confirm (CLICK)
+2026-01-20 06:48:09,529 - INFO - ACTION: CLICK | KEYWORD: 'Confirm' | COORDS: (581, 260, 67, 15) | VERIFIED: PASS | RETRY: 0 | COMPLETION: N/A%
+2026-01-20 06:48:09,530 - INFO - Action Verified: Keyword disappeared from target location
+2026-01-20 06:48:11,813 - INFO - Test running... 5s
+2026-01-20 06:48:11,813 - INFO - Test running... 5s
+2026-01-20 06:48:16,815 - INFO - Test running... 10s
+2026-01-20 06:48:16,815 - INFO - Test running... 10s
+2026-01-20 06:48:21,816 - INFO - Test running... 15s
+2026-01-20 06:48:21,816 - INFO - Test running... 15s
+2026-01-20 06:48:26,818 - INFO - Test running... 20s
+2026-01-20 06:48:26,818 - INFO - Test running... 20s
+2026-01-20 06:48:31,819 - INFO - Test running... 25s
+2026-01-20 06:48:31,819 - INFO - Test running... 25s
+2026-01-20 06:48:35,916 - INFO - Captured end state screenshot.
+2026-01-20 06:48:35,916 - INFO - Captured end state screenshot.
+2026-01-20 06:48:35,916 - INFO - Terminating processes...
+2026-01-20 06:48:35,916 - INFO - Terminating processes...
+2026-01-20 06:48:35,931 - INFO - Found 1 verified actions in the NEW log entries.
+2026-01-20 06:48:35,931 - INFO - Found 1 verified actions in the NEW log entries.
+2026-01-20 06:48:35,931 - INFO - TEST RESULT: PASS
+2026-01-20 06:48:35,931 - INFO - TEST RESULT: PASS
+2026-01-20 06:59:35,531 - INFO - Starting Test Scenario...
+2026-01-20 06:59:35,531 - INFO - Starting Test Scenario...
+2026-01-20 06:59:35,541 - INFO - Launching Test Harness...
+2026-01-20 06:59:35,541 - INFO - Launching Test Harness...
+2026-01-20 06:59:38,644 - INFO - Captured initial state screenshot.
+2026-01-20 06:59:38,644 - INFO - Captured initial state screenshot.
+2026-01-20 06:59:38,644 - INFO - Launching Auto Clicker Bot...
+2026-01-20 06:59:38,644 - INFO - Launching Auto Clicker Bot...
+2026-01-20 06:59:38,650 - INFO - Monitoring for 30 seconds...
+2026-01-20 06:59:38,650 - INFO - Monitoring for 30 seconds...
+2026-01-20 06:59:38,949 - INFO - Initializing Autonomous Auto Clicker...
+2026-01-20 06:59:38,949 - INFO - Running Self-Tests...
+2026-01-20 06:59:39,650 - INFO - Test running... 0s
+2026-01-20 06:59:39,650 - INFO - Test running... 0s
+2026-01-20 06:59:40,037 - INFO - TEST PASS: OCR System functional.
+2026-01-20 06:59:40,038 - INFO - Self-Tests Passed.
+2026-01-20 06:59:40,038 - INFO - Starting Continuous Execution Loop...
+2026-01-20 06:59:40,538 - INFO - Detected 1 potential targets.
+2026-01-20 06:59:40,538 - INFO - Engaging Target: Continue (CLICK)
+2026-01-20 06:59:42,441 - INFO - ACTION: CLICK | KEYWORD: 'Continue' | COORDS: (392, 314, 76, 15) | VERIFIED: PASS | RETRY: 0 | COMPLETION: N/A%
+2026-01-20 06:59:42,441 - INFO - Action Verified: Keyword disappeared from target location
+2026-01-20 06:59:43,295 - INFO - Detected 3 potential targets.
+2026-01-20 06:59:43,295 - INFO - Engaging Target: Proceed (CLICK)
+2026-01-20 06:59:44,652 - INFO - Test running... 5s
+2026-01-20 06:59:44,652 - INFO - Test running... 5s
+2026-01-20 06:59:45,205 - INFO - ACTION: CLICK | KEYWORD: 'Proceed' | COORDS: (335, 348, 73, 16) | VERIFIED: FAIL | RETRY: 0 | COMPLETION: N/A%
+2026-01-20 06:59:45,206 - WARNING - Verification Failed: Keyword 'Proceed' still present at target location (Overlap)
+2026-01-20 06:59:45,968 - INFO - Detected 3 potential targets.
+2026-01-20 06:59:45,968 - INFO - Engaging Target: Proceed (CLICK)
+2026-01-20 06:59:47,820 - INFO - ACTION: CLICK | KEYWORD: 'Proceed' | COORDS: (335, 348, 73, 16) | VERIFIED: PASS | RETRY: 1 | COMPLETION: N/A%
+2026-01-20 06:59:47,820 - INFO - Action Verified: Keyword disappeared from target location
+2026-01-20 06:59:49,654 - INFO - Test running... 10s
+2026-01-20 06:59:49,654 - INFO - Test running... 10s
+2026-01-20 06:59:54,656 - INFO - Test running... 15s
+2026-01-20 06:59:54,656 - INFO - Test running... 15s
+2026-01-20 06:59:59,658 - INFO - Test running... 20s
+2026-01-20 06:59:59,658 - INFO - Test running... 20s
+2026-01-20 07:00:04,660 - INFO - Test running... 25s
+2026-01-20 07:00:04,660 - INFO - Test running... 25s
+2026-01-20 07:00:08,751 - INFO - Captured end state screenshot.
+2026-01-20 07:00:08,751 - INFO - Captured end state screenshot.
+2026-01-20 07:00:08,751 - INFO - Terminating processes...
+2026-01-20 07:00:08,751 - INFO - Terminating processes...
+2026-01-20 07:00:08,764 - INFO - Found 2 verified actions in the NEW log entries.
+2026-01-20 07:00:08,764 - INFO - Found 2 verified actions in the NEW log entries.
+2026-01-20 07:00:08,764 - INFO - TEST RESULT: PASS
+2026-01-20 07:00:08,764 - INFO - TEST RESULT: PASS
+2026-01-20 07:05:58,314 - INFO - Starting Test Scenario...
+2026-01-20 07:05:58,314 - INFO - Starting Test Scenario...
+2026-01-20 07:05:58,325 - INFO - Launching Test Harness...
+2026-01-20 07:05:58,325 - INFO - Launching Test Harness...
+2026-01-20 07:06:01,444 - INFO - Captured initial state screenshot.
+2026-01-20 07:06:01,444 - INFO - Captured initial state screenshot.
+2026-01-20 07:06:01,444 - INFO - Launching Auto Clicker Bot...
+2026-01-20 07:06:01,444 - INFO - Launching Auto Clicker Bot...
+2026-01-20 07:06:01,449 - INFO - Monitoring for 45 seconds...
+2026-01-20 07:06:01,449 - INFO - Monitoring for 45 seconds...
+2026-01-20 07:06:01,874 - INFO - Initializing Autonomous Auto Clicker...
+2026-01-20 07:06:01,874 - INFO - Running Self-Tests...
+2026-01-20 07:06:02,450 - INFO - Test running... 0s
+2026-01-20 07:06:02,450 - INFO - Test running... 0s
+2026-01-20 07:06:02,487 - INFO - TEST PASS: OCR System functional.
+2026-01-20 07:06:02,487 - INFO - Self-Tests Passed.
+2026-01-20 07:06:02,487 - INFO - Starting Continuous Execution Loop...
+2026-01-20 07:06:02,831 - INFO - Detected 2 potential targets.
+2026-01-20 07:06:02,831 - INFO - Engaging Target: Continue (CLICK)
+2026-01-20 07:06:04,767 - INFO - ACTION: CLICK | KEYWORD: 'Continue' | COORDS: (484, 468, 75, 15) | VERIFIED: FAIL | RETRY: 0 | COMPLETION: N/A%
+2026-01-20 07:06:04,768 - WARNING - Verification Failed: Keyword 'Continue' still present at target location (Overlap)
+2026-01-20 07:06:05,369 - INFO - Detected 2 potential targets.
+2026-01-20 07:06:05,370 - INFO - Engaging Target: Continue (CLICK)
+2026-01-20 07:06:07,372 - INFO - ACTION: CLICK | KEYWORD: 'Continue' | COORDS: (484, 468, 75, 15) | VERIFIED: PASS | RETRY: 1 | COMPLETION: N/A%
+2026-01-20 07:06:07,372 - INFO - Action Verified: Keyword disappeared from target location
+2026-01-20 07:06:07,452 - INFO - Test running... 5s
+2026-01-20 07:06:07,452 - INFO - Test running... 5s
+2026-01-20 07:06:08,062 - INFO - Detected 2 potential targets.
+2026-01-20 07:06:08,063 - INFO - Engaging Target: Expand (CLICK)
+2026-01-20 07:06:09,854 - INFO - ACTION: CLICK | KEYWORD: 'Expand' | COORDS: (469, 531, 64, 18) | VERIFIED: PASS | RETRY: 0 | COMPLETION: N/A%
+2026-01-20 07:06:09,854 - INFO - Action Verified: Keyword disappeared from target location
+2026-01-20 07:06:12,454 - INFO - Test running... 10s
+2026-01-20 07:06:12,454 - INFO - Test running... 10s
+2026-01-20 07:06:17,456 - INFO - Test running... 15s
+2026-01-20 07:06:17,456 - INFO - Test running... 15s
+2026-01-20 07:06:22,458 - INFO - Test running... 20s
+2026-01-20 07:06:22,458 - INFO - Test running... 20s
+2026-01-20 07:06:27,460 - INFO - Test running... 25s
+2026-01-20 07:06:27,460 - INFO - Test running... 25s
+2026-01-20 07:06:32,462 - INFO - Test running... 30s
+2026-01-20 07:06:32,462 - INFO - Test running... 30s
+2026-01-20 07:06:37,464 - INFO - Test running... 35s
+2026-01-20 07:06:37,464 - INFO - Test running... 35s
+2026-01-20 07:06:42,466 - INFO - Test running... 40s
+2026-01-20 07:06:42,466 - INFO - Test running... 40s
+2026-01-20 07:06:46,582 - INFO - Captured end state screenshot.
+2026-01-20 07:06:46,582 - INFO - Captured end state screenshot.
+2026-01-20 07:06:46,582 - INFO - Terminating processes...
+2026-01-20 07:06:46,582 - INFO - Terminating processes...
+2026-01-20 07:06:46,599 - INFO - Found 2 verified actions in the NEW log entries.
+2026-01-20 07:06:46,599 - INFO - Found 2 verified actions in the NEW log entries.
+2026-01-20 07:06:46,600 - INFO - TEST RESULT: PASS
+2026-01-20 07:06:46,600 - INFO - TEST RESULT: PASS
+2026-01-20 07:08:02,417 - INFO - Starting Test Scenario...
+2026-01-20 07:08:02,417 - INFO - Starting Test Scenario...
+2026-01-20 07:08:02,428 - INFO - Launching Test Harness...
+2026-01-20 07:08:02,428 - INFO - Launching Test Harness...
+2026-01-20 07:08:05,547 - INFO - Captured initial state screenshot.
+2026-01-20 07:08:05,547 - INFO - Captured initial state screenshot.
+2026-01-20 07:08:05,548 - INFO - Launching Auto Clicker Bot...
+2026-01-20 07:08:05,548 - INFO - Launching Auto Clicker Bot...
+2026-01-20 07:08:05,552 - INFO - Monitoring for 45 seconds...
+2026-01-20 07:08:05,552 - INFO - Monitoring for 45 seconds...
+2026-01-20 07:08:05,907 - INFO - Initializing Autonomous Auto Clicker...
+2026-01-20 07:08:05,908 - INFO - Running Self-Tests...
+2026-01-20 07:08:06,166 - INFO - TEST PASS: OCR System functional.
+2026-01-20 07:08:06,166 - INFO - Self-Tests Passed.
+2026-01-20 07:08:06,166 - INFO - Starting Continuous Execution Loop...
+2026-01-20 07:08:06,400 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:06,401 - INFO - Engaging Target: Proceed (CLICK)
+2026-01-20 07:08:06,553 - INFO - Test running... 0s
+2026-01-20 07:08:06,553 - INFO - Test running... 0s
+2026-01-20 07:08:08,112 - INFO - ACTION: CLICK | KEYWORD: 'Proceed' | COORDS: (370, 590, 71, 18) | VERIFIED: FAIL | RETRY: 0 | COMPLETION: N/A%
+2026-01-20 07:08:08,112 - WARNING - Verification Failed: Keyword 'Proceed' still present at target location (Overlap)
+2026-01-20 07:08:08,550 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:08,550 - INFO - Engaging Target: Proceed (CLICK)
+2026-01-20 07:08:10,122 - INFO - ACTION: CLICK | KEYWORD: 'Proceed' | COORDS: (370, 590, 71, 18) | VERIFIED: FAIL | RETRY: 1 | COMPLETION: N/A%
+2026-01-20 07:08:10,122 - WARNING - Verification Failed: Keyword 'Proceed' still present at target location (Overlap)
+2026-01-20 07:08:10,509 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:10,509 - INFO - Engaging Target: Proceed (CLICK)
+2026-01-20 07:08:11,556 - INFO - Test running... 5s
+2026-01-20 07:08:11,556 - INFO - Test running... 5s
+2026-01-20 07:08:11,980 - INFO - ACTION: CLICK | KEYWORD: 'Proceed' | COORDS: (370, 590, 71, 18) | VERIFIED: FAIL | RETRY: 2 | COMPLETION: N/A%
+2026-01-20 07:08:11,980 - WARNING - Verification Failed: Keyword 'Proceed' still present at target location (Overlap)
+2026-01-20 07:08:12,402 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:12,402 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:13,006 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:13,006 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:13,587 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:13,587 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:14,171 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:14,171 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:14,759 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:14,759 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:15,387 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:15,387 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:15,973 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:15,973 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:16,558 - INFO - Test running... 10s
+2026-01-20 07:08:16,558 - INFO - Test running... 10s
+2026-01-20 07:08:16,560 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:16,560 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:17,148 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:17,149 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:17,735 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:17,735 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:18,350 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:18,350 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:18,932 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:18,932 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:19,521 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:19,522 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:20,104 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:20,104 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:20,694 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:20,694 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:21,286 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:21,287 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:21,560 - INFO - Test running... 15s
+2026-01-20 07:08:21,560 - INFO - Test running... 15s
+2026-01-20 07:08:21,873 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:21,873 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:22,454 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:22,454 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:23,040 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:23,041 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:23,627 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:23,627 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:24,213 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:24,213 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:24,801 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:24,802 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:25,386 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:25,386 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:25,994 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:25,994 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:26,562 - INFO - Test running... 20s
+2026-01-20 07:08:26,562 - INFO - Test running... 20s
+2026-01-20 07:08:26,599 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:26,599 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:27,203 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:27,203 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:27,807 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:27,807 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:28,391 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:28,392 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:29,003 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:29,003 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:29,591 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:29,591 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:30,194 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:30,194 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:30,781 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:30,781 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:31,381 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:31,381 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:31,564 - INFO - Test running... 25s
+2026-01-20 07:08:31,564 - INFO - Test running... 25s
+2026-01-20 07:08:31,972 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:31,972 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:32,592 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:32,592 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:33,178 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:33,178 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:33,762 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:33,762 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:34,347 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:34,348 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:34,940 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:34,940 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:35,522 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:35,522 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:36,109 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:36,109 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:36,566 - INFO - Test running... 30s
+2026-01-20 07:08:36,566 - INFO - Test running... 30s
+2026-01-20 07:08:36,700 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:36,700 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:37,304 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:37,304 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:37,908 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:37,908 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:38,493 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:38,493 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:39,120 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:39,121 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:39,792 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:39,792 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:40,431 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:40,431 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:41,062 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:41,062 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:41,568 - INFO - Test running... 35s
+2026-01-20 07:08:41,568 - INFO - Test running... 35s
+2026-01-20 07:08:41,647 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:41,648 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:42,231 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:42,231 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:42,816 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:42,816 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:43,407 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:43,407 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:43,992 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:43,993 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:44,572 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:44,572 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:45,160 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:45,160 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:45,746 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:45,746 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:46,342 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:46,342 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:46,569 - INFO - Test running... 40s
+2026-01-20 07:08:46,569 - INFO - Test running... 40s
+2026-01-20 07:08:46,948 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:46,948 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:47,532 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:47,532 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:48,302 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:48,302 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:48,887 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:48,887 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:49,467 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:49,467 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:50,066 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:50,066 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:50,670 - INFO - Detected 2 potential targets.
+2026-01-20 07:08:50,670 - WARNING - Max retries reached for 'Proceed'. Skipping temporarily.
+2026-01-20 07:08:50,687 - INFO - Captured end state screenshot.
+2026-01-20 07:08:50,687 - INFO - Captured end state screenshot.
+2026-01-20 07:08:50,688 - INFO - Terminating processes...
+2026-01-20 07:08:50,688 - INFO - Terminating processes...
+2026-01-20 07:08:50,701 - INFO - Found 0 verified actions in the NEW log entries.
+2026-01-20 07:08:50,701 - INFO - Found 0 verified actions in the NEW log entries.
+2026-01-20 07:08:50,702 - INFO - TEST RESULT: FAIL (No verified actions)
+2026-01-20 07:08:50,702 - INFO - TEST RESULT: FAIL (No verified actions)
+2026-01-20 07:15:27,984 - INFO - Starting Test Scenario...
+2026-01-20 07:15:27,984 - INFO - Starting Test Scenario...
+2026-01-20 07:15:27,995 - INFO - Launching Test Harness...
+2026-01-20 07:15:27,995 - INFO - Launching Test Harness...
+2026-01-20 07:15:31,148 - INFO - Captured initial state screenshot.
+2026-01-20 07:15:31,148 - INFO - Captured initial state screenshot.
+2026-01-20 07:15:31,149 - INFO - Launching Auto Clicker Bot...
+2026-01-20 07:15:31,149 - INFO - Launching Auto Clicker Bot...
+2026-01-20 07:15:31,156 - INFO - Monitoring for 45 seconds...
+2026-01-20 07:15:31,156 - INFO - Monitoring for 45 seconds...
+2026-01-20 07:15:31,576 - INFO - Initializing Autonomous Auto Clicker...
+2026-01-20 07:15:31,576 - INFO - Running Self-Tests...
+2026-01-20 07:15:32,157 - INFO - Test running... 0s
+2026-01-20 07:15:32,157 - INFO - Test running... 0s
+2026-01-20 07:15:32,574 - INFO - TEST PASS: OCR System functional.
+2026-01-20 07:15:32,574 - INFO - Self-Tests Passed.
+2026-01-20 07:15:32,574 - INFO - Starting Continuous Execution Loop...
+2026-01-20 07:15:37,159 - INFO - Test running... 5s
+2026-01-20 07:15:37,159 - INFO - Test running... 5s
+2026-01-20 07:15:42,161 - INFO - Test running... 10s
+2026-01-20 07:15:42,161 - INFO - Test running... 10s
+2026-01-20 07:15:47,163 - INFO - Test running... 15s
+2026-01-20 07:15:47,163 - INFO - Test running... 15s
+2026-01-20 07:15:52,166 - INFO - Test running... 20s
+2026-01-20 07:15:52,166 - INFO - Test running... 20s
+2026-01-20 07:15:57,168 - INFO - Test running... 25s
+2026-01-20 07:15:57,168 - INFO - Test running... 25s
+2026-01-20 07:16:02,170 - INFO - Test running... 30s
+2026-01-20 07:16:02,170 - INFO - Test running... 30s
+2026-01-20 07:16:07,172 - INFO - Test running... 35s
+2026-01-20 07:16:07,172 - INFO - Test running... 35s
+2026-01-20 07:16:12,174 - INFO - Test running... 40s
+2026-01-20 07:16:12,174 - INFO - Test running... 40s
+2026-01-20 07:16:16,296 - INFO - Captured end state screenshot.
+2026-01-20 07:16:16,296 - INFO - Captured end state screenshot.
+2026-01-20 07:16:16,296 - INFO - Terminating processes...
+2026-01-20 07:16:16,296 - INFO - Terminating processes...
+2026-01-20 07:16:16,314 - INFO - Found 0 verified actions in the NEW log entries.
+2026-01-20 07:16:16,314 - INFO - Found 0 verified actions in the NEW log entries.
+2026-01-20 07:16:16,317 - INFO - TEST RESULT: FAIL (No verified actions)
+2026-01-20 07:16:16,317 - INFO - TEST RESULT: FAIL (No verified actions)
+2026-01-20 08:48:11,285 - INFO - Starting Test Scenario...
+2026-01-20 08:48:11,285 - INFO - Starting Test Scenario...
+2026-01-20 08:48:11,295 - INFO - Launching Test Harness...
+2026-01-20 08:48:11,295 - INFO - Launching Test Harness...
+2026-01-20 08:48:14,428 - INFO - Captured initial state screenshot.
+2026-01-20 08:48:14,428 - INFO - Captured initial state screenshot.
+2026-01-20 08:48:14,428 - INFO - Launching Auto Clicker Bot...
+2026-01-20 08:48:14,428 - INFO - Launching Auto Clicker Bot...
+2026-01-20 08:48:14,433 - INFO - Monitoring for 45 seconds...
+2026-01-20 08:48:14,433 - INFO - Monitoring for 45 seconds...
+2026-01-20 08:48:14,749 - INFO - Initializing Autonomous Auto Clicker...
+2026-01-20 08:48:14,749 - INFO - Running Self-Tests...
+2026-01-20 08:48:15,434 - INFO - Test running... 0s
+2026-01-20 08:48:15,434 - INFO - Test running... 0s
+2026-01-20 08:48:15,679 - INFO - TEST PASS: OCR System functional.
+2026-01-20 08:48:15,680 - INFO - Self-Tests Passed.
+2026-01-20 08:48:15,680 - INFO - Starting Continuous Execution Loop...
+2026-01-20 08:48:20,436 - INFO - Test running... 5s
+2026-01-20 08:48:20,436 - INFO - Test running... 5s
+2026-01-20 08:48:25,438 - INFO - Test running... 10s
+2026-01-20 08:48:25,438 - INFO - Test running... 10s
+2026-01-20 08:48:30,440 - INFO - Test running... 15s
+2026-01-20 08:48:30,440 - INFO - Test running... 15s
+2026-01-20 08:48:35,443 - INFO - Test running... 20s
+2026-01-20 08:48:35,443 - INFO - Test running... 20s
+2026-01-20 08:48:40,445 - INFO - Test running... 25s
+2026-01-20 08:48:40,445 - INFO - Test running... 25s
+2026-01-20 08:48:45,447 - INFO - Test running... 30s
+2026-01-20 08:48:45,447 - INFO - Test running... 30s
+2026-01-20 08:48:50,449 - INFO - Test running... 35s
+2026-01-20 08:48:50,449 - INFO - Test running... 35s
+2026-01-20 08:48:55,451 - INFO - Test running... 40s
+2026-01-20 08:48:55,451 - INFO - Test running... 40s
+2026-01-20 08:48:59,552 - INFO - Captured end state screenshot.
+2026-01-20 08:48:59,552 - INFO - Captured end state screenshot.
+2026-01-20 08:48:59,553 - INFO - Terminating processes...
+2026-01-20 08:48:59,553 - INFO - Terminating processes...
+2026-01-20 08:48:59,563 - INFO - Found 0 verified actions in the NEW log entries.
+2026-01-20 08:48:59,563 - INFO - Found 0 verified actions in the NEW log entries.
+2026-01-20 08:48:59,564 - INFO - TEST RESULT: FAIL (No verified actions)
+2026-01-20 08:48:59,564 - INFO - TEST RESULT: FAIL (No verified actions)
+2026-01-20 08:51:39,769 - INFO - Starting Test Scenario...
+2026-01-20 08:51:39,769 - INFO - Starting Test Scenario...
+2026-01-20 08:51:39,779 - INFO - Launching Test Harness...
+2026-01-20 08:51:39,779 - INFO - Launching Test Harness...
+2026-01-20 08:51:42,934 - INFO - Captured initial state screenshot.
+2026-01-20 08:51:42,934 - INFO - Captured initial state screenshot.
+2026-01-20 08:51:42,935 - INFO - Launching Auto Clicker Bot...
+2026-01-20 08:51:42,935 - INFO - Launching Auto Clicker Bot...
+2026-01-20 08:51:42,940 - INFO - Monitoring for 45 seconds...
+2026-01-20 08:51:42,940 - INFO - Monitoring for 45 seconds...
+2026-01-20 08:51:43,378 - INFO - Initializing Autonomous Auto Clicker...
+2026-01-20 08:51:43,378 - INFO - Running Self-Tests...
+2026-01-20 08:51:43,941 - INFO - Test running... 0s
+2026-01-20 08:51:43,941 - INFO - Test running... 0s
+2026-01-20 08:51:44,469 - INFO - TEST PASS: OCR System functional.
+2026-01-20 08:51:44,469 - INFO - Self-Tests Passed.
+2026-01-20 08:51:44,469 - INFO - Starting Continuous Execution Loop...
+2026-01-20 08:51:48,943 - INFO - Test running... 5s
+2026-01-20 08:51:48,943 - INFO - Test running... 5s
+2026-01-20 08:51:53,945 - INFO - Test running... 10s
+2026-01-20 08:51:53,945 - INFO - Test running... 10s
+2026-01-20 08:51:58,947 - INFO - Test running... 15s
+2026-01-20 08:51:58,947 - INFO - Test running... 15s
+2026-01-20 08:52:03,949 - INFO - Test running... 20s
+2026-01-20 08:52:03,949 - INFO - Test running... 20s
+2026-01-20 08:52:08,952 - INFO - Test running... 25s
+2026-01-20 08:52:08,952 - INFO - Test running... 25s
+2026-01-20 08:52:13,953 - INFO - Test running... 30s
+2026-01-20 08:52:13,953 - INFO - Test running... 30s
+2026-01-20 08:52:18,956 - INFO - Test running... 35s
+2026-01-20 08:52:18,956 - INFO - Test running... 35s
+2026-01-20 08:52:23,958 - INFO - Test running... 40s
+2026-01-20 08:52:23,958 - INFO - Test running... 40s
+2026-01-20 08:52:28,078 - INFO - Captured end state screenshot.
+2026-01-20 08:52:28,078 - INFO - Captured end state screenshot.
+2026-01-20 08:52:28,079 - INFO - Terminating processes...
+2026-01-20 08:52:28,079 - INFO - Terminating processes...
+2026-01-20 08:52:28,094 - INFO - Found 0 verified actions in the NEW log entries.
+2026-01-20 08:52:28,094 - INFO - Found 0 verified actions in the NEW log entries.
+2026-01-20 08:52:28,095 - INFO - TEST RESULT: FAIL (No verified actions)
+2026-01-20 08:52:28,095 - INFO - TEST RESULT: FAIL (No verified actions)
+2026-01-20 08:52:56,987 - INFO - Starting Test Scenario...
+2026-01-20 08:52:56,987 - INFO - Starting Test Scenario...
+2026-01-20 08:52:56,997 - INFO - Launching Test Harness...
+2026-01-20 08:52:56,997 - INFO - Launching Test Harness...
+2026-01-20 08:53:00,117 - INFO - Captured initial state screenshot.
+2026-01-20 08:53:00,117 - INFO - Captured initial state screenshot.
+2026-01-20 08:53:00,118 - INFO - Launching Auto Clicker Bot...
+2026-01-20 08:53:00,118 - INFO - Launching Auto Clicker Bot...
+2026-01-20 08:53:00,123 - INFO - Monitoring for 45 seconds...
+2026-01-20 08:53:00,123 - INFO - Monitoring for 45 seconds...
+2026-01-20 08:53:00,454 - INFO - Initializing Autonomous Auto Clicker...
+2026-01-20 08:53:00,454 - INFO - Running Self-Tests...
+2026-01-20 08:53:01,124 - INFO - Test running... 0s
+2026-01-20 08:53:01,124 - INFO - Test running... 0s
+2026-01-20 08:53:01,303 - INFO - TEST PASS: OCR System functional.
+2026-01-20 08:53:01,304 - INFO - Self-Tests Passed.
+2026-01-20 08:53:01,304 - INFO - Starting Continuous Execution Loop...
+2026-01-20 08:53:06,125 - INFO - Test running... 5s
+2026-01-20 08:53:06,125 - INFO - Test running... 5s
+2026-01-20 08:53:11,127 - INFO - Test running... 10s
+2026-01-20 08:53:11,127 - INFO - Test running... 10s
+2026-01-20 08:53:16,129 - INFO - Test running... 15s
+2026-01-20 08:53:16,129 - INFO - Test running... 15s
+2026-01-20 08:53:21,130 - INFO - Test running... 20s
+2026-01-20 08:53:21,130 - INFO - Test running... 20s
+2026-01-20 08:53:26,132 - INFO - Test running... 25s
+2026-01-20 08:53:26,132 - INFO - Test running... 25s
+2026-01-20 08:53:31,133 - INFO - Test running... 30s
+2026-01-20 08:53:31,133 - INFO - Test running... 30s
+2026-01-20 08:53:36,135 - INFO - Test running... 35s
+2026-01-20 08:53:36,135 - INFO - Test running... 35s
+2026-01-20 08:53:41,137 - INFO - Test running... 40s
+2026-01-20 08:53:41,137 - INFO - Test running... 40s
+2026-01-20 08:53:45,249 - INFO - Captured end state screenshot.
+2026-01-20 08:53:45,249 - INFO - Captured end state screenshot.
+2026-01-20 08:53:45,250 - INFO - Terminating processes...
+2026-01-20 08:53:45,250 - INFO - Terminating processes...
+2026-01-20 08:53:45,263 - INFO - Found 0 verified actions in the NEW log entries.
+2026-01-20 08:53:45,263 - INFO - Found 0 verified actions in the NEW log entries.
+2026-01-20 08:53:45,264 - INFO - TEST RESULT: FAIL (No verified actions)
+2026-01-20 08:53:45,264 - INFO - TEST RESULT: FAIL (No verified actions)
+2026-01-20 08:54:12,143 - INFO - Starting Test Scenario...
+2026-01-20 08:54:12,143 - INFO - Starting Test Scenario...
+2026-01-20 08:54:12,152 - INFO - Launching Test Harness...
+2026-01-20 08:54:12,152 - INFO - Launching Test Harness...
+2026-01-20 08:54:15,296 - INFO - Captured initial state screenshot.
+2026-01-20 08:54:15,296 - INFO - Captured initial state screenshot.
+2026-01-20 08:54:15,296 - INFO - Launching Auto Clicker Bot...
+2026-01-20 08:54:15,296 - INFO - Launching Auto Clicker Bot...
+2026-01-20 08:54:15,301 - INFO - Monitoring for 45 seconds...
+2026-01-20 08:54:15,301 - INFO - Monitoring for 45 seconds...
+2026-01-20 08:54:15,730 - INFO - Initializing Autonomous Auto Clicker...
+2026-01-20 08:54:15,732 - INFO - Running Self-Tests...
+2026-01-20 08:54:16,302 - INFO - Test running... 0s
+2026-01-20 08:54:16,302 - INFO - Test running... 0s
+2026-01-20 08:54:16,670 - INFO - TEST PASS: OCR System functional.
+2026-01-20 08:54:16,670 - INFO - Self-Tests Passed.
+2026-01-20 08:54:16,670 - INFO - Starting Continuous Execution Loop...
+2026-01-20 08:54:21,304 - INFO - Test running... 5s
+2026-01-20 08:54:21,304 - INFO - Test running... 5s
+2026-01-20 08:54:26,306 - INFO - Test running... 10s
+2026-01-20 08:54:26,306 - INFO - Test running... 10s
+2026-01-20 08:54:31,308 - INFO - Test running... 15s
+2026-01-20 08:54:31,308 - INFO - Test running... 15s
+2026-01-20 08:54:36,310 - INFO - Test running... 20s
+2026-01-20 08:54:36,310 - INFO - Test running... 20s
+2026-01-20 08:54:41,312 - INFO - Test running... 25s
+2026-01-20 08:54:41,312 - INFO - Test running... 25s
+2026-01-20 08:54:46,314 - INFO - Test running... 30s
+2026-01-20 08:54:46,314 - INFO - Test running... 30s
+2026-01-20 08:54:51,316 - INFO - Test running... 35s
+2026-01-20 08:54:51,316 - INFO - Test running... 35s
+2026-01-20 08:54:56,318 - INFO - Test running... 40s
+2026-01-20 08:54:56,318 - INFO - Test running... 40s
+2026-01-20 08:55:00,445 - INFO - Captured end state screenshot.
+2026-01-20 08:55:00,445 - INFO - Captured end state screenshot.
+2026-01-20 08:55:00,445 - INFO - Terminating processes...
+2026-01-20 08:55:00,445 - INFO - Terminating processes...
+2026-01-20 08:55:00,460 - INFO - Found 0 verified actions in the NEW log entries.
+2026-01-20 08:55:00,460 - INFO - Found 0 verified actions in the NEW log entries.
+2026-01-20 08:55:00,460 - INFO - TEST RESULT: FAIL (No verified actions)
+2026-01-20 08:55:00,460 - INFO - TEST RESULT: FAIL (No verified actions)
+2026-01-20 09:08:18,727 - INFO - Starting Test Scenario...
+2026-01-20 09:08:18,727 - INFO - Starting Test Scenario...
+2026-01-20 09:08:18,738 - INFO - Launching Test Harness...
+2026-01-20 09:08:18,738 - INFO - Launching Test Harness...
+2026-01-20 09:08:21,912 - INFO - Captured initial state screenshot.
+2026-01-20 09:08:21,912 - INFO - Captured initial state screenshot.
+2026-01-20 09:08:21,912 - INFO - Launching Auto Clicker Bot...
+2026-01-20 09:08:21,912 - INFO - Launching Auto Clicker Bot...
+2026-01-20 09:08:21,917 - INFO - Monitoring for 45 seconds...
+2026-01-20 09:08:21,917 - INFO - Monitoring for 45 seconds...
+2026-01-20 09:08:22,299 - INFO - Initializing Autonomous Auto Clicker...
+2026-01-20 09:08:22,299 - INFO - Running Self-Tests...
+2026-01-20 09:08:22,918 - INFO - Test running... 0s
+2026-01-20 09:08:22,918 - INFO - Test running... 0s
+2026-01-20 09:08:23,178 - INFO - TEST PASS: OCR System functional.
+2026-01-20 09:08:23,179 - INFO - Self-Tests Passed.
+2026-01-20 09:08:23,179 - INFO - Starting Continuous Execution Loop...
+2026-01-20 09:08:27,919 - INFO - Test running... 5s
+2026-01-20 09:08:27,919 - INFO - Test running... 5s
+2026-01-20 09:08:32,922 - INFO - Test running... 10s
+2026-01-20 09:08:32,922 - INFO - Test running... 10s
+2026-01-20 09:08:37,923 - INFO - Test running... 15s
+2026-01-20 09:08:37,923 - INFO - Test running... 15s
+2026-01-20 09:08:42,925 - INFO - Test running... 20s
+2026-01-20 09:08:42,925 - INFO - Test running... 20s
+2026-01-20 09:08:47,926 - INFO - Test running... 25s
+2026-01-20 09:08:47,926 - INFO - Test running... 25s
+2026-01-20 09:08:52,927 - INFO - Test running... 30s
+2026-01-20 09:08:52,927 - INFO - Test running... 30s
+2026-01-20 09:08:57,929 - INFO - Test running... 35s
+2026-01-20 09:08:57,929 - INFO - Test running... 35s
+2026-01-20 09:09:02,931 - INFO - Test running... 40s
+2026-01-20 09:09:02,931 - INFO - Test running... 40s
+2026-01-20 09:09:07,016 - INFO - Captured end state screenshot.
+2026-01-20 09:09:07,016 - INFO - Captured end state screenshot.
+2026-01-20 09:09:07,016 - INFO - Terminating processes...
+2026-01-20 09:09:07,016 - INFO - Terminating processes...
+2026-01-20 09:09:07,027 - INFO - Found 0 verified actions in the NEW log entries.
+2026-01-20 09:09:07,027 - INFO - Found 0 verified actions in the NEW log entries.
+2026-01-20 09:09:07,027 - INFO - TEST RESULT: FAIL (No verified actions)
+2026-01-20 09:09:07,027 - INFO - TEST RESULT: FAIL (No verified actions)

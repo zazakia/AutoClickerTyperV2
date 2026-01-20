@@ -89,10 +89,14 @@ def main():
             action_type = target['type']
             box = target['box']
             
-            # Check Retry Limits
-            current_retries = retry_map.get(keyword, 0)
+            # Check Retry Limits (Index by keyword and approximate location)
+            # Round coordinates to allow for small variations in scan
+            rx, ry = int(box[0] // 5) * 5, int(box[1] // 5) * 5
+            retry_key = f"{keyword}_{rx}_{ry}"
+            
+            current_retries = retry_map.get(retry_key, 0)
             if current_retries >= config_manager.get("MAX_RETRY_ATTEMPTS", 3):
-                logger.warning(f"Max retries reached for '{keyword}'. Skipping temporarily.")
+                logger.warning(f"Max retries reached for '{keyword}' at ({rx},{ry}). Skipping temporarily.")
                 # In a real sophisticated system, we'd blacklist this specific region
                 # For now, we wait a bit longer to see if state changes externally
                 time.sleep(config_manager.get("SCAN_INTERVAL", 0.5) * 2)
@@ -127,10 +131,10 @@ def main():
             
             if verified:
                 logger.info(f"Action Verified: {reason}")
-                retry_map[keyword] = 0 # Reset retries on success
+                retry_map[retry_key] = 0 # Reset retries on success
             else:
                 logger.warning(f"Verification Failed: {reason}")
-                retry_map[keyword] = current_retries + 1
+                retry_map[retry_key] = current_retries + 1
                 # Verification failure logic (Section 6)
                 # "Re-focus active window" - clicking usually does this
                 # "Increase delay" - handled in next loop implicitly by processing time

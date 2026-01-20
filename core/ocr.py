@@ -141,13 +141,17 @@ def scan_for_keywords(target_keywords_click, target_keywords_type):
     Optimized: If blue filter is enabled, it scans blue regions individually for better speed.
     Returns a list of dicts: {'keyword': str, 'type': 'CLICK'|'TYPE', 'box': (x, y, w, h), 'conf': float}
     """
+    print(f"DEBUG: Getting target region...")
     region = get_target_region()
+    print(f"DEBUG: Region: {region}")
     
     # Handle case where window wasn't found - don't scan full screen if restricted
     if region == (0, 0, 0, 0):
         return []
 
+    print(f"DEBUG: Capturing screen...")
     screenshot = capture_screen(region=region)
+    print(f"DEBUG: Captured. Analyzing...")
     img_np = np.array(screenshot)
     
     # Region offset for coordinate mapping (0,0 if full screen)
@@ -156,20 +160,22 @@ def scan_for_keywords(target_keywords_click, target_keywords_type):
     # Detect blue regions if color filtering is enabled
     enable_color = config_manager.get("ENABLE_COLOR_FILTER", True)
     blue_mask = detect_blue_regions(screenshot)
+    print(f"DEBUG: Blue mask detected: {blue_mask is not None}")
     
     matches = []
 
     if enable_color and blue_mask is not None:
-        logger.debug("Running targeted scan on blue regions...")
         # Find contours of blue regions
         contours, _ = cv2.findContours(blue_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        print(f"DEBUG: Found {len(contours)} candidate blue regions.")
         
-        for cnt in contours:
+        for idx, cnt in enumerate(contours):
             x, y, w, h = cv2.boundingRect(cnt)
-            # Skip noise or tiny regions
-            if w < 10 or h < 5:
+            # Skip noise or tiny regions - buttons are usually larger
+            if w < 25 or h < 15:
                 continue
             
+            print(f"DEBUG: Scanning region {idx} at ({x},{y},{w},{h})...")
             # Add padding to the crop to help Tesseract
             pad = 5
             x_pad = max(0, x - pad)
@@ -191,6 +197,18 @@ def scan_for_keywords(target_keywords_click, target_keywords_type):
                 
                 # Run OCR on the upscaled crop
                 data = pytesseract.image_to_data(upscaled, output_type=pytesseract.Output.DICT)
+                
+                # --- NEW: Full Region Text Matching ---
+                # Sometimes Tesseract splits words. We check the joined text of the entire region.
+                full_region_text = " ".join([t.strip() for t in data['text'] if t.strip()])
+                if full_region_text:
+                    print(f"DEBUG: Found text in region: '{full_region_text}'")
+                    # Use the bounding box of the entire region (not just one word)
+                    # Coordinates in data are relative to upscaled crop. 
+                    # We use the region (x, y, w, h) from findContours as the base.
+                    full_abs_box = (offset_x + x, offset_y + y, w, h)
+                    process_text_match(full_region_text, full_region_text.lower(), 100, full_abs_box, 
+                                       target_keywords_click, target_keywords_type, matches)
             except Exception as e:
                 logger.error(f"OCR Failed on region: {e}")
                 continue

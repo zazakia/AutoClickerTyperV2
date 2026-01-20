@@ -93,7 +93,7 @@ class App(ctk.CTk):
         ctk.CTkLabel(wf_frame, text="Suffix:", font=ctk.CTkFont(weight="bold")).grid(row=2, column=0, padx=10, pady=5, sticky="w")
         self.suffix_entry = ctk.CTkEntry(wf_frame)
         self.suffix_entry.grid(row=2, column=1, padx=10, pady=5, sticky="ew")
-        self.suffix_entry.insert(0, "Proceed")
+        self.suffix_entry.insert(0, config_manager.get("DEFAULT_SUFFIX", "Proceed"))
         
         self.run_wf_btn = ctk.CTkButton(wf_frame, text="Run Workflow (Focus -> Type -> Send)", command=self.start_workflow_thread)
         self.run_wf_btn.grid(row=3, column=1, padx=10, pady=10, sticky="ew")

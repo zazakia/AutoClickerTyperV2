@@ -14,7 +14,7 @@ class ConfigManager:
     
     DEFAULT_CONFIG = {
         "TARGET_WINDOW_TITLE": "Manager",
-        "CLICK_KEYWORDS": ["Accept", "Run", "Allow", "Allow Always", "Proceed", "Yes", "OK", "Confirm"],
+        "CLICK_KEYWORDS": ["Accept", "Run", "Allow", "Allow Always", "Proceed", "Yes", "OK", "Confirm", "Continue", "Expand"],
         "TYPE_KEYWORDS": ["proceed"],
         "OCR_CONFIDENCE_THRESHOLD": 60,
         "SCAN_INTERVAL": 0.5,
@@ -24,7 +24,8 @@ class ConfigManager:
         "ENABLE_COLOR_FILTER": True,
         "BLUE_HSV_LOWER": [100, 50, 50],
         "BLUE_HSV_UPPER": [130, 255, 255],
-        "COLOR_OVERLAP_THRESHOLD": 0.5
+        "COLOR_OVERLAP_THRESHOLD": 0.5,
+        "DEFAULT_SUFFIX": "Proceed"
     }
 
     def __init__(self, config_path: str = "config.json"):

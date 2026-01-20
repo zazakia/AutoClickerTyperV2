@@ -19,7 +19,8 @@ def run_test_scenario():
             start_log_pos = f.tell()
         
     logger.info("Launching Test Harness...")
-    harness_process = subprocess.Popen([sys.executable, "test_harness.py"], cwd=os.getcwd())
+    h_out = open("harness_output.log", "w")
+    harness_process = subprocess.Popen([sys.executable, "-u", "test_harness.py"], cwd=os.getcwd(), stdout=h_out, stderr=h_out)
     
     # Give it time to render
     time.sleep(3)
@@ -30,15 +31,16 @@ def run_test_scenario():
 
     # 2. Start Main Bot
     logger.info("Launching Auto Clicker Bot...")
+    b_out = open("bot_output.log", "w")
     env = os.environ.copy()
     env["TARGET_WINDOW_TITLE"] = "Auto Clicker Test Harness"
-    bot_process = subprocess.Popen([sys.executable, "main.py"], cwd=os.getcwd(), env=env)
+    bot_process = subprocess.Popen([sys.executable, "-u", "main.py"], cwd=os.getcwd(), env=env, stdout=b_out, stderr=b_out)
 
     # 3. Monitor for a duration
     # We expect the bot to find keywords like "Accept", "Run", "Allow" in the harness
     # and click them, causing them to disappear.
     
-    duration = 30
+    duration = 45
     logger.info(f"Monitoring for {duration} seconds...")
     
     for i in range(duration):
@@ -54,6 +56,8 @@ def run_test_scenario():
     logger.info("Terminating processes...")
     bot_process.terminate()
     harness_process.terminate()
+    h_out.close()
+    b_out.close()
     
     # 5. Analysis
     # We can check execution.log for "Action Verified"

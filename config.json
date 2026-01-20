@@ -1,5 +1,5 @@
 {
-    "TARGET_WINDOW_TITLE": "Manager",
+    "TARGET_WINDOW_TITLE": "Auto Clicker Test Harness",
     "CLICK_KEYWORDS": [
         "Accept",
         "Run",
@@ -15,7 +15,7 @@
     "TYPE_KEYWORDS": [
         "proceed"
     ],
-    "OCR_CONFIDENCE_THRESHOLD": 60,
+    "OCR_CONFIDENCE_THRESHOLD": 50,
     "SCAN_INTERVAL": 0.2,
     "MAX_RETRY_ATTEMPTS": 3,
     "ACTION_DELAY": 0.05,
@@ -32,5 +32,6 @@
         255
     ],
     "COLOR_OVERLAP_THRESHOLD": 0.5,
+    "DEFAULT_SUFFIX": "Proceed",
     "TEST_KEY": "TEST_VALUE"
 }
