@@ -7126,3 +7126,960 @@ pyautogui.FailSafeException: PyAutoGUI fail-safe triggered from mouse moving to 
 2026-01-20 09:55:09,284 - INFO - Found 0 verified actions in the NEW log entries.
 2026-01-20 09:55:09,284 - INFO - TEST RESULT: FAIL (No verified actions)
 2026-01-20 09:55:09,284 - INFO - TEST RESULT: FAIL (No verified actions)
+2026-01-28 01:59:35,051 - INFO - Starting AutoClicker...
+2026-01-28 01:59:35,052 - INFO - Initializing Autonomous Auto Clicker...
+2026-01-28 01:59:35,054 - INFO - Running Self-Tests...
+2026-01-28 01:59:35,059 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:35,059 - INFO - TEST PASS: OCR System functional.
+2026-01-28 01:59:35,060 - INFO - Self-Tests Passed.
+2026-01-28 01:59:35,062 - INFO - Starting Continuous Execution Loop...
+2026-01-28 01:59:35,063 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:35,266 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:35,468 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:35,669 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:35,869 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:36,071 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:36,272 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:36,473 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:36,675 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:36,876 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:37,077 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:37,279 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:37,479 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:37,681 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:37,882 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:38,083 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:38,284 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:38,485 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:38,768 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:38,969 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:39,171 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:39,372 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:39,573 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:39,775 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:39,976 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:40,177 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:40,379 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:40,580 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:40,781 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:40,982 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:41,183 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:41,385 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:41,586 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:41,788 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:41,989 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:42,190 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:42,391 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:42,593 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:42,794 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:42,996 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:43,197 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:43,398 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:43,599 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:43,800 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:44,002 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:44,203 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:44,404 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:44,605 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:44,807 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:45,008 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:45,210 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:45,411 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:45,613 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:45,814 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:46,015 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:46,216 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:46,418 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:46,619 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:46,820 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:47,022 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:47,223 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:47,424 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:47,626 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:47,827 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:48,029 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:48,231 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:48,432 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:48,633 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:48,835 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:49,037 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:49,238 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:49,440 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:49,641 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:49,842 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:50,043 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:50,245 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:50,446 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:50,646 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:50,847 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:51,049 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:51,251 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:51,452 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:51,653 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:51,855 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:52,057 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:52,264 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:52,466 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:52,667 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:52,868 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:53,069 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:53,270 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:53,471 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:53,672 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:53,873 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:54,075 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:54,276 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:54,477 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:54,679 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:54,880 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:55,081 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:55,282 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:55,484 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:55,685 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:55,887 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:56,087 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:56,289 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:56,490 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:56,692 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:56,893 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:57,093 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:57,294 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:57,496 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:57,697 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:57,899 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:58,100 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:58,301 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:58,503 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:58,705 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:58,906 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:59,108 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:59,309 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:59,511 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:59,713 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 01:59:59,913 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:00,115 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:00,316 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:00,517 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:00,719 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:00,921 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:01,122 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:01,323 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:01,525 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:01,726 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:01,928 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:02,129 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:02,330 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:02,532 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:02,733 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:02,935 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:03,136 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:03,337 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:03,539 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:03,740 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:03,942 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:04,144 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:04,345 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:04,546 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:04,747 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:04,949 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:05,150 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:05,352 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:05,553 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:05,754 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:05,956 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:06,157 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:06,358 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:06,560 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:06,761 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:06,962 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:07,164 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:07,365 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:07,566 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:07,768 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:07,968 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:08,170 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:08,371 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:08,572 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:08,774 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:08,975 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:09,176 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:09,377 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:09,578 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:09,780 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:09,981 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:10,183 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:10,384 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:10,585 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:10,787 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:10,988 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:11,189 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:11,390 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:11,592 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:11,793 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:11,994 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:12,196 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:12,398 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:12,600 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:12,801 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:13,003 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:13,204 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:13,405 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:13,606 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:13,808 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:14,009 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:14,210 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:14,411 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:14,613 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:14,814 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:15,015 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:15,217 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:15,418 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:15,619 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:15,821 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:16,022 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:16,224 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:16,425 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:16,626 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:16,828 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:17,030 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:17,232 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:17,433 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:17,634 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:17,836 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:18,037 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:18,239 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:18,440 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:18,641 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:18,843 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:19,044 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:19,246 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:19,447 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:19,649 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:19,850 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:20,051 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:20,253 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:20,454 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:20,656 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:20,857 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:21,058 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:21,260 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:21,461 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:21,662 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:21,864 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:22,064 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:22,266 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:22,468 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:22,669 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:22,871 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:23,072 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:23,273 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:23,475 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:23,676 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:23,877 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:24,079 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:24,280 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:24,481 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:24,683 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:24,884 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:25,087 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:25,288 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:25,489 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:25,691 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:25,892 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:26,093 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:26,294 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:26,496 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:26,697 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:26,899 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:27,100 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:27,301 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:27,503 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:27,703 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:27,905 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:28,106 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:28,307 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:28,508 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:28,710 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:28,911 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:29,112 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:29,314 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:29,515 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:29,716 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:29,918 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:30,119 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:30,319 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:30,521 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:30,723 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:30,924 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:31,126 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:31,328 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:31,529 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:31,731 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:31,932 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:32,133 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:32,335 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:32,536 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:32,737 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:32,939 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:33,140 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:33,341 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:33,543 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:33,744 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:33,946 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:34,147 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:34,349 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:34,550 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:34,751 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:34,953 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:35,154 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:35,355 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:35,557 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:35,758 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:35,960 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:36,161 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:36,362 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:36,564 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:36,766 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:36,967 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:37,168 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:37,370 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:37,571 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:37,773 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:37,974 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:38,176 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:38,377 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:38,578 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:38,780 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:38,981 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:39,182 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:39,383 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:39,585 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:39,786 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:39,987 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:40,189 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:40,390 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:40,591 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:40,793 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:40,994 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:41,196 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:41,398 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:41,599 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:41,800 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:42,002 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:42,203 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:42,404 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:42,606 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:42,807 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:43,008 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:43,210 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:43,411 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:43,613 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:43,814 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:44,016 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:44,218 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:44,419 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:44,621 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:44,822 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:45,025 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:45,226 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:45,428 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:45,630 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:45,831 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:46,032 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:46,234 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:46,436 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:46,638 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:46,839 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:47,040 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:47,242 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:47,444 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:47,645 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:47,847 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:48,048 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:48,250 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:48,452 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:48,653 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:48,856 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:49,057 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:49,258 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:49,460 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:49,662 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:49,863 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:50,065 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:50,267 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:50,469 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:50,670 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:50,871 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:51,073 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:51,274 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:51,477 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:51,678 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:51,880 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:52,082 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:52,284 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:52,485 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:52,687 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:52,889 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:53,091 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:53,293 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:53,495 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:53,696 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:53,898 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:54,101 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:54,302 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:54,503 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:54,705 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:54,906 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:55,108 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:55,310 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:55,511 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:55,713 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:55,914 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:56,116 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:56,318 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:56,519 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:56,720 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:56,922 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:57,123 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:57,325 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:57,527 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:57,729 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:57,931 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:58,133 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:58,334 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:58,536 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:58,737 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:58,939 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:59,140 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:59,341 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:59,544 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:59,745 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:00:59,947 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:00,148 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:00,350 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:00,551 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:00,753 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:00,954 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:01,156 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:01,358 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:01,560 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:01,762 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:01,963 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:02,165 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:02,367 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:02,568 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:02,769 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:02,971 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:03,172 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:03,374 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:03,575 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:03,777 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:03,978 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:04,180 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:04,382 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:04,584 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:04,785 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:04,986 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:05,188 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:05,390 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:05,591 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:05,792 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:05,994 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:06,195 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:06,398 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:06,599 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:06,800 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:07,002 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:07,204 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:07,405 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:07,607 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:07,808 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:08,010 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:08,211 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:08,412 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:08,614 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:08,816 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:09,017 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:09,219 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:09,420 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:09,622 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:09,823 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:10,024 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:10,225 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:10,427 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:10,629 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:10,830 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:11,032 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:11,233 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:11,435 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:11,637 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:11,839 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:12,040 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:12,242 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:12,443 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:12,645 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:12,846 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:13,048 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:13,249 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:13,451 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:13,653 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:13,854 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:14,056 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:14,258 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:14,459 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:14,661 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:14,863 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:15,064 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:15,266 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:15,467 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:15,669 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:15,870 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:16,072 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:16,274 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:16,475 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:16,677 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:16,879 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:17,081 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:17,283 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:17,484 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:17,686 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:17,888 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:18,090 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:18,293 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:18,494 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:18,695 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:18,896 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:19,098 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:19,299 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:19,501 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:19,703 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:19,905 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:20,107 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:20,308 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:20,510 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:20,712 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:20,913 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:21,115 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:21,317 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:21,519 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:21,720 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:21,922 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:22,124 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:22,325 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:22,526 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:22,729 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:22,930 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:23,131 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:23,334 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:23,535 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:23,736 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:23,938 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:24,141 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:01:24,343 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:51,844 - INFO - Starting AutoClicker...
+2026-01-28 02:02:51,845 - INFO - Initializing Autonomous Auto Clicker...
+2026-01-28 02:02:51,849 - INFO - Running Self-Tests...
+2026-01-28 02:02:51,854 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:51,855 - INFO - TEST PASS: OCR System functional.
+2026-01-28 02:02:51,856 - INFO - Self-Tests Passed.
+2026-01-28 02:02:51,857 - INFO - Starting Continuous Execution Loop...
+2026-01-28 02:02:51,863 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:52,064 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:52,266 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:52,467 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:52,668 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:52,869 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:53,070 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:53,272 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:53,473 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:53,675 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:53,876 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:54,077 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:54,279 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:54,481 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:54,682 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:54,883 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:55,084 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:55,286 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:55,487 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:55,688 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:55,890 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:56,091 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:56,293 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:56,494 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:56,695 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:56,897 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:57,098 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:57,299 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:57,501 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:57,703 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:57,905 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:58,106 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:58,307 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:58,508 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:58,710 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:58,911 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:59,112 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:59,313 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:59,515 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:59,716 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:02:59,917 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:00,119 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:00,321 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:00,522 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:00,723 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:00,925 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:01,126 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:01,327 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:01,529 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:01,730 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:01,931 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:02,133 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:02,334 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:02,536 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:02,737 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:02,939 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:03,140 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:03,342 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:03,544 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:03,745 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:03,946 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:04,147 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:04,349 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:04,551 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:04,752 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:04,953 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:05,155 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:05,357 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:05,558 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:05,760 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:05,960 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:06,162 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:06,363 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:06,565 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:06,766 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:06,968 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:07,169 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:07,370 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:07,572 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:07,773 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:07,974 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:08,175 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:08,377 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:08,578 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:08,780 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:08,982 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:09,183 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:09,385 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:09,586 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:09,787 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:09,988 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:10,190 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:10,391 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:10,593 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:10,794 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:10,996 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:11,197 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:11,398 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:11,599 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:11,800 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:12,002 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:12,204 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:12,405 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:12,606 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:12,807 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:13,008 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:13,210 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:13,411 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:13,613 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:13,814 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:14,016 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:14,217 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:14,418 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:14,619 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:14,821 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:15,022 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:15,223 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:15,425 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:15,626 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:15,828 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:16,030 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:16,231 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:16,432 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:16,636 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:16,837 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:17,038 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:17,239 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:17,441 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:17,642 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:17,843 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:18,044 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:18,246 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:18,447 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:18,649 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:18,851 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:19,052 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:19,255 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:19,456 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:19,658 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:19,859 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:20,061 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:20,263 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:20,465 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:20,668 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:20,870 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:21,071 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:21,273 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:21,474 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:21,675 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:21,877 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:22,079 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:22,280 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:22,482 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:22,683 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:22,884 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:23,086 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:23,288 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:23,490 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:23,691 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:23,893 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:24,094 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:24,296 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:24,498 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:24,699 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:24,901 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:25,103 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:25,305 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:25,506 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:25,707 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:25,909 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:26,111 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:26,312 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:26,513 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:26,715 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:26,917 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:27,118 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:27,320 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:27,521 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:27,722 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:27,924 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:28,126 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:28,328 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:28,530 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:28,732 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:28,933 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:29,134 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:29,335 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:29,537 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:29,739 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:29,941 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:30,142 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:30,344 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:30,545 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:30,746 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:30,947 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:31,149 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:31,349 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:31,551 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:31,752 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:31,954 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:32,155 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:32,356 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:32,557 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:32,759 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:32,961 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:33,162 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:33,364 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:33,565 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:33,766 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:33,968 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:34,169 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:34,370 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:34,572 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:34,773 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:34,974 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:35,176 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:35,378 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:35,578 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:35,780 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:35,981 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:36,184 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:36,385 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:36,586 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:36,788 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:36,989 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:37,190 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:37,391 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:37,592 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:37,794 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:03:37,995 - WARNING - Target window 'Auto Clicker Test Harness' not found. Skipping scan.
+2026-01-28 02:04:01,604 - INFO - Starting AutoClicker...
+2026-01-28 02:04:01,605 - INFO - Initializing Autonomous Auto Clicker...
+2026-01-28 02:04:01,606 - INFO - Running Self-Tests...
+2026-01-28 02:04:04,028 - INFO - TEST PASS: OCR System functional.
+2026-01-28 02:04:04,028 - INFO - Self-Tests Passed.
+2026-01-28 02:04:04,029 - INFO - Starting Continuous Execution Loop...
+2026-01-28 02:04:05,762 - INFO - Detected 5 potential targets.
+2026-01-28 02:04:05,762 - INFO - Engaging Target: Proceed (CLICK)
+2026-01-28 02:04:08,848 - INFO - ACTION: CLICK | KEYWORD: 'Proceed' | COORDS: (552, 693, 55, 12) | VERIFIED: PASS | RETRY: 0 | COMPLETION: N/A%
+2026-01-28 02:04:08,848 - INFO - Action Verified: Keyword disappeared from target location
+2026-01-28 02:04:10,744 - INFO - Detected 4 potential targets.
+2026-01-28 02:04:10,744 - INFO - Engaging Target: Proceed (CLICK)
+2026-01-28 02:04:11,109 - INFO - Quick prompt button 6 clicked
+2026-01-28 02:04:11,109 - INFO - Sending quick prompt: Proceed without asking for confirmation.
+If an err...
+2026-01-28 02:04:11,110 - INFO - === Starting Workflow Execution ===
+2026-01-28 02:04:11,111 - ERROR - No target window set. Please enter a window title.
+2026-01-28 02:04:13,913 - INFO - ACTION: CLICK | KEYWORD: 'Proceed' | COORDS: (1706, 744, 55, 12) | VERIFIED: FAIL | RETRY: 0 | COMPLETION: N/A%
+2026-01-28 02:04:13,913 - WARNING - Verification Failed: Keyword 'Proceed' still present at target location (Overlap)
+2026-01-28 02:04:15,786 - INFO - Detected 4 potential targets.
+2026-01-28 02:04:15,786 - INFO - Engaging Target: Proceed (CLICK)
+2026-01-28 02:04:17,744 - INFO - ACTION: CLICK | KEYWORD: 'Proceed' | COORDS: (1706, 744, 55, 12) | VERIFIED: PASS | RETRY: 1 | COMPLETION: N/A%
+2026-01-28 02:04:17,744 - INFO - Action Verified: Keyword disappeared from target location
+2026-01-28 02:04:31,068 - ERROR - OCR Failed on region: (3221225786, 'ObjectCache(00007ffeaeeb95a0)::~ObjectCache(): WARNING! LEAK! object 0000025bc6cc0070 still has count 1 (id C:\\Program Files\\Tesseract-OCR/tessdata/eng.traineddatalstm-punc-dawg) ObjectCache(00007ffeaeeb95a0)::~ObjectCache(): WARNING! LEAK! object 0000025bc6cd2e50 still has count 1 (id C:\\Program Files\\Tesseract-OCR/tessdata/eng.traineddatalstm-word-dawg) ObjectCache(00007ffeaeeb95a0)::~ObjectCache(): WARNING! LEAK! object 0000025bc7652ed0 still has count 1 (id C:\\Program Files\\Tesseract-OCR/tessdata/eng.traineddatalstm-number-dawg)')
+2026-01-28 02:05:22,923 - INFO - Starting AutoClicker...
+2026-01-28 02:05:22,924 - INFO - Initializing Autonomous Auto Clicker...
+2026-01-28 02:05:22,925 - INFO - Running Self-Tests...
+2026-01-28 02:05:25,486 - INFO - TEST PASS: OCR System functional.
+2026-01-28 02:05:25,486 - INFO - Self-Tests Passed.
+2026-01-28 02:05:25,487 - INFO - Starting Continuous Execution Loop...
+2026-01-28 02:05:40,546 - INFO - Detected 2 potential targets.
+2026-01-28 02:05:40,547 - INFO - Engaging Target: Proceed (CLICK)
+2026-01-28 02:05:42,577 - INFO - ACTION: CLICK | KEYWORD: 'Proceed' | COORDS: (1622, 466, 60, 14) | VERIFIED: PASS | RETRY: 0 | COMPLETION: N/A%
+2026-01-28 02:05:42,578 - INFO - Action Verified: Keyword disappeared from target location
+2026-01-28 02:05:44,252 - INFO - Detected 4 potential targets.
+2026-01-28 02:05:44,253 - INFO - Engaging Target: Proceed (CLICK)
+2026-01-28 02:05:46,121 - INFO - ACTION: CLICK | KEYWORD: 'Proceed' | COORDS: (1539, 401, 65, 14) | VERIFIED: PASS | RETRY: 0 | COMPLETION: N/A%
+2026-01-28 02:05:46,121 - INFO - Action Verified: Keyword disappeared from target location
+2026-01-28 02:05:48,787 - INFO - Detected 2 potential targets.
+2026-01-28 02:05:48,787 - INFO - Engaging Target: Proceed (CLICK)
+2026-01-28 02:05:50,591 - INFO - ACTION: CLICK | KEYWORD: 'Proceed' | COORDS: (1622, 466, 60, 14) | VERIFIED: PASS | RETRY: 0 | COMPLETION: N/A%
+2026-01-28 02:05:50,592 - INFO - Action Verified: Keyword disappeared from target location
+2026-01-28 02:07:21,365 - INFO - Starting AutoClicker...
+2026-01-28 02:07:21,366 - INFO - Initializing Autonomous Auto Clicker...
+2026-01-28 02:07:21,369 - INFO - Running Self-Tests...
+2026-01-28 02:07:21,376 - INFO - TEST PASS: OCR System functional.
+2026-01-28 02:07:21,383 - INFO - Self-Tests Passed.
+2026-01-28 02:07:21,384 - INFO - Starting Continuous Execution Loop...
+2026-01-28 02:10:21,679 - INFO - Stopping AutoClicker...
+2026-01-28 02:10:23,219 - INFO - Starting AutoClicker...
+2026-01-28 02:10:23,225 - INFO - Initializing Autonomous Auto Clicker...
+2026-01-28 02:10:23,229 - INFO - Running Self-Tests...
+2026-01-28 02:10:23,229 - INFO - TEST PASS: OCR System functional.
+2026-01-28 02:10:23,230 - INFO - Self-Tests Passed.
+2026-01-28 02:10:23,230 - INFO - Starting Continuous Execution Loop...
+2026-01-28 02:10:53,451 - INFO - Quick prompt button 4 clicked
+2026-01-28 02:10:53,452 - INFO - Sending quick prompt: Improve test suite analyze codebase and enhance te...
+2026-01-28 02:10:53,454 - INFO - === Starting Workflow Execution ===
+2026-01-28 02:10:53,457 - ERROR - No target window set. Please enter a window title.
+2026-01-28 02:11:01,689 - INFO - Quick prompt button 4 clicked
+2026-01-28 02:11:01,689 - INFO - Sending quick prompt: Improve test suite analyze codebase and enhance te...
+2026-01-28 02:11:01,690 - INFO - === Starting Workflow Execution ===
+2026-01-28 02:11:01,693 - ERROR - No target window set. Please enter a window title.
+2026-01-28 02:11:10,568 - INFO - Quick prompt button 4 clicked
+2026-01-28 02:11:10,569 - INFO - Sending quick prompt: Improve test suite analyze codebase and enhance te...
+2026-01-28 02:11:10,570 - INFO - === Starting Workflow Execution ===
+2026-01-28 02:11:10,572 - ERROR - No target window set. Please enter a window title.
+2026-01-28 02:11:10,778 - INFO - Quick prompt button 4 clicked
+2026-01-28 02:11:10,778 - INFO - Sending quick prompt: Improve test suite analyze codebase and enhance te...
+2026-01-28 02:11:10,779 - INFO - === Starting Workflow Execution ===
+2026-01-28 02:11:10,780 - ERROR - No target window set. Please enter a window title.
+2026-01-28 02:11:23,009 - INFO - Quick prompt button 3 clicked
+2026-01-28 02:11:23,010 - INFO - Sending quick prompt: Do Test App and Proceed and Verify...
+2026-01-28 02:11:23,010 - INFO - === Starting Workflow Execution ===
+2026-01-28 02:11:23,012 - ERROR - No target window set. Please enter a window title.
+2026-01-28 02:22:23,474 - INFO - === Run Workflow button clicked ===
+2026-01-28 02:22:23,513 - WARNING - No prompt text entered. Please enter some text to send.
+2026-01-28 02:22:28,640 - INFO - === Run Workflow button clicked ===
+2026-01-28 02:22:28,644 - WARNING - No prompt text entered. Please enter some text to send.
+2026-01-28 02:22:28,848 - INFO - === Run Workflow button clicked ===
+2026-01-28 02:22:28,850 - WARNING - No prompt text entered. Please enter some text to send.
+2026-01-28 02:22:29,038 - INFO - === Run Workflow button clicked ===
+2026-01-28 02:22:29,041 - WARNING - No prompt text entered. Please enter some text to send.
+2026-01-28 02:22:29,224 - INFO - === Run Workflow button clicked ===
+2026-01-28 02:22:29,231 - WARNING - No prompt text entered. Please enter some text to send.
+2026-01-28 02:22:29,367 - INFO - === Run Workflow button clicked ===
+2026-01-28 02:22:29,378 - WARNING - No prompt text entered. Please enter some text to send.
+2026-01-28 02:22:29,512 - INFO - === Run Workflow button clicked ===
+2026-01-28 02:22:29,512 - WARNING - No prompt text entered. Please enter some text to send.
+2026-01-28 02:22:49,818 - INFO - Keywords saved successfully.
+2026-01-28 02:22:50,503 - INFO - Keywords saved successfully.
+2026-01-28 02:22:50,687 - INFO - Keywords saved successfully.
+2026-01-28 02:22:54,784 - INFO - === Run Workflow button clicked ===
+2026-01-28 02:22:54,787 - WARNING - No prompt text entered. Please enter some text to send.
+2026-01-28 02:23:00,281 - INFO - Quick prompt button 2 clicked
+2026-01-28 02:23:00,297 - INFO - Sending quick prompt: Proceed...
+2026-01-28 02:23:00,324 - INFO - === Starting Workflow Execution ===
+2026-01-28 02:23:00,337 - ERROR - No target window set. Please enter a window title.
+2026-01-28 02:23:06,352 - INFO - Quick prompt button 2 clicked
+2026-01-28 02:23:06,353 - INFO - Sending quick prompt: Proceed...
+2026-01-28 02:23:06,356 - INFO - === Starting Workflow Execution ===
+2026-01-28 02:23:06,362 - ERROR - No target window set. Please enter a window title.
+2026-01-28 02:23:07,255 - INFO - Quick prompt button 2 clicked
+2026-01-28 02:23:07,255 - INFO - Sending quick prompt: Proceed...
+2026-01-28 02:23:07,257 - INFO - === Starting Workflow Execution ===
+2026-01-28 02:23:07,260 - ERROR - No target window set. Please enter a window title.
+2026-01-28 02:23:07,847 - INFO - Quick prompt button 2 clicked
+2026-01-28 02:23:07,852 - INFO - Sending quick prompt: Proceed...
+2026-01-28 02:23:07,859 - INFO - === Starting Workflow Execution ===
+2026-01-28 02:23:07,863 - ERROR - No target window set. Please enter a window title.
+2026-01-28 02:23:10,247 - INFO - Quick prompt button 3 clicked
+2026-01-28 02:23:10,253 - INFO - Sending quick prompt: Do Test App and Proceed and Verify...
+2026-01-28 02:23:10,263 - INFO - === Starting Workflow Execution ===
+2026-01-28 02:23:10,273 - ERROR - No target window set. Please enter a window title.
+2026-01-28 02:23:26,320 - INFO - === Run Workflow button clicked ===
+2026-01-28 02:23:26,323 - WARNING - No prompt text entered. Please enter some text to send.
+2026-01-28 02:23:32,437 - INFO - Target window updated to: Manager
+2026-01-28 02:23:36,393 - INFO - Quick prompt button 2 clicked
+2026-01-28 02:23:36,393 - INFO - Sending quick prompt: Proceed...
+2026-01-28 02:23:36,393 - INFO - === Starting Workflow Execution ===
+2026-01-28 02:23:36,398 - INFO - Targeting window: 'Manager'
+2026-01-28 02:23:36,409 - INFO - Found window: Manager
+2026-01-28 02:23:36,414 - INFO - Activating window...
+2026-01-28 02:23:36,425 - INFO - Target window updated to: Manager
+2026-01-28 02:23:37,416 - INFO - Scanning for '+' button...
+2026-01-28 02:23:41,489 - INFO - Detected 6 potential targets.
+2026-01-28 02:23:41,489 - INFO - Engaging Target: Proceed (CLICK)
+2026-01-28 02:23:41,684 - INFO - Quick prompt button 6 clicked
+2026-01-28 02:23:41,684 - INFO - Sending quick prompt: Proceed without asking for confirmation.
+If an err...
+2026-01-28 02:23:41,688 - INFO - === Starting Workflow Execution ===
+2026-01-28 02:23:41,699 - INFO - Targeting window: 'Manager'
+2026-01-28 02:23:41,707 - INFO - Found window: Manager
+2026-01-28 02:23:41,713 - INFO - Activating window...
+2026-01-28 02:23:41,719 - INFO - Target window updated to: Manager
+2026-01-28 02:23:42,714 - INFO - Scanning for '+' button...
+2026-01-28 02:23:43,327 - WARNING - '+' button not found, skipping click step
+2026-01-28 02:23:43,336 - INFO - Added suffix: Proceed
+2026-01-28 02:23:43,345 - INFO - Typing text (15 chars): Proceed Proceed...
+2026-01-28 02:23:44,375 - INFO - Pressing Enter...
+2026-01-28 02:23:44,628 - INFO - === Workflow Execution Finished ===
+2026-01-28 02:23:46,450 - WARNING - '+' button not found, skipping click step
+2026-01-28 02:23:46,451 - INFO - Added suffix: Proceed
+2026-01-28 02:23:46,452 - INFO - Typing text (156 chars): Proceed without asking for confirmation. If an err...
+2026-01-28 02:23:46,462 - INFO - ACTION: CLICK | KEYWORD: 'Proceed' | COORDS: (1389, 735, 55, 12) | VERIFIED: FAIL | RETRY: 0 | COMPLETION: N/A%
+2026-01-28 02:23:46,463 - WARNING - Verification Failed: Keyword 'Proceed' still present at target location (Overlap)
+2026-01-28 02:23:48,668 - INFO - Detected 6 potential targets.
+2026-01-28 02:23:48,669 - INFO - Engaging Target: Proceed (CLICK)
+2026-01-28 02:23:48,793 - INFO - Pressing Enter...
+2026-01-28 02:23:48,813 - INFO - Quick prompt button 6 clicked
+2026-01-28 02:23:48,813 - INFO - Sending quick prompt: Proceed without asking for confirmation.
+If an err...
+2026-01-28 02:23:48,814 - INFO - === Starting Workflow Execution ===
+2026-01-28 02:23:48,816 - INFO - Targeting window: 'Manager'
+2026-01-28 02:23:48,817 - INFO - Found window: Manager
+2026-01-28 02:23:48,821 - INFO - Activating window...
+2026-01-28 02:23:48,826 - INFO - Target window updated to: Manager
+2026-01-28 02:23:48,896 - INFO - === Workflow Execution Finished ===
+2026-01-28 02:23:49,823 - INFO - Scanning for '+' button...
+2026-01-28 02:23:51,658 - WARNING - '+' button not found, skipping click step
+2026-01-28 02:23:51,659 - INFO - Added suffix: Proceed
+2026-01-28 02:23:51,660 - INFO - Typing text (156 chars): Proceed without asking for confirmation. If an err...
+2026-01-28 02:23:51,868 - INFO - ACTION: CLICK | KEYWORD: 'Proceed' | COORDS: (1389, 735, 55, 12) | VERIFIED: FAIL | RETRY: 1 | COMPLETION: N/A%
+2026-01-28 02:23:51,869 - WARNING - Verification Failed: Keyword 'Proceed' still present at target location (Overlap)
+2026-01-28 02:23:53,873 - INFO - Detected 6 potential targets.
+2026-01-28 02:23:53,874 - INFO - Engaging Target: Proceed (CLICK)
+2026-01-28 02:23:53,986 - INFO - Pressing Enter...
+2026-01-28 02:23:54,089 - INFO - === Workflow Execution Finished ===
+2026-01-28 02:23:54,270 - INFO - Quick prompt button 5 clicked
+2026-01-28 02:23:54,271 - WARNING - Empty prompt!

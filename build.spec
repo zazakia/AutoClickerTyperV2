@@ -9,6 +9,7 @@ a = Analysis(
     datas=[
         ('quick_prompts.json', '.'),
         ('README.md', '.'),
+        ('C:/Users/HI/AppData/Local/Programs/Python/Python312/Lib/site-packages/customtkinter', 'customtkinter/'),
     ],
     hiddenimports=[
         'main',

@@ -13,8 +13,8 @@ class ConfigManager:
     """
     
     DEFAULT_CONFIG = {
-        "TARGET_WINDOW_TITLE": "Manager",
-        "CLICK_KEYWORDS": ["Accept", "Run", "Allow", "Allow Always", "Proceed", "Yes", "OK", "Confirm", "Continue", "Expand"],
+        "TARGET_WINDOW_TITLE": "",
+        "CLICK_KEYWORDS": ["Accept", "Allow", "Allow Always", "Proceed", "Yes", "OK", "Confirm", "Continue", "Expand"],
         "TYPE_KEYWORDS": ["proceed"],
         "OCR_CONFIDENCE_THRESHOLD": 60,
         "SCAN_INTERVAL": 0.5,

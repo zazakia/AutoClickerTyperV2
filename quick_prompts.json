@@ -16,8 +16,8 @@
         "prompt": "Improve test suite analyze codebase and enhance tests to 90% testability"
     },
     {
-        "label": "",
-        "prompt": ""
+        "label": "run, test, fix errors and verify keep repeating unitl all is well and done",
+        "prompt": "run , test, fix errors and verify keep repeating unitl all is well and done"
     },
     {
         "label": "Proceed without asking for confirmation.\nIf an error occurs, fix it automatically and continue.\nDo not stop until the task is complete and verified.\n",
@@ -26,5 +26,21 @@
     {
         "label": "commit and Push to github ",
         "prompt": "commit and Push to github "
+    },
+    {
+        "label": "run, test, fix errors, verify and cycle until no more erros",
+        "prompt": "run, test, fix errors, verify and cycle until no more erros"
+    },
+    {
+        "label": "run full test suite on whole codebase",
+        "prompt": "run full test suite on whole codebase"
+    },
+    {
+        "label": "Build a test suite. Unit test, e2e and integration test",
+        "prompt": "Build a test suite. Unit test, e2e and integration test"
+    },
+    {
+        "label": "whats the next task ? Proceed",
+        "prompt": "whats the next task ? Proceed"
     }
 ]

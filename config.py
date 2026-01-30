@@ -33,7 +33,7 @@ ALWAYS_ON_TOP = True
 # If set, the bot will ONLY scan and interact within the window containing this title.
 # Set to None or "" to scan the entire screen.
 import os
-TARGET_WINDOW_TITLE = os.getenv("TARGET_WINDOW_TITLE", "Manager")
+TARGET_WINDOW_TITLE = os.getenv("TARGET_WINDOW_TITLE", "")
 TESSERACT_CMD_PATH = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 # Special Workflow Actions

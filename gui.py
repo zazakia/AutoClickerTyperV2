@@ -37,15 +37,40 @@ class App(ctk.CTk):
         self.title("Zapweb.app Prompt Assist and AutoClicker")
         self.geometry("900x700")
 
-        # Grid Layout
-        self.grid_columnconfigure(1, weight=1)
+        # Variables for Docking
+        self.is_docked = False
+        self.restore_geometry = "900x700"
+        self.screen_width = self.winfo_screenwidth()
+        self.screen_height = self.winfo_screenheight()
+        self.dock_width = 320
+        self.dock_hidden_width = 10 
+        self.autohide_loop_running = False
+        self.just_docked = False # Flag to prevent immediate hide
+
+        # Grid Layout for Root
+        self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
-        # Sidebar
-        self.sidebar_frame = ctk.CTkFrame(self, width=140, corner_radius=0)
+        # --- Main View Container ---
+        self.main_container = ctk.CTkFrame(self, fg_color="transparent")
+        self.main_container.grid(row=0, column=0, sticky="nsew")
+        self.main_container.grid_columnconfigure(1, weight=1)
+        self.main_container.grid_rowconfigure(0, weight=1)
+
+        # --- Dock View Container ---
+        self.dock_container = ctk.CTkFrame(self, fg_color="transparent")
+        # Hidden by default
+
+        # Bind double click to background (approximate by binding to root and containers)
+        self.bind("<Double-Button-1>", self.on_double_click_background)
+        self.main_container.bind("<Double-Button-1>", self.on_double_click_background)
+
+        # Sidebar (Inside Main Container)
+        self.sidebar_frame = ctk.CTkFrame(self.main_container, width=140, corner_radius=0)
         self.sidebar_frame.grid(row=0, column=0, rowspan=4, sticky="nsew")
         self.sidebar_frame.grid_rowconfigure(4, weight=1)
-        
+        self.sidebar_frame.bind("<Double-Button-1>", self.on_double_click_background)
+
         self.logo_label = ctk.CTkLabel(self.sidebar_frame, text="Zapweb.app", font=ctk.CTkFont(size=20, weight="bold"))
         self.logo_label.grid(row=0, column=0, padx=20, pady=(20, 10))
         
@@ -58,14 +83,31 @@ class App(ctk.CTk):
             self.always_on_top_switch.select()
         self.toggle_always_on_top()
 
-        # Tabs
-        self.tabview = ctk.CTkTabview(self)
+        self.add_prompt_btn = ctk.CTkButton(self.sidebar_frame, text="+ Add Quick Prompt", command=self.add_new_prompt)
+        self.add_prompt_btn.grid(row=3, column=0, padx=20, pady=10)
+
+        self.dock_mode_btn = ctk.CTkButton(self.sidebar_frame, text="Dock to Side", command=self.toggle_dock_mode, fg_color="gray")
+        self.dock_mode_btn.grid(row=4, column=0, padx=20, pady=10)
+
+        # Sidebar Quick Prompts List
+        self.sidebar_qp_frame = ctk.CTkScrollableFrame(self.sidebar_frame, label_text="Quick Prompts", height=300)
+        self.sidebar_qp_frame.grid(row=5, column=0, padx=10, pady=10, sticky="nsew")
+
+        # Tabs (Inside Main Container)
+        self.tabview = ctk.CTkTabview(self.main_container)
         self.tabview.grid(row=0, column=1, padx=20, pady=0, sticky="nsew")
         self.tabview.add("Dashboard")
         self.tabview.add("Settings")
         
+        # Load Quick Prompts Data once
+        self.quick_prompts = self.load_quick_prompts()
+        
         self.setup_dashboard()
         self.setup_settings()
+        self.setup_dock_view()
+        
+        # Initial Render
+        self.refresh_all_qp_views()
 
         # State
         self.autoclicker_thread = None
@@ -98,28 +140,12 @@ class App(ctk.CTk):
         self.run_wf_btn = ctk.CTkButton(wf_frame, text="Run Workflow (Focus -> Type -> Send)", command=self.start_workflow_thread)
         self.run_wf_btn.grid(row=3, column=1, padx=10, pady=10, sticky="ew")
         
-        # --- Quick Prompts ---
-        qp_frame = ctk.CTkFrame(dash)
+        # --- Quick Prompts (Using Scrollable Frame) ---
+        qp_frame = ctk.CTkScrollableFrame(dash, label_text="Quick Prompts", height=200)
         qp_frame.grid(row=1, column=0, padx=10, pady=10, sticky="ew")
-        ctk.CTkLabel(qp_frame, text="Quick Prompts", font=ctk.CTkFont(size=14, weight="bold")).pack(pady=5)
         
-        self.quick_prompts = self.load_quick_prompts()
-        self.qp_buttons = []
-        
-        grid_f = ctk.CTkFrame(qp_frame, fg_color="transparent")
-        grid_f.pack(fill="x", padx=5)
-        
-        for i in range(7):
-            f = ctk.CTkFrame(grid_f, fg_color="transparent")
-            f.pack(fill="x", pady=2)
-            
-            p_label = self.quick_prompts[i]['label']
-            btn = ctk.CTkButton(f, text=f"Send {p_label}", command=lambda idx=i: self.send_quick_prompt(idx))
-            btn.pack(side="left", fill="x", expand=True, padx=(0, 5))
-            self.qp_buttons.append(btn)
-            
-            edit_btn = ctk.CTkButton(f, text="Edit", width=60, command=lambda idx=i: self.edit_prompt(idx), fg_color="gray")
-            edit_btn.pack(side="right")
+        # Use Helper to render buttons
+        self.render_quick_prompts(qp_frame, is_docked=False)
 
         # --- Logs ---
         log_frame = ctk.CTkFrame(dash)
@@ -202,13 +228,13 @@ class App(ctk.CTk):
             self.start_btn.configure(text="Stop Loops", fg_color="red")
 
     def load_quick_prompts(self):
-        default = [{"label": f"Prompt {i+1}", "prompt": ""} for i in range(7)]
+        default = [{"label": f"Prompt {i+1}", "prompt": ""} for i in range(15)]
         if not os.path.exists('quick_prompts.json'): return default
         try:
             with open('quick_prompts.json', 'r') as f:
                 data = json.load(f)
-                if len(data) < 7: data += default[len(data):]
-                return data[:7]
+                if len(data) < 15: data += default[len(data):]
+                return data[:15]
         except: return default
 
     def save_quick_prompts(self):
@@ -226,62 +252,262 @@ class App(ctk.CTk):
         
         self.quick_prompts[index] = {"label": new_label, "prompt": new_prompt}
         self.save_quick_prompts()
-        self.qp_buttons[index].configure(text=f"Send {new_label}")
+        self.refresh_all_qp_views()
+
+    def add_new_prompt(self):
+        new_index = len(self.quick_prompts)
+        self.quick_prompts.append({"label": f"New Prompt {new_index+1}", "prompt": ""})
+        # We don't save yet, edit_prompt will save if user confirms.
+        # But we need to refresh to show the placeholder if edit is cancelled.
+        self.edit_prompt(new_index)
+        self.refresh_all_qp_views()
+
+    def refresh_all_qp_views(self):
+        # Sidebar
+        self.render_quick_prompts(self.sidebar_qp_frame, is_docked=True)
+        # Dashboard
+        for widget in self.tabview.tab("Dashboard").winfo_children():
+            if isinstance(widget, ctk.CTkScrollableFrame) and getattr(widget, "_label", None) and widget._label.cget("text") == "Quick Prompts":
+                self.render_quick_prompts(widget, is_docked=False)
+        # Dock
+        if hasattr(self, 'dock_inner_frame'):
+            self.render_quick_prompts(self.dock_inner_frame, is_docked=True)
 
     def send_quick_prompt(self, index):
+        logger.info(f"Quick prompt button {index+1} clicked")
         prompt = self.quick_prompts[index]['prompt']
         if not prompt:
             logger.warning("Empty prompt!")
             return
+        logger.info(f"Sending quick prompt: {prompt[:50]}...")
         threading.Thread(target=self.run_workflow, args=(prompt,), daemon=True).start()
 
     def start_workflow_thread(self):
-        prompt = self.prompt_text.get("1.0", "end-1c")
-        threading.Thread(target=self.run_workflow, args=(prompt,), daemon=True).start()
+        logger.info("=== Run Workflow button clicked ===")
+        try:
+            prompt = self.prompt_text.get("1.0", "end-1c")
+            if not prompt.strip():
+                logger.warning("No prompt text entered. Please enter some text to send.")
+                return
+            logger.info(f"Starting workflow with prompt: {prompt[:50]}...")
+            threading.Thread(target=self.run_workflow, args=(prompt,), daemon=True).start()
+        except Exception as e:
+            logger.error(f"Error starting workflow: {e}", exc_info=True)
 
     def run_workflow(self, prompt_text):
+        logger.info("=== Starting Workflow Execution ===")
         target = self.target_entry.get()
         suffix = self.suffix_entry.get()
         
         if not target:
-            logger.error("No target window set.")
+            logger.error("No target window set. Please enter a window title.")
             return
 
-        logger.info(f"Targeting '{target}'...")
+        logger.info(f"Targeting window: '{target}'")
         try:
             wins = gw.getWindowsWithTitle(target)
             if not wins:
-                logger.error("Window not found.")
+                logger.error(f"Window '{target}' not found. Available windows:")
+                all_wins = gw.getAllTitles()
+                for w in all_wins[:10]:  # Show first 10 windows
+                    if w.strip():
+                        logger.info(f"  - {w}")
                 return
+            
             win = wins[0]
+            logger.info(f"Found window: {win.title}")
+            
             if not win.isActive:
-                try: win.activate()
-                except: win.minimize(); win.restore()
+                logger.info("Activating window...")
+                try: 
+                    win.activate()
+                except: 
+                    logger.info("Trying minimize/restore...")
+                    win.minimize()
+                    win.restore()
             time.sleep(1)
             
             # Click Plus
+            logger.info("Scanning for '+' button...")
             matches = scan_for_keywords(["+"], [])
             if matches:
                 box = matches[0]['box']
                 x, y, w, h = box
+                logger.info(f"Found '+' at ({x}, {y}), clicking...")
                 pyautogui.click(x + w//2, y + h//2)
                 time.sleep(0.5)
+            else:
+                logger.warning("'+' button not found, skipping click step")
             
             # Type
             full = prompt_text.replace("\n", " ").strip()
-            if suffix: full += " " + suffix
+            if suffix: 
+                full += " " + suffix
+                logger.info(f"Added suffix: {suffix}")
             
             if full:
-                logger.info(f"Typing: {full[:30]}...")
+                logger.info(f"Typing text ({len(full)} chars): {full[:50]}...")
                 pyautogui.write(full, interval=0.01)
                 time.sleep(0.5)
+                logger.info("Pressing Enter...")
                 pyautogui.press('enter')
-                logger.info("Sent.")
+                logger.info("✓ Workflow completed successfully!")
             else:
-                logger.warning("Nothing to send.")
+                logger.warning("Nothing to send - prompt is empty.")
                 
         except Exception as e:
-            logger.error(f"Workflow Error: {e}")
+            logger.error(f"Workflow Error: {e}", exc_info=True)
+        finally:
+            logger.info("=== Workflow Execution Finished ===")
+
+    # --- Docking & Picking Toolbar Logic ---
+    
+    def on_double_click_background(self, event):
+        # Only toggle if double-click is not on a specific interactive widget
+        # (Tkinter events bubble up, but we can check target if needed. 
+        # For now, binding to background frames is usually sufficient.)
+        logger.info("Double-click backdrop detected. Toggling dock...")
+        self.toggle_dock_mode()
+
+    def setup_dock_view(self):
+        # Create a vertical toolbar look
+        self.dock_container.grid_columnconfigure(0, weight=1)
+        self.dock_container.grid_rowconfigure(1, weight=1)
+
+        # Header / Drag handle
+        hdr = ctk.CTkLabel(self.dock_container, text=":: Zapweb ::", font=("Arial", 12), cursor="hand2")
+        hdr.grid(row=0, column=0, pady=5, sticky="ew")
+        hdr.bind("<Double-Button-1>", lambda e: self.toggle_dock_mode())
+
+        # Scrollable area for buttons
+        self.dock_inner_frame = ctk.CTkScrollableFrame(self.dock_container)
+        self.dock_inner_frame.grid(row=1, column=0, sticky="nsew", padx=2, pady=2)
+        
+        self.render_quick_prompts(self.dock_inner_frame, is_docked=True)
+        
+        # Tools at bottom
+        tools = ctk.CTkFrame(self.dock_container)
+        tools.grid(row=2, column=0, sticky="ew", padx=2, pady=5)
+        
+        ctk.CTkButton(tools, text="Undock", command=self.toggle_dock_mode, height=25).pack(pady=2, fill="x")
+
+    def render_quick_prompts(self, parent_frame, is_docked=False):
+        # Clear existing
+        for w in parent_frame.winfo_children():
+            w.destroy()
+            
+        for i, item in enumerate(self.quick_prompts):
+            lbl = item['label']
+            if not lbl.strip(): lbl = f"Prompt {i+1}"
+            
+            # Row container
+            row = ctk.CTkFrame(parent_frame, fg_color="transparent")
+            row.pack(fill="x", pady=2)
+            
+            if is_docked:
+                # Compact view
+                btn = ctk.CTkButton(row, text=lbl, command=lambda idx=i: self.send_quick_prompt(idx), height=35)
+                btn.pack(fill="x")
+            else:
+                # Dashboard view with Edit
+                btn = ctk.CTkButton(row, text=lbl, command=lambda idx=i: self.send_quick_prompt(idx))
+                btn.pack(side="left", fill="x", expand=True, padx=(0,5))
+                
+                edit = ctk.CTkButton(row, text="Edit", width=50, command=lambda idx=i: self.edit_prompt(idx), fg_color="gray")
+                edit.pack(side="right")
+
+    def toggle_dock_mode(self):
+        if not self.is_docked:
+            # Enter Dock Mode
+            logger.info("Entering Dock Mode...")
+            self.restore_geometry = self.geometry()
+            self.is_docked = True
+            self.just_docked = True # Set flag to prevent immediate hide
+            
+            # Use withdraw/deiconify for cleaner transition with overrideredirect
+            self.withdraw()
+            
+            self.main_container.grid_forget()
+            self.dock_container.grid(row=0, column=0, sticky="nsew")
+            
+            # Refresh screen dimensions in case of changes
+            self.screen_width = self.winfo_screenwidth()
+            self.screen_height = self.winfo_screenheight()
+            
+            # Resize and Move
+            x_pos = self.screen_width - self.dock_width
+            self.geometry(f"{self.dock_width}x{self.screen_height}+{x_pos}+0")
+            self.attributes('-topmost', True)
+            self.overrideredirect(True) # Remove title bar for cleaner look
+            
+            self.deiconify()
+            self.start_autohide_loop()
+            
+            # Clear "just docked" flag after 2 seconds or if mouse enters
+            self.after(2000, lambda: setattr(self, 'just_docked', False))
+        else:
+            # Exit Dock Mode
+            logger.info("Exiting Dock Mode...")
+            self.is_docked = False
+            self.stop_autohide_loop()
+            
+            self.withdraw()
+            
+            self.dock_container.grid_forget()
+            self.main_container.grid(row=0, column=0, sticky="nsew")
+            
+            self.overrideredirect(False)
+            self.geometry(self.restore_geometry)
+            
+            self.deiconify()
+            # Restore previous always on top preference
+            self.toggle_always_on_top() 
+
+    def start_autohide_loop(self):
+        self.autohide_loop_running = True
+        self.check_autohide()
+
+    def stop_autohide_loop(self):
+        self.autohide_loop_running = False
+
+    def check_autohide(self):
+        if not self.autohide_loop_running: return
+        
+        try:
+            # Get mouse position
+            x, y = pyautogui.position()
+            
+            # If mouse is inside the dock area, clear just_docked immediately
+            dock_x_start = self.screen_width - self.dock_width
+            if x >= dock_x_start:
+                self.just_docked = False
+
+            # If we recently docked, don't hide yet
+            if self.just_docked:
+                return
+
+            # Edges
+            edge_threshold = self.screen_width - 10
+            # If mouse near right edge, Show
+            if x >= edge_threshold:
+                if self.geometry().split('x')[0] != str(self.dock_width):
+                    self.geometry(f"{self.dock_width}x{self.screen_height}+{self.screen_width - self.dock_width}+0")
+                    self.attributes('-alpha', 1.0)
+            
+            # If mouse away from dock area, Hide
+            # Dock area covers from (screen_width - dock_width) to screen_width
+            dock_x_start = self.screen_width - self.dock_width
+            
+            if x < dock_x_start - 50: # Buffer
+                if self.geometry().split('x')[0] != str(self.dock_hidden_width):
+                    # "Hide" by making it tiny and transparent-ish
+                     self.geometry(f"{self.dock_hidden_width}x{self.screen_height}+{self.screen_width - self.dock_hidden_width}+0")
+                     self.attributes('-alpha', 0.01) # Almost invisible trigger functionality might be tricky with 0.01 alpha for clicks, but checking mouse pos works
+            
+        except Exception:
+            pass
+            
+        self.after(200, self.check_autohide)
 
 if __name__ == "__main__":
     app = App()

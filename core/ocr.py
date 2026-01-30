@@ -35,28 +35,35 @@ def capture_screen(region=None):
 def get_target_region():
     """
     Returns the (x, y, w, h) of the target window if configured and found.
-    Returns None if full screen should be used.
+    Returns (0, 0, 0, 0) if no target window is configured or if window not found.
+    Returns None only if explicitly set to None (for full screen scanning).
     """
     target_title = config_manager.get("TARGET_WINDOW_TITLE")
-    if target_title:
-        try:
-            # Filter windows by title
-            windows = gw.getWindowsWithTitle(target_title)
-            if windows:
-                # Pick the first matching window
-                win = windows[0]
-                # Ensure it has a valid size
-                if win.width > 0 and win.height > 0:
-                     return (win.left, win.top, win.width, win.height)
-            else:
-                logger.warning(f"Target window '{target_title}' not found. Skipping scan.")
-                # We return a 0-size rect to indicate 'do not scan' or special sentinel
-                # For safety, if user WANTS restriction, we shouldn't fail-open to full screen.
-                return (0, 0, 0, 0) 
-        except Exception as e:
-            logger.error(f"Error finding window: {e}")
-            return (0, 0, 0, 0)
-    return None
+    
+    # If target_title is empty string or None, don't scan
+    if not target_title:
+        logger.debug("No target window configured. Skipping scan.")
+        return (0, 0, 0, 0)
+    
+    try:
+        # Filter windows by title
+        windows = gw.getWindowsWithTitle(target_title)
+        if windows:
+            # Pick the first matching window
+            win = windows[0]
+            # Ensure it has a valid size
+            if win.width > 0 and win.height > 0:
+                 return (win.left, win.top, win.width, win.height)
+        else:
+            logger.warning(f"Target window '{target_title}' not found. Skipping scan.")
+            # We return a 0-size rect to indicate 'do not scan'
+            return (0, 0, 0, 0) 
+    except Exception as e:
+        logger.error(f"Error finding window: {e}")
+        return (0, 0, 0, 0)
+    
+    # This line should never be reached, but just in case
+    return (0, 0, 0, 0)
 
 def detect_blue_regions(screenshot):
     """

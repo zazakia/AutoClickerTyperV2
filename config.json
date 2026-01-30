@@ -1,8 +1,7 @@
 {
-    "TARGET_WINDOW_TITLE": "Auto Clicker Test Harness",
+    "TARGET_WINDOW_TITLE": "Manager",
     "CLICK_KEYWORDS": [
         "Accept",
-        "Run",
         "Allow",
         "Allow Always",
         "Proceed",
@@ -10,7 +9,8 @@
         "OK",
         "Confirm",
         "Continue",
-        "Expand"
+        "Expand",
+        "Run"
     ],
     "TYPE_KEYWORDS": [
         "proceed"
@@ -19,7 +19,7 @@
     "SCAN_INTERVAL": 0.2,
     "MAX_RETRY_ATTEMPTS": 3,
     "ACTION_DELAY": 0.05,
-    "ALWAYS_ON_TOP": true,
+    "ALWAYS_ON_TOP": false,
     "ENABLE_COLOR_FILTER": true,
     "BLUE_HSV_LOWER": [
         100,
