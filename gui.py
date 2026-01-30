@@ -34,8 +34,9 @@ class App(ctk.CTk):
     def __init__(self):
         super().__init__()
 
-        self.title("Zapweb.app Prompt Assist and AutoClicker")
+        self.title(config_manager.get("APP_TITLE", "Zapweb.app Prompt Assist and AutoClicker"))
         self.geometry("900x700")
+
 
         # Variables for Docking
         self.is_docked = False
@@ -305,8 +306,12 @@ class App(ctk.CTk):
 
         logger.info(f"Targeting window: '{target}'")
         try:
-            wins = gw.getWindowsWithTitle(target)
+            all_matches = gw.getWindowsWithTitle(target)
+            app_title = config_manager.get("APP_TITLE")
+            wins = [w for w in all_matches if w.title != app_title]
+            
             if not wins:
+
                 logger.error(f"Window '{target}' not found. Available windows:")
                 all_wins = gw.getAllTitles()
                 for w in all_wins[:10]:  # Show first 10 windows

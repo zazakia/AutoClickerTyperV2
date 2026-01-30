@@ -25,8 +25,10 @@ class ConfigManager:
         "BLUE_HSV_LOWER": [100, 50, 50],
         "BLUE_HSV_UPPER": [130, 255, 255],
         "COLOR_OVERLAP_THRESHOLD": 0.5,
-        "DEFAULT_SUFFIX": "Proceed"
+        "DEFAULT_SUFFIX": "Proceed",
+        "APP_TITLE": "Zapweb.app Prompt Assist and AutoClicker"
     }
+
 
     def __init__(self, config_path: str = "config.json"):
         self.config_path = config_path

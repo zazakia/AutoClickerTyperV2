@@ -19,7 +19,7 @@
     "SCAN_INTERVAL": 0.2,
     "MAX_RETRY_ATTEMPTS": 3,
     "ACTION_DELAY": 0.05,
-    "ALWAYS_ON_TOP": false,
+    "ALWAYS_ON_TOP": true,
     "ENABLE_COLOR_FILTER": true,
     "BLUE_HSV_LOWER": [
         100,
@@ -33,5 +33,6 @@
     ],
     "COLOR_OVERLAP_THRESHOLD": 0.5,
     "DEFAULT_SUFFIX": "Proceed",
+    "APP_TITLE": "Zapweb.app Prompt Assist and AutoClicker",
     "TEST_KEY": "TEST_VALUE"
 }

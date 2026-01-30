@@ -2,16 +2,13 @@ import cv2
 import numpy as np
 import pyautogui
 import pytesseract
+import os
 from PIL import Image
-import cv2
-import numpy as np
-import pyautogui
-import pytesseract
-from PIL import Image
+from contextlib import suppress
 from core.config_manager import config_manager
 from utils.logger import logger
-import os
-from contextlib import suppress
+import pygetwindow as gw
+
 # Try importing thefuzz, handle if not installed (though it should be)
 try:
     from thefuzz import fuzz
@@ -26,7 +23,7 @@ if os.path.exists(tesseract_cmd):
 else:
     logger.warning(f"Tesseract not found at configured path: {tesseract_cmd}. Assuming it is in PATH.")
 
-import pygetwindow as gw
+
 
 def capture_screen(region=None):
     """Captures the screen or a specific region (x, y, w, h)."""
@@ -36,34 +33,58 @@ def get_target_region():
     """
     Returns the (x, y, w, h) of the target window if configured and found.
     Returns (0, 0, 0, 0) if no target window is configured or if window not found.
-    Returns None only if explicitly set to None (for full screen scanning).
+    Excludes the app's own window from being targeted.
     """
     target_title = config_manager.get("TARGET_WINDOW_TITLE")
+    app_title = config_manager.get("APP_TITLE")
     
-    # If target_title is empty string or None, don't scan
     if not target_title:
         logger.debug("No target window configured. Skipping scan.")
         return (0, 0, 0, 0)
     
     try:
         # Filter windows by title
-        windows = gw.getWindowsWithTitle(target_title)
+        all_matches = gw.getWindowsWithTitle(target_title)
+        
+        # Filter out the app's own window by exactly comparing title if possible,
+        # or checking against our known ID/handle if we had it.
+        # Here we filter by title.
+        windows = [w for w in all_matches if w.title != app_title]
+        
         if windows:
-            # Pick the first matching window
+            # Pick the first matching window that is NOT our app
             win = windows[0]
-            # Ensure it has a valid size
             if win.width > 0 and win.height > 0:
                  return (win.left, win.top, win.width, win.height)
         else:
-            logger.warning(f"Target window '{target_title}' not found. Skipping scan.")
-            # We return a 0-size rect to indicate 'do not scan'
+            logger.warning(f"Target window '{target_title}' not found (or only app's own window matched).")
             return (0, 0, 0, 0) 
     except Exception as e:
         logger.error(f"Error finding window: {e}")
         return (0, 0, 0, 0)
     
-    # This line should never be reached, but just in case
     return (0, 0, 0, 0)
+
+def is_box_in_app_window(box, app_window_bounds):
+    """
+    Checks if a bounding box (x, y, w, h) in screen coordinates 
+    overlaps with the app's window bounds.
+    """
+    if not app_window_bounds:
+        return False
+    
+    bx, by, bw, bh = box
+    ax, ay, aw, ah = app_window_bounds
+    
+    # Target center point
+    cx, cy = bx + bw//2, by + bh//2
+    
+    # Check if center of target is inside app window
+    if ax <= cx <= ax + aw and ay <= cy <= ay + ah:
+        return True
+    
+    return False
+
 
 def detect_blue_regions(screenshot):
     """
@@ -164,7 +185,18 @@ def scan_for_keywords(target_keywords_click, target_keywords_type):
     enable_color = config_manager.get("ENABLE_COLOR_FILTER", True)
     blue_mask = detect_blue_regions(screenshot)
     
+    # Get app window bounds to avoid self-clicking
+    app_bounds = None
+    app_title = config_manager.get("APP_TITLE")
+    if app_title:
+        with suppress(Exception):
+            awins = gw.getWindowsWithTitle(app_title)
+            if awins:
+                awin = awins[0]
+                app_bounds = (awin.left, awin.top, awin.width, awin.height)
+
     matches = []
+
 
     if enable_color and blue_mask is not None:
         # Find contours of blue regions
@@ -206,7 +238,8 @@ def scan_for_keywords(target_keywords_click, target_keywords_type):
                     # Use the bounding box of the entire region (not just one word)
                     full_abs_box = (offset_x + x, offset_y + y, w, h)
                     process_text_match(full_region_text, full_region_text.lower(), 100, full_abs_box, 
-                                       target_keywords_click, target_keywords_type, matches)
+                                       target_keywords_click, target_keywords_type, matches, app_bounds)
+
             except Exception as e:
                 logger.error(f"OCR Failed on region: {e}")
                 continue
@@ -228,9 +261,9 @@ def scan_for_keywords(target_keywords_click, target_keywords_type):
                 abs_w = data['width'][i] // 2
                 abs_h = data['height'][i] // 2
                 abs_box = (abs_x, abs_y, abs_w, abs_h)
-                
                 # Check keywords
-                process_text_match(text, text_lower, conf, abs_box, target_keywords_click, target_keywords_type, matches)
+                process_text_match(text, text_lower, conf, abs_box, target_keywords_click, target_keywords_type, matches, app_bounds)
+
     else:
         # Fallback to full screen scan if color filter disabled or failed
         logger.debug("Falling back to full screenshot OCR scan...")
@@ -255,12 +288,18 @@ def scan_for_keywords(target_keywords_click, target_keywords_type):
             abs_h = data['height'][i]
             abs_box = (abs_x, abs_y, abs_w, abs_h)
             
-            process_text_match(text, text_lower, conf, abs_box, target_keywords_click, target_keywords_type, matches)
+            process_text_match(text, text_lower, conf, abs_box, target_keywords_click, target_keywords_type, matches, app_bounds)
+
 
     return matches
 
-def process_text_match(text, text_lower, conf, abs_box, target_keywords_click, target_keywords_type, matches):
+def process_text_match(text, text_lower, conf, abs_box, target_keywords_click, target_keywords_type, matches, app_bounds=None):
     """Refactored matching logic used by both scan paths."""
+    # Safety: check if this coordinate is within our own app window
+    if app_bounds and is_box_in_app_window(abs_box, app_bounds):
+        # logger.debug(f"Ignoring keyword '{text}' as it is within the app's own window.")
+        return matches
+
     # Check CLICK keywords
     for k in target_keywords_click:
         match_found = False
@@ -301,5 +340,5 @@ def process_text_match(text, text_lower, conf, abs_box, target_keywords_click, t
             })
             logger.debug(f"Found '{k}' (text='{text}') at {abs_box}")
 
-
     return matches
+

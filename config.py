@@ -1,5 +1,8 @@
 import logging
 
+APP_TITLE = "Zapweb.app Prompt Assist and AutoClicker"
+
+
 # Keywords to CLICK
 CLICK_KEYWORDS = [
     "Accept",

@@ -42,5 +42,21 @@
     {
         "label": "whats the next task ? Proceed",
         "prompt": "whats the next task ? Proceed"
+    },
+    {
+        "label": "Next task proceed",
+        "prompt": "Next task proceed"
+    },
+    {
+        "label": "Prompt 13",
+        "prompt": ""
+    },
+    {
+        "label": "Prompt 14",
+        "prompt": ""
+    },
+    {
+        "label": "Prompt 15",
+        "prompt": ""
     }
 ]
