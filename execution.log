@@ -8457,3 +8457,69 @@ If an err...
 2026-01-30 13:13:11,907 - INFO - Found 0 verified actions in the NEW log entries.
 2026-01-30 13:13:11,908 - INFO - TEST RESULT: FAIL (No verified actions)
 2026-01-30 13:13:11,908 - INFO - TEST RESULT: FAIL (No verified actions)
+2026-01-30 14:11:54,781 - INFO - Entering Dock Mode...
+2026-01-30 14:12:01,252 - INFO - Double-click backdrop detected. Toggling dock...
+2026-01-30 14:12:01,252 - INFO - Exiting Dock Mode...
+2026-01-30 14:12:04,044 - INFO - Entering Dock Mode...
+2026-01-30 14:22:43,852 - INFO - Double-click backdrop detected. Toggling dock...
+2026-01-30 14:22:43,865 - INFO - Exiting Dock Mode...
+2026-01-30 14:54:58,146 - INFO - Entering Dock Mode...
+2026-01-30 14:54:59,546 - INFO - Auto-hide: Hiding dock
+2026-01-30 14:55:06,758 - INFO - Auto-hide: Showing dock
+2026-01-30 14:55:07,588 - INFO - Auto-hide: Hiding dock
+2026-01-30 14:55:08,213 - INFO - Auto-hide: Showing dock
+2026-01-30 14:55:09,031 - INFO - Auto-hide: Hiding dock
+2026-01-30 14:55:12,622 - INFO - Auto-hide: Showing dock
+2026-01-30 14:55:13,871 - INFO - Auto-hide: Hiding dock
+2026-01-30 15:05:22,241 - INFO - Auto-hide: Showing dock
+2026-01-30 15:06:31,021 - INFO - Auto-hide: Hiding dock
+2026-01-30 15:10:41,316 - INFO - Auto-hide: Showing dock
+2026-01-30 15:10:49,555 - INFO - Auto-hide: Hiding dock
+2026-01-30 15:10:50,182 - INFO - Auto-hide: Showing dock
+2026-01-30 15:10:50,593 - INFO - Auto-hide: Hiding dock
+2026-01-30 15:16:32,503 - INFO - Auto-hide: Showing dock
+2026-01-30 15:16:33,142 - INFO - Auto-hide: Hiding dock
+2026-01-30 15:28:12,407 - INFO - Auto-hide: Showing dock
+2026-01-30 15:28:13,456 - INFO - Auto-hide: Hiding dock
+2026-01-30 15:28:35,629 - INFO - Auto-hide: Showing dock
+2026-01-30 15:28:36,243 - INFO - Auto-hide: Hiding dock
+2026-01-30 15:28:41,873 - INFO - Auto-hide: Showing dock
+2026-01-30 15:28:42,501 - INFO - Auto-hide: Hiding dock
+2026-01-30 15:28:51,908 - INFO - Auto-hide: Showing dock
+2026-01-30 15:28:54,377 - INFO - Auto-hide: Hiding dock
+2026-01-30 15:28:54,778 - INFO - Auto-hide: Showing dock
+2026-01-30 15:28:55,396 - INFO - Auto-hide: Hiding dock
+2026-01-30 15:29:04,480 - INFO - Auto-hide: Showing dock
+2026-01-30 15:29:05,517 - INFO - Auto-hide: Hiding dock
+2026-01-30 15:31:23,121 - INFO - Auto-hide: Showing dock
+2026-01-30 15:31:24,984 - INFO - Auto-hide: Hiding dock
+2026-01-30 15:36:08,412 - INFO - Auto-hide: Showing dock
+2026-01-30 15:36:09,255 - INFO - Auto-hide: Hiding dock
+2026-01-30 16:04:49,474 - INFO - Auto-hide: Showing dock
+2026-01-30 16:05:24,198 - INFO - Auto-hide: Hiding dock
+2026-01-30 16:09:04,644 - INFO - Auto-hide: Showing dock
+2026-01-30 16:09:05,059 - INFO - Auto-hide: Hiding dock
+2026-01-30 16:11:58,111 - INFO - Auto-hide: Showing dock
+2026-01-30 16:11:58,724 - INFO - Auto-hide: Hiding dock
+2026-01-30 16:16:31,666 - INFO - Auto-hide: Showing dock
+2026-01-30 16:16:32,082 - INFO - Auto-hide: Hiding dock
+2026-01-30 16:17:23,111 - INFO - Auto-hide: Showing dock
+2026-01-30 16:17:23,512 - INFO - Auto-hide: Hiding dock
+2026-01-30 16:17:29,947 - INFO - Auto-hide: Showing dock
+2026-01-30 16:17:31,577 - INFO - Auto-hide: Hiding dock
+2026-01-30 16:17:56,213 - INFO - Auto-hide: Showing dock
+2026-01-30 16:17:57,268 - INFO - Auto-hide: Hiding dock
+2026-01-30 16:28:46,783 - INFO - Auto-hide: Showing dock
+2026-01-30 16:28:47,193 - INFO - Auto-hide: Hiding dock
+2026-01-30 16:33:23,745 - INFO - Auto-hide: Showing dock
+2026-01-30 16:33:24,585 - INFO - Auto-hide: Hiding dock
+2026-01-30 16:37:41,591 - INFO - Auto-hide: Showing dock
+2026-01-30 16:37:42,418 - INFO - Auto-hide: Hiding dock
+2026-01-30 16:38:11,032 - INFO - Auto-hide: Showing dock
+2026-01-30 16:38:12,717 - INFO - Auto-hide: Hiding dock
+2026-01-31 15:36:55,173 - INFO - Entering Dock Mode...
+2026-01-31 15:37:05,484 - INFO - Double-click backdrop detected. Toggling dock...
+2026-01-31 15:37:05,484 - INFO - Exiting Dock Mode...
+2026-01-31 15:37:21,588 - INFO - Entering Dock Mode...
+2026-01-31 15:38:06,427 - INFO - Double-click backdrop detected. Toggling dock...
+2026-01-31 15:38:06,427 - INFO - Exiting Dock Mode...

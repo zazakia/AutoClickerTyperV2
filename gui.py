@@ -47,6 +47,7 @@ class App(ctk.CTk):
         self.dock_hidden_width = 10 
         self.autohide_loop_running = False
         self.just_docked = False # Flag to prevent immediate hide
+        self.dock_is_expanded = False # Track dock state explicitly
 
         # Grid Layout for Root
         self.grid_columnconfigure(0, weight=1)
@@ -427,6 +428,7 @@ class App(ctk.CTk):
             logger.info("Entering Dock Mode...")
             self.restore_geometry = self.geometry()
             self.is_docked = True
+            self.dock_is_expanded = True
             self.just_docked = True # Set flag to prevent immediate hide
             
             # Use withdraw/deiconify for cleaner transition with overrideredirect
@@ -479,38 +481,44 @@ class App(ctk.CTk):
         if not self.autohide_loop_running: return
         
         try:
-            # Get mouse position
-            x, y = pyautogui.position()
+            # Get mouse position using tkinter method for consistency
+            x, y = self.winfo_pointerxy()
             
-            # If mouse is inside the dock area, clear just_docked immediately
+            # If mouse is inside the expanded dock area, clear just_docked immediately
             dock_x_start = self.screen_width - self.dock_width
             if x >= dock_x_start:
                 self.just_docked = False
 
             # If we recently docked, don't hide yet
             if self.just_docked:
+                self.after(200, self.check_autohide)
                 return
 
-            # Edges
-            edge_threshold = self.screen_width - 10
-            # If mouse near right edge, Show
-            if x >= edge_threshold:
-                if self.geometry().split('x')[0] != str(self.dock_width):
+            # Show threshold (right edge of screen)
+            # Increase sensitivity slightly (20px instead of 10px)
+            show_threshold = self.screen_width - 20
+            
+            # Hide threshold (left of the dock)
+            hide_threshold = dock_x_start - 50
+
+            if x >= show_threshold:
+                # MOUSE AT RIGHT EDGE -> SHOW
+                if not self.dock_is_expanded:
+                    logger.info("Auto-hide: Showing dock")
                     self.geometry(f"{self.dock_width}x{self.screen_height}+{self.screen_width - self.dock_width}+0")
                     self.attributes('-alpha', 1.0)
+                    self.dock_is_expanded = True
             
-            # If mouse away from dock area, Hide
-            # Dock area covers from (screen_width - dock_width) to screen_width
-            dock_x_start = self.screen_width - self.dock_width
+            elif x < hide_threshold:
+                # MOUSE LEFT OF DOCK -> HIDE
+                if self.dock_is_expanded:
+                    logger.info("Auto-hide: Hiding dock")
+                    self.geometry(f"{self.dock_hidden_width}x{self.screen_height}+{self.screen_width - self.dock_hidden_width}+0")
+                    self.attributes('-alpha', 0.01)
+                    self.dock_is_expanded = False
             
-            if x < dock_x_start - 50: # Buffer
-                if self.geometry().split('x')[0] != str(self.dock_hidden_width):
-                    # "Hide" by making it tiny and transparent-ish
-                     self.geometry(f"{self.dock_hidden_width}x{self.screen_height}+{self.screen_width - self.dock_hidden_width}+0")
-                     self.attributes('-alpha', 0.01) # Almost invisible trigger functionality might be tricky with 0.01 alpha for clicks, but checking mouse pos works
-            
-        except Exception:
-            pass
+        except Exception as e:
+            logger.error(f"Error in autohide loop: {e}")
             
         self.after(200, self.check_autohide)
 
