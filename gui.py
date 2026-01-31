@@ -37,17 +37,17 @@ class App(ctk.CTk):
         self.title(config_manager.get("APP_TITLE", "Zapweb.app Prompt Assist and AutoClicker"))
         self.geometry("900x700")
 
-
         # Variables for Docking
         self.is_docked = False
         self.restore_geometry = "900x700"
         self.screen_width = self.winfo_screenwidth()
         self.screen_height = self.winfo_screenheight()
         self.dock_width = 320
-        self.dock_hidden_width = 10 
+        self.dock_hidden_width = 15 
         self.autohide_loop_running = False
         self.just_docked = False # Flag to prevent immediate hide
         self.dock_is_expanded = False # Track dock state explicitly
+        self.autohide_job = None
 
         # Grid Layout for Root
         self.grid_columnconfigure(0, weight=1)
@@ -451,7 +451,7 @@ class App(ctk.CTk):
             self.start_autohide_loop()
             
             # Clear "just docked" flag after 2 seconds or if mouse enters
-            self.after(2000, lambda: setattr(self, 'just_docked', False))
+            self.after(2000, self._clear_just_docked)
         else:
             # Exit Dock Mode
             logger.info("Exiting Dock Mode...")
@@ -470,57 +470,74 @@ class App(ctk.CTk):
             # Restore previous always on top preference
             self.toggle_always_on_top() 
 
+    def _clear_just_docked(self):
+        self.just_docked = False
+        logger.debug("Dock: just_docked flag cleared")
+
     def start_autohide_loop(self):
         self.autohide_loop_running = True
+        if self.autohide_job:
+            self.after_cancel(self.autohide_job)
         self.check_autohide()
 
     def stop_autohide_loop(self):
         self.autohide_loop_running = False
+        if self.autohide_job:
+            self.after_cancel(self.autohide_job)
+            self.autohide_job = None
+
+    def expand_dock(self):
+        if not self.dock_is_expanded:
+            logger.info("Auto-hide: Expanding dock")
+            self.geometry(f"{self.dock_width}x{self.screen_height}+{self.screen_width - self.dock_width}+0")
+            self.attributes('-alpha', 1.0)
+            self.dock_is_expanded = True
+
+    def collapse_dock(self):
+        if self.dock_is_expanded:
+            logger.info("Auto-hide: Collapsing dock")
+            self.geometry(f"{self.dock_hidden_width}x{self.screen_height}+{self.screen_width - self.dock_hidden_width}+0")
+            self.attributes('-alpha', 0.05) # Slightly visible strip
+            self.dock_is_expanded = False
 
     def check_autohide(self):
         if not self.autohide_loop_running: return
         
         try:
-            # Get mouse position using tkinter method for consistency
-            x, y = self.winfo_pointerxy()
+            # Use pyautogui for better global coordinates across multiple monitors
+            import pyautogui
+            mx, my = pyautogui.position()
             
-            # If mouse is inside the expanded dock area, clear just_docked immediately
+            # Use self.screen_width (refreshed when docked)
             dock_x_start = self.screen_width - self.dock_width
-            if x >= dock_x_start:
+            
+            # Logic: If mouse is inside the zone where the dock would be, 
+            # we definitely don't want it to collapse.
+            if mx >= dock_x_start and mx <= self.screen_width:
                 self.just_docked = False
 
-            # If we recently docked, don't hide yet
-            if self.just_docked:
-                self.after(200, self.check_autohide)
-                return
-
-            # Show threshold (right edge of screen)
-            # Increase sensitivity slightly (20px instead of 10px)
-            show_threshold = self.screen_width - 20
-            
-            # Hide threshold (left of the dock)
-            hide_threshold = dock_x_start - 50
-
-            if x >= show_threshold:
-                # MOUSE AT RIGHT EDGE -> SHOW
+            if not self.just_docked:
+                # thresholds for showing (mouse at very edge)
+                # and hiding (mouse moved significantly away)
+                show_threshold = self.screen_width - 5
+                
+                # We hide if mouse is far to the left OR if it's moved to another monitor on the right
+                # (mx > self.screen_width + 10)
+                hide_threshold_left = dock_x_start - 60
+                
                 if not self.dock_is_expanded:
-                    logger.info("Auto-hide: Showing dock")
-                    self.geometry(f"{self.dock_width}x{self.screen_height}+{self.screen_width - self.dock_width}+0")
-                    self.attributes('-alpha', 1.0)
-                    self.dock_is_expanded = True
-            
-            elif x < hide_threshold:
-                # MOUSE LEFT OF DOCK -> HIDE
-                if self.dock_is_expanded:
-                    logger.info("Auto-hide: Hiding dock")
-                    self.geometry(f"{self.dock_hidden_width}x{self.screen_height}+{self.screen_width - self.dock_hidden_width}+0")
-                    self.attributes('-alpha', 0.01)
-                    self.dock_is_expanded = False
+                    # When collapsed, show if mouse is at the right edge
+                    if mx >= show_threshold and mx <= self.screen_width + 20: 
+                        self.expand_dock()
+                else:
+                    # When expanded, hide if mouse is far left or moved off-screen to the right
+                    if mx < hide_threshold_left or mx > self.screen_width + 50:
+                        self.collapse_dock()
             
         except Exception as e:
             logger.error(f"Error in autohide loop: {e}")
             
-        self.after(200, self.check_autohide)
+        self.autohide_job = self.after(150, self.check_autohide)
 
 if __name__ == "__main__":
     app = App()
