@@ -121,6 +121,13 @@ def main():
     if not verify_build():
         print("\n❌ Build verification failed.")
         sys.exit(1)
+        
+    # Step 5: Copy config files to dist for testing
+    print("\nCopying configuration files to dist/...")
+    for f in ['quick_prompts.json', 'config.json']:
+        if os.path.exists(f):
+            shutil.copy2(f, 'dist/')
+            print(f"  ✓ Copied {f}")
     
     print("\n" + "=" * 60)
     print("✓ BUILD COMPLETE!")

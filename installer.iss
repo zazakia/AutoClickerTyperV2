@@ -40,7 +40,8 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 ; Main Application
 Source: "dist\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "README.md"; DestDir: "{app}"; Flags: ignoreversion
-Source: "quick_prompts.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "quick_prompts.json"; DestDir: "{app}"; Flags: onlyifdoesntexist
+Source: "config.json"; DestDir: "{app}"; Flags: onlyifdoesntexist
 
 ; Tesseract OCR (bundled from system installation)
 ; NOTE: This assumes Tesseract is installed at the default location
