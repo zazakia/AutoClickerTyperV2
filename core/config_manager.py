@@ -4,7 +4,25 @@ import logging
 from typing import Dict, Any, List
 from contextlib import suppress
 
+import sys
+
 logger = logging.getLogger(__name__)
+
+def get_base_path():
+    """Returns the base path for persistent data.
+    In frozen (EXE) mode, this is the directory of the executable.
+    In script mode, this is the project root.
+    """
+    if getattr(sys, 'frozen', False):
+        return os.path.dirname(sys.executable)
+    # Return current directory if not frozen, which is project root in dev
+    return os.getcwd()
+
+def get_resource_path(relative_path):
+    """Get absolute path to resource, works for dev and for PyInstaller"""
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(os.path.abspath("."), relative_path)
 
 class ConfigManager:
     """
@@ -30,8 +48,9 @@ class ConfigManager:
     }
 
 
-    def __init__(self, config_path: str = "config.json"):
-        self.config_path = config_path
+    def __init__(self, filename: str = "config.json"):
+        self.base_path = get_base_path()
+        self.config_path = os.path.join(self.base_path, filename)
         self._config = self.DEFAULT_CONFIG.copy()
         self.load_config()
 
@@ -47,8 +66,20 @@ class ConfigManager:
             except Exception as e:
                 logger.error(f"Failed to load config from {self.config_path}: {e}")
         else:
-            logger.info("No config file found. Using defaults.")
-            self.save_config() # Create default file
+            # Fallback to bundled config if available
+            bundled_path = get_resource_path(os.path.basename(self.config_path))
+            if os.path.exists(bundled_path):
+                try:
+                    with open(bundled_path, 'r') as f:
+                        bundled_config = json.load(f)
+                        self._config.update(bundled_config)
+                    logger.info(f"Using bundled configuration as default: {bundled_path}")
+                    self.save_config() # Persist bundled config to external file
+                except Exception as e:
+                    logger.error(f"Failed to load bundled config: {e}")
+            else:
+                logger.info("No config file found and no bundled config. Using hardcoded defaults.")
+                self.save_config() # Create default file
 
     def save_config(self):
         """Saves current configuration to the file."""

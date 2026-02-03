@@ -2,14 +2,19 @@
 
 block_cipher = None
 
+import customtkinter
+import os
+customtkinter_path = os.path.dirname(customtkinter.__file__)
+
 a = Analysis(
     ['gui.py'],
     pathex=[],
     binaries=[],
     datas=[
         ('quick_prompts.json', '.'),
+        ('config.json', '.'),
         ('README.md', '.'),
-        ('C:/Users/HI/AppData/Local/Programs/Python/Python312/Lib/site-packages/customtkinter', 'customtkinter/'),
+        (customtkinter_path, 'customtkinter/'),
     ],
     hiddenimports=[
         'main',

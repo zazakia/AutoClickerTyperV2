@@ -8,7 +8,7 @@ import pygetwindow as gw
 import json
 import os
 import main
-from core.config_manager import config_manager
+from core.config_manager import config_manager, get_resource_path
 from utils.logger import logger
 from core.ocr import scan_for_keywords
 
@@ -231,16 +231,32 @@ class App(ctk.CTk):
 
     def load_quick_prompts(self):
         default = [{"label": f"Prompt {i+1}", "prompt": ""} for i in range(15)]
-        if not os.path.exists('quick_prompts.json'): return default
+        path = os.path.join(config_manager.base_path, 'quick_prompts.json')
+        if not os.path.exists(path):
+            # Try to load from bundled resources
+            bundled_path = get_resource_path('quick_prompts.json')
+            if os.path.exists(bundled_path):
+                try:
+                    with open(bundled_path, 'r') as f:
+                        data = json.load(f)
+                        if len(data) < 15: data += default[len(data):]
+                        self.quick_prompts = data[:15]
+                        self.save_quick_prompts() # Persist to external file
+                        logger.info(f"Loaded bundled quick prompts from {bundled_path}")
+                        return self.quick_prompts
+                except Exception as e:
+                    logger.error(f"Failed to load bundled quick prompts: {e}")
+            return default
         try:
-            with open('quick_prompts.json', 'r') as f:
+            with open(path, 'r') as f:
                 data = json.load(f)
                 if len(data) < 15: data += default[len(data):]
                 return data[:15]
         except: return default
 
     def save_quick_prompts(self):
-        with open('quick_prompts.json', 'w') as f:
+        path = os.path.join(config_manager.base_path, 'quick_prompts.json')
+        with open(path, 'w') as f:
             json.dump(self.quick_prompts, f, indent=4)
 
     def edit_prompt(self, index):

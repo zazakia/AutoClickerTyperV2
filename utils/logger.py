@@ -1,6 +1,8 @@
 import logging
 import sys
 from datetime import datetime
+from core.config_manager import config_manager
+import os
 import config
 
 def setup_logger():
@@ -13,7 +15,8 @@ def setup_logger():
     c_handler.setLevel(config.LOG_VERBOSITY)
 
     # File Handler
-    f_handler = logging.FileHandler('execution.log')
+    log_path = os.path.join(config_manager.base_path, 'execution.log')
+    f_handler = logging.FileHandler(log_path)
     f_handler.setLevel(config.LOG_VERBOSITY)
 
     # Formatter
