@@ -8600,3 +8600,237 @@ If an err...
 2026-02-02 21:03:35,188 - INFO - Auto-hide: Collapsing dock
 2026-02-02 21:03:56,580 - INFO - Auto-hide: Expanding dock
 2026-02-02 21:03:56,731 - INFO - Auto-hide: Collapsing dock
+2026-02-03 12:01:58,468 - INFO - Starting Test Scenario...
+2026-02-03 12:01:58,468 - INFO - Starting Test Scenario...
+2026-02-03 12:01:58,485 - INFO - Launching Test Harness...
+2026-02-03 12:01:58,485 - INFO - Launching Test Harness...
+2026-02-03 12:02:01,633 - INFO - Captured initial state screenshot.
+2026-02-03 12:02:01,633 - INFO - Captured initial state screenshot.
+2026-02-03 12:02:01,633 - INFO - Launching Auto Clicker Bot...
+2026-02-03 12:02:01,633 - INFO - Launching Auto Clicker Bot...
+2026-02-03 12:02:01,640 - INFO - Monitoring for 45 seconds...
+2026-02-03 12:02:01,640 - INFO - Monitoring for 45 seconds...
+2026-02-03 12:02:02,372 - INFO - Initializing Autonomous Auto Clicker...
+2026-02-03 12:02:02,372 - INFO - Running Self-Tests...
+2026-02-03 12:02:02,641 - INFO - Test running... 0s
+2026-02-03 12:02:02,641 - INFO - Test running... 0s
+2026-02-03 12:02:04,672 - INFO - TEST PASS: OCR System functional.
+2026-02-03 12:02:04,673 - INFO - Self-Tests Passed.
+2026-02-03 12:02:04,673 - INFO - Starting Continuous Execution Loop...
+2026-02-03 12:02:07,643 - INFO - Test running... 5s
+2026-02-03 12:02:07,643 - INFO - Test running... 5s
+2026-02-03 12:02:12,647 - INFO - Test running... 10s
+2026-02-03 12:02:12,647 - INFO - Test running... 10s
+2026-02-03 12:02:17,649 - INFO - Test running... 15s
+2026-02-03 12:02:17,649 - INFO - Test running... 15s
+2026-02-03 12:02:20,085 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:20,286 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:20,487 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:20,688 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:20,889 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:21,090 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:21,291 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:21,492 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:21,693 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:21,894 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:22,095 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:22,296 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:22,497 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:22,652 - INFO - Test running... 20s
+2026-02-03 12:02:22,652 - INFO - Test running... 20s
+2026-02-03 12:02:22,698 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:22,899 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:23,100 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:23,301 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:23,502 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:23,704 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:23,905 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:24,107 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:24,309 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:24,510 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:24,711 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:24,913 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:25,114 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:25,315 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:25,516 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:25,717 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:25,918 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:26,120 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:26,321 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:26,522 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:26,724 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:26,925 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:27,126 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:27,328 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:27,529 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:27,654 - INFO - Test running... 25s
+2026-02-03 12:02:27,654 - INFO - Test running... 25s
+2026-02-03 12:02:27,729 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:27,931 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:28,131 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:28,332 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:28,533 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:28,734 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:28,936 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:29,136 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:29,338 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:29,539 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:29,740 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:29,942 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:30,143 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:30,345 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:30,546 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:30,747 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:30,948 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:31,149 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:31,351 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:31,552 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:31,753 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:31,955 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:32,156 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:32,358 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:32,559 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:32,656 - INFO - Test running... 30s
+2026-02-03 12:02:32,656 - INFO - Test running... 30s
+2026-02-03 12:02:32,760 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:32,961 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:33,162 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:33,363 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:33,565 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:33,766 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:33,966 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:34,168 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:34,369 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:34,570 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:34,771 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:34,972 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:35,173 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:35,374 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:35,575 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:35,776 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:35,977 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:36,179 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:36,380 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:36,581 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:36,782 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:36,984 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:37,185 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:37,386 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:37,587 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:37,658 - INFO - Test running... 35s
+2026-02-03 12:02:37,658 - INFO - Test running... 35s
+2026-02-03 12:02:37,788 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:37,989 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:38,190 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:38,391 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:38,592 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:38,793 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:38,995 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:39,195 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:39,396 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:39,597 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:39,798 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:40,000 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:40,201 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:40,402 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:40,603 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:40,804 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:41,005 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:41,206 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:41,407 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:41,608 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:41,809 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:42,011 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:42,212 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:42,413 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:42,614 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:42,660 - INFO - Test running... 40s
+2026-02-03 12:02:42,660 - INFO - Test running... 40s
+2026-02-03 12:02:42,815 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:43,016 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:43,217 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:43,419 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:43,621 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:43,822 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:44,023 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:44,224 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:44,426 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:44,627 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:44,828 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:45,030 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:45,231 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:45,432 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:45,633 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:45,835 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:46,038 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:46,239 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:46,441 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:46,642 - WARNING - Target window 'Auto Clicker Test Harness' not found (or only app's own window matched).
+2026-02-03 12:02:46,811 - INFO - Captured end state screenshot.
+2026-02-03 12:02:46,811 - INFO - Captured end state screenshot.
+2026-02-03 12:02:46,812 - INFO - Terminating processes...
+2026-02-03 12:02:46,812 - INFO - Terminating processes...
+2026-02-03 12:02:46,832 - INFO - Found 0 verified actions in the NEW log entries.
+2026-02-03 12:02:46,832 - INFO - Found 0 verified actions in the NEW log entries.
+2026-02-03 12:02:46,833 - INFO - TEST RESULT: FAIL (No verified actions)
+2026-02-03 12:02:46,833 - INFO - TEST RESULT: FAIL (No verified actions)
+2026-02-03 12:05:40,011 - INFO - Entering Dock Mode...
+2026-02-03 12:05:42,097 - INFO - Auto-hide: Collapsing dock
+2026-02-03 12:08:28,009 - INFO - Auto-hide: Expanding dock
+2026-02-03 12:08:29,650 - INFO - Auto-hide: Collapsing dock
+2026-02-03 12:08:33,248 - INFO - Auto-hide: Expanding dock
+2026-02-03 12:08:33,961 - INFO - Auto-hide: Collapsing dock
+2026-02-03 12:08:39,848 - INFO - Auto-hide: Expanding dock
+2026-02-03 12:08:40,640 - INFO - Auto-hide: Collapsing dock
+2026-02-03 12:15:53,879 - INFO - Auto-hide: Expanding dock
+2026-02-03 12:16:12,490 - INFO - Quick prompt button 3 clicked
+2026-02-03 12:16:12,493 - INFO - Sending quick prompt: Do Test App and Proceed and Verify...
+2026-02-03 12:16:12,518 - INFO - === Starting Workflow Execution ===
+2026-02-03 12:16:12,549 - INFO - Targeting window: 'Manager'
+2026-02-03 12:16:12,625 - INFO - Found window: Manager
+2026-02-03 12:16:12,629 - INFO - Activating window...
+2026-02-03 12:16:13,636 - INFO - Scanning for '+' button...
+2026-02-03 12:16:22,264 - INFO - Auto-hide: Collapsing dock
+2026-02-03 12:16:23,933 - WARNING - '+' button not found, skipping click step
+2026-02-03 12:16:23,934 - INFO - Added suffix: Proceed
+2026-02-03 12:16:23,936 - INFO - Typing text (42 chars): Do Test App and Proceed and Verify Proceed...
+2026-02-03 12:16:24,113 - INFO - Auto-hide: Expanding dock
+2026-02-03 12:16:24,247 - ERROR - Workflow Error: PyAutoGUI fail-safe triggered from mouse moving to a corner of the screen. To disable this fail-safe, set pyautogui.FAILSAFE to False. DISABLING FAIL-SAFE IS NOT RECOMMENDED.
+Traceback (most recent call last):
+  File "E:\GitHub\AutoClickerTyperV2\gui.py", line 372, in run_workflow
+    pyautogui.write(full, interval=0.01)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\cyber\AppData\Local\Programs\Python\Python313\Lib\site-packages\pyautogui\__init__.py", line 594, in wrapper
+    returnVal = wrappedFunction(*args, **kwargs)
+  File "C:\Users\cyber\AppData\Local\Programs\Python\Python313\Lib\site-packages\pyautogui\__init__.py", line 1687, in typewrite
+    failSafeCheck()
+    ~~~~~~~~~~~~~^^
+  File "C:\Users\cyber\AppData\Local\Programs\Python\Python313\Lib\site-packages\pyautogui\__init__.py", line 1734, in failSafeCheck
+    raise FailSafeException(
+        "PyAutoGUI fail-safe triggered from mouse moving to a corner of the screen. To disable this fail-safe, set pyautogui.FAILSAFE to False. DISABLING FAIL-SAFE IS NOT RECOMMENDED."
+    )
+pyautogui.FailSafeException: PyAutoGUI fail-safe triggered from mouse moving to a corner of the screen. To disable this fail-safe, set pyautogui.FAILSAFE to False. DISABLING FAIL-SAFE IS NOT RECOMMENDED.
+2026-02-03 12:16:25,829 - INFO - === Workflow Execution Finished ===
+2026-02-03 12:16:29,857 - INFO - Auto-hide: Collapsing dock
+2026-02-03 12:16:31,980 - INFO - Auto-hide: Expanding dock
+2026-02-03 12:16:39,634 - INFO - Quick prompt button 3 clicked
+2026-02-03 12:16:39,634 - INFO - Sending quick prompt: Do Test App and Proceed and Verify...
+2026-02-03 12:16:39,637 - INFO - === Starting Workflow Execution ===
+2026-02-03 12:16:39,646 - INFO - Targeting window: 'Manager'
+2026-02-03 12:16:39,653 - INFO - Found window: Manager
+2026-02-03 12:16:39,664 - INFO - Activating window...
+2026-02-03 12:16:40,667 - INFO - Scanning for '+' button...
+2026-02-03 12:16:46,281 - WARNING - '+' button not found, skipping click step
+2026-02-03 12:16:46,282 - INFO - Added suffix: Proceed
+2026-02-03 12:16:46,284 - INFO - Typing text (42 chars): Do Test App and Proceed and Verify Proceed...
+2026-02-03 12:16:47,561 - INFO - Pressing Enter...
+2026-02-03 12:16:47,718 - INFO - === Workflow Execution Finished ===
+2026-02-03 12:18:46,440 - INFO - Auto-hide: Collapsing dock
+2026-02-03 12:22:03,059 - INFO - Auto-hide: Expanding dock
+2026-02-03 12:22:05,074 - INFO - Auto-hide: Collapsing dock
+2026-02-03 12:43:49,379 - INFO - Auto-hide: Expanding dock
+2026-02-03 12:43:49,995 - INFO - Auto-hide: Collapsing dock
+2026-02-03 12:49:19,937 - INFO - Auto-hide: Expanding dock
+2026-02-03 12:49:20,740 - INFO - Auto-hide: Collapsing dock
+2026-02-03 13:11:44,290 - INFO - Auto-hide: Expanding dock
+2026-02-03 13:11:45,079 - INFO - Auto-hide: Collapsing dock
