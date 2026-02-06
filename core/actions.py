@@ -24,11 +24,18 @@ def perform_click(box):
     x, y, w, h = box
     target_x, target_y = apply_random_offset(x, y, w, h)
     
+    # Try to activate window if we have one
+    # Note: we might want to pass the window title or similar here
+    
     logger.debug(f"Moving to click at ({target_x}, {target_y})")
     smooth_move(target_x, target_y)
     
     time.sleep(random.uniform(0.02, 0.08)) # Pre-click delay
     pyautogui.click()
+    
+    # Move mouse away to avoid obscuring the target for verification
+    pyautogui.moveRel(100, 0, duration=0.1)
+    
     time.sleep(config_manager.get("ACTION_DELAY", 0.1))
     
     return (target_x, target_y)

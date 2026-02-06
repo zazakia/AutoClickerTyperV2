@@ -1,3 +1,4 @@
+
 import cv2
 import numpy as np
 import pyautogui
@@ -8,6 +9,13 @@ from contextlib import suppress
 from core.config_manager import config_manager
 from utils.logger import logger
 import pygetwindow as gw
+
+# Known OCR misreads
+OCR_ALIASES = {
+    "conten": "Confirm",
+    "alow": "Allow",
+    "acce": "Accept"
+}
 
 # Try importing thefuzz, handle if not installed (though it should be)
 try:
@@ -55,7 +63,13 @@ def get_target_region():
             # Pick the first matching window that is NOT our app
             win = windows[0]
             if win.width > 0 and win.height > 0:
+                 # Activate window to ensure it receives clicks
+                 try:
+                     win.activate()
+                 except Exception:
+                     pass # Might fail if minimized or protected
                  return (win.left, win.top, win.width, win.height)
+
         else:
             logger.warning(f"Target window '{target_title}' not found (or only app's own window matched).")
             return (0, 0, 0, 0) 
@@ -106,12 +120,13 @@ def detect_blue_regions(screenshot):
         upper_blue = np.array(config_manager.get("BLUE_HSV_UPPER", [130, 255, 255]))
         mask = cv2.inRange(hsv, lower_blue, upper_blue)
         
-        # Apply morphological operations to reduce noise
+        # Apply morphological operations
         kernel = np.ones((5, 5), np.uint8)
         mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
         mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
         
         return mask
+
     except Exception as e:
         logger.error(f"Blue region detection failed: {e}")
         return None
@@ -176,7 +191,10 @@ def scan_for_keywords(target_keywords_click, target_keywords_type):
         return []
 
     screenshot = capture_screen(region=region)
+    print(f"DEBUG: capture_screen returned: {type(screenshot)} of size {screenshot.size if hasattr(screenshot, 'size') else 'N/A'}")
     img_np = np.array(screenshot)
+    print(f"DEBUG: img_np shape: {img_np.shape}")
+
     
     # Region offset for coordinate mapping (0,0 if full screen)
     offset_x, offset_y = (region[0], region[1]) if region else (0, 0)
@@ -207,8 +225,9 @@ def scan_for_keywords(target_keywords_click, target_keywords_type):
             # Skip noise or tiny regions - buttons are usually larger
             if w < 25 or h < 15:
                 continue
+
             
-            # Add padding to the crop to help Tesseract
+            # Pad the region slightly for better OCR
             pad = 5
             x_pad = max(0, x - pad)
             y_pad = max(0, y - pad)
@@ -221,20 +240,46 @@ def scan_for_keywords(target_keywords_click, target_keywords_type):
                 # --- Preprocessing for better OCR ---
                 # 1. Grayscale
                 gray = cv2.cvtColor(crop, cv2.COLOR_RGB2GRAY)
-                # 2. Binarization (Assume white text on dark background -> Invert to get black on white)
-                # We'll use Otsu thresholding with inversion
+                # 2. Binarization
+                # We'll try to handle both black-on-white and white-on-black by checking mean brightness
+                # But typically buttons are white text on blue/dark.
                 _, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
-                # 3. Upscale 2x
-                upscaled = cv2.resize(thresh, (0,0), fx=2, fy=2, interpolation=cv2.INTER_CUBIC)
                 
-                # Run OCR on the upscaled crop with PSM 6 (Assume single block of text)
-                config_str = '--psm 6'
+                # 3. Upscale 3x (Better for small symbols like +)
+                upscaled = cv2.resize(thresh, (0,0), fx=3, fy=3, interpolation=cv2.INTER_CUBIC)
+                
+                # 4. Lightly denoise and sharpen
+                upscaled = cv2.medianBlur(upscaled, 3)
+
+                
+                # Run OCR on the upscaled crop with a tiered PSM strategy
+                # 1. PSM 7 (Single Line)
+                config_str = '--psm 7'
                 data = pytesseract.image_to_data(upscaled, config=config_str, output_type=pytesseract.Output.DICT)
+                full_region_text = " ".join([t.strip() for t in data['text'] if t.strip()]).replace("|", "").strip()
                 
-                # --- Full Region Text Matching ---
-                # Sometimes Tesseract splits words. We check the joined text of the entire region.
-                full_region_text = " ".join([t.strip() for t in data['text'] if t.strip()])
+                if not full_region_text:
+                    # 2. PSM 8 (Single Word) - Often better for short button text
+                    config_str = '--psm 8'
+                    data = pytesseract.image_to_data(upscaled, config=config_str, output_type=pytesseract.Output.DICT)
+                    full_region_text = " ".join([t.strip() for t in data['text'] if t.strip()]).replace("|", "").strip()
+
+                if not full_region_text:
+                    # 3. PSM 10 (Single Character) - Fallback for symbols like +
+                    config_str = '--psm 10'
+                    data = pytesseract.image_to_data(upscaled, config=config_str, output_type=pytesseract.Output.DICT)
+                    full_region_text = " ".join([t.strip() for t in data['text'] if t.strip()]).replace("|", "").strip()
+
+                # Debug: Save ALL crops
+                cv2.imwrite(f"crop_{idx}.png", upscaled)
+
                 if full_region_text:
+                    logger.debug(f"DEBUG: Contour {idx} Text: '{full_region_text}' at ({x}, {y})")
+                    # Use the bounding box of the entire region (not just one word)
+
+
+
+
                     # Use the bounding box of the entire region (not just one word)
                     full_abs_box = (offset_x + x, offset_y + y, w, h)
                     process_text_match(full_region_text, full_region_text.lower(), 100, full_abs_box, 
@@ -255,11 +300,12 @@ def scan_for_keywords(target_keywords_click, target_keywords_type):
                 text_lower = text.lower()
                 
                 # Calculate ABSOLUTE screen coordinates
-                # Adjusted for 2x upscale: data['left'][i] / 2
-                abs_x = offset_x + x_pad + (data['left'][i] // 2)
-                abs_y = offset_y + y_pad + (data['top'][i] // 2)
-                abs_w = data['width'][i] // 2
-                abs_h = data['height'][i] // 2
+                # Adjusted for 3x upscale: data['left'][i] / 3
+                abs_x = offset_x + x_pad + (data['left'][i] // 3)
+                abs_y = offset_y + y_pad + (data['top'][i] // 3)
+                abs_w = data['width'][i] // 3
+                abs_h = data['height'][i] // 3
+
                 abs_box = (abs_x, abs_y, abs_w, abs_h)
                 # Check keywords
                 process_text_match(text, text_lower, conf, abs_box, target_keywords_click, target_keywords_type, matches, app_bounds)
@@ -300,14 +346,24 @@ def process_text_match(text, text_lower, conf, abs_box, target_keywords_click, t
         # logger.debug(f"Ignoring keyword '{text}' as it is within the app's own window.")
         return matches
 
+    # Apply aliases
+    if text_lower in OCR_ALIASES:
+        logger.debug(f"Aliasing '{text}' -> '{OCR_ALIASES[text_lower]}'")
+        text = OCR_ALIASES[text_lower]
+        text_lower = text.lower()
+    
     # Check CLICK keywords
     for k in target_keywords_click:
         match_found = False
         if fuzz:
+            # Using partial_ratio or lower threshold for short keywords / symbols
             ratio = fuzz.ratio(text_lower, k.lower())
-            if ratio > 90:
+            # For symbols like '+', exact contains check might be safer
+            if k in ['+', '-'] and k in text_lower:
                 match_found = True
-        elif text_lower == k.lower():
+            elif ratio > 80: # Relaxed from 90 to 80
+                match_found = True
+        elif text_lower == k.lower() or (k in ['+', '-'] and k in text_lower):
             match_found = True
 
         if match_found:
@@ -319,6 +375,7 @@ def process_text_match(text, text_lower, conf, abs_box, target_keywords_click, t
                 'conf': conf
             })
             logger.debug(f"Found '{k}' (text='{text}') at {abs_box}")
+
     
     # Check TYPE keywords
     for k in target_keywords_type:

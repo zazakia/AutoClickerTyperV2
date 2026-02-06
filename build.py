@@ -86,7 +86,8 @@ def verify_build():
     """Verify the build output"""
     print("\nVerifying build output...")
     
-    exe_path = Path('dist/ZapwebPromptAssist.exe')
+    exe_path = Path('dist/AutoClickerTyper.exe')
+
     
     if not exe_path.exists():
         print("❌ Executable not found in dist/")

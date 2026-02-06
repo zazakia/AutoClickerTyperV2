@@ -368,6 +368,10 @@ class App(ctk.CTk):
                 logger.info(f"Added suffix: {suffix}")
             
             if full:
+                # Safety: Move mouse to center of window to avoid fail-safe if near corner
+                cx, cy = win.left + win.width//2, win.top + win.height//2
+                pyautogui.moveTo(cx, cy, duration=0.1)
+                
                 logger.info(f"Typing text ({len(full)} chars): {full[:50]}...")
                 pyautogui.write(full, interval=0.01)
                 time.sleep(0.5)

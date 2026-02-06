@@ -40,7 +40,8 @@ def run_test_scenario():
     # We expect the bot to find keywords like "Accept", "Run", "Allow" in the harness
     # and click them, causing them to disappear.
     
-    duration = 45
+    duration = 60
+
     logger.info(f"Monitoring for {duration} seconds...")
     
     for i in range(duration):

@@ -1,5 +1,5 @@
 {
-    "TARGET_WINDOW_TITLE": "Manager",
+    "TARGET_WINDOW_TITLE": "Auto Clicker Test Harness",
     "CLICK_KEYWORDS": [
         "Accept",
         "Allow",
@@ -10,7 +10,8 @@
         "Confirm",
         "Continue",
         "Expand",
-        "Run"
+        "Run",
+        "+"
     ],
     "TYPE_KEYWORDS": [
         "proceed"
