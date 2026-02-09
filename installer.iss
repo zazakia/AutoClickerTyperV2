@@ -1,11 +1,11 @@
 ; AutoClickerTyper Installer Script
 ; Requires Inno Setup 6.0 or later: https://jrsoftware.org/isinfo.php
 
-#define MyAppName "Zapweb.app Prompt Assist and AutoClicker"
+#define MyAppName "AutoClickerTyper"
 #define MyAppVersion "1.0.0"
 #define MyAppPublisher "Your Name"
 #define MyAppURL "https://github.com/yourusername/AutoClickerTyperV2"
-#define MyAppExeName "ZapwebPromptAssist.exe"
+#define MyAppExeName "AutoClickerTyper.exe"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -22,7 +22,7 @@ DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 LicenseFile=LICENSE.txt
 OutputDir=installer_output
-OutputBaseFilename=ZapwebPromptAssist_Setup_v{#MyAppVersion}
+OutputBaseFilename=AutoClickerTyper_Setup_v{#MyAppVersion}
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern

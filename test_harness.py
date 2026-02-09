@@ -17,7 +17,7 @@ class TestApp:
         self.frame.pack(expand=True, fill='both')
 
         # Keywords from config
-        self.click_keywords = ["Accept", "Run", "Allow", "Proceed", "Confirm", "Continue", "Expand"]
+        self.click_keywords = ["+", "Accept", "Run", "Allow", "Proceed", "Confirm", "Continue", "Expand"]
         self.type_keywords = ["Type Here"] # Modified for visual clarity vs typing content
 
         self.widgets = []

@@ -61,7 +61,8 @@ exe = EXE(
     a.zipfiles,
     a.datas,
     [],
-    name='ZapwebPromptAssist',
+    name='AutoClickerTyper',
+
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,

@@ -35,6 +35,10 @@ def perform_click(box):
         
         time.sleep(random.uniform(0.02, 0.08)) # Pre-click delay
         pyautogui.click()
+        
+        # Move mouse away to avoid obscuring the target for verification
+        pyautogui.moveRel(100, 0, duration=0.1)
+        
         time.sleep(config_manager.get("ACTION_DELAY", 0.1))
         
         return (target_x, target_y)
