@@ -3,6 +3,7 @@ import os
 import logging
 from typing import Dict, Any, List
 from contextlib import suppress
+from core.exceptions import ConfigError
 
 import sys
 
@@ -63,8 +64,15 @@ class ConfigManager:
                     # Update defaults with user config (preserves new keys if defaults change)
                     self._config.update(user_config)
                 logger.info(f"Configuration loaded from {self.config_path}")
+            except json.JSONDecodeError as e:
+                logger.error(f"Failed to parse config from {self.config_path}: {e}")
+                # We raise ConfigError so the main app knows config is bad
+                raise ConfigError(f"Invalid JSON in config file: {e}")
             except Exception as e:
                 logger.error(f"Failed to load config from {self.config_path}: {e}")
+                # Optional: could raise here too, but maybe file permission error is recoverable?
+                # For now let's raise for robustness as requested
+                raise ConfigError(f"Could not load config file: {e}")
         else:
             # Fallback to bundled config if available
             bundled_path = get_resource_path(os.path.basename(self.config_path))

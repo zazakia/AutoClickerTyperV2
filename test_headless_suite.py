@@ -1,5 +1,6 @@
 import sys
 import unittest
+import importlib
 from unittest.mock import MagicMock
 
 # Create mock module for customtkinter
@@ -38,21 +39,48 @@ if __name__ == "__main__":
     # Import tests AFTER patching
     import test_blue_detection
 
-    print("\n[1/2] Running test_blue_detection...")
+    print("\n[1/6] Running test_blue_detection...")
     if test_blue_detection.test_blue_detection():
         print("PASS")
     else:
         print("FAIL")
 
-    print("\n[2/2] Running test_gui_unit...")
-    import test_gui_unit
-    suite = unittest.TestLoader().loadTestsFromModule(test_gui_unit)
-    runner = unittest.TextTestRunner(verbosity=2)
-    result = runner.run(suite)
+    # List of unit test modules
+    test_modules = [
+        ('test_gui_unit', 'test_gui_unit'),
+        ('test_actions', 'tests.test_actions'),
+        ('test_config', 'tests.test_config'),
+        ('test_verification', 'tests.test_verification'),
+        ('test_logger', 'tests.test_logger'),
+        ('test_ocr', 'tests.test_ocr')
+    ]
 
-    if result.wasSuccessful():
-        print("ALL TESTS PASSED")
+    total_failures = 0
+
+
+    for idx, (name, module_name) in enumerate(test_modules):
+        print(f"\n[{idx+2}/6] Running {name}...")
+        try:
+            module = importlib.import_module(module_name)
+            suite = unittest.TestLoader().loadTestsFromModule(module)
+            runner = unittest.TextTestRunner(verbosity=1)
+            result = runner.run(suite)
+            if result.testsRun == 0:
+                 print("NO TESTS RAN (Check discovery)")
+                 # Treat as potential warning or failure? 
+                 # For now let's just log it.
+            if not result.wasSuccessful():
+                total_failures += 1
+        except ImportError as e:
+            print(f"Failed to import {module_name}: {e}")
+            total_failures += 1
+        except Exception as e:
+            print(f"Error running {module_name}: {e}")
+            total_failures += 1
+
+    if total_failures == 0:
+        print("\nALL TESTS PASSED")
         sys.exit(0)
     else:
-        print("SOME TESTS FAILED")
+        print(f"\n{total_failures} MODULES FAILED")
         sys.exit(1)

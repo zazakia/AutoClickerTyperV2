@@ -23,6 +23,8 @@ a = Analysis(
         'core.actions',
         'core.verification',
         'utils.logger',
+        'core.exceptions',
+        'core.config_manager',
         'target_window',
         'PIL._tkinter_finder',
         'tkinter',

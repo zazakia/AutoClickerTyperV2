@@ -30,6 +30,61 @@ class TextHandler(logging.Handler):
             self.text_widget.see(tk.END)
         self.text_widget.after(0, append)
 
+class InputDialog(ctk.CTkToplevel):
+    def __init__(self, title="Input", text="Type:", default_value=""):
+        super().__init__()
+        self.title(title)
+        self.lift()  # lift window on top
+        self.attributes("-topmost", True)  # stay on top
+        self.protocol("WM_DELETE_WINDOW", self._on_closing)
+        self.after(10, self._create_widgets, text, default_value)  # create widgets with slight delay to avoid white flash
+        self.resizable(False, False)
+        self.grab_set()  # make other windows incorrectable
+
+        self._user_input = None
+
+    def _create_widgets(self, text, default_value):
+        self.grid_columnconfigure(0, weight=1)
+        self.rowconfigure(0, weight=1)
+        self.rowconfigure(1, weight=1)
+        self.rowconfigure(2, weight=1)
+
+        self._label = ctk.CTkLabel(master=self,
+                                   width=300,
+                                   wraplength=300,
+                                   fg_color="transparent",
+                                   text=text)
+        self._label.grid(row=0, column=0, padx=20, pady=20, sticky="ew")
+
+        self._entry = ctk.CTkEntry(master=self,
+                                   width=230)
+        self._entry.grid(row=1, column=0, padx=20, pady=(0, 20), sticky="ew")
+        self._entry.insert(0, default_value) # Insert default value
+
+        self._ok_button = ctk.CTkButton(master=self,
+                                        width=100,
+                                        border_width=0,
+                                        fg_color=None,
+                                        text='Ok',
+                                        command=self._ok_event)
+        self._ok_button.grid(row=2, column=0, padx=20, pady=(0, 20))
+
+        self._entry.bind("<Return>", self._ok_event)
+        self.after(100, lambda: self._entry.focus())  # set focus to entry
+
+    def _ok_event(self, event=None):
+        self._user_input = self._entry.get()
+        self.grab_release()
+        self.destroy()
+
+    def _on_closing(self):
+        self.grab_release()
+        self.destroy()
+
+    def get_input(self):
+        self.master.wait_window(self)
+        return self._user_input
+
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -154,7 +209,11 @@ class App(ctk.CTk):
         log_frame.grid(row=2, column=0, padx=10, pady=10, sticky="nsew")
         dash.grid_rowconfigure(2, weight=1)
         
-        ctk.CTkLabel(log_frame, text="Execution Logs").pack(anchor="w", padx=5)
+        # Log Header
+        log_head = ctk.CTkFrame(log_frame, fg_color="transparent")
+        log_head.pack(fill="x", padx=5, pady=2)
+        ctk.CTkLabel(log_head, text="Execution Logs").pack(side="left")
+        ctk.CTkButton(log_head, text="Clear Logs", width=80, height=24, command=self.clear_logs, fg_color="gray").pack(side="right")
         self.log_area = ctk.CTkTextbox(log_frame, state="disabled")
         self.log_area.pack(fill="both", expand=True, padx=5, pady=5)
         
@@ -192,6 +251,12 @@ class App(ctk.CTk):
         self.click_kw_entry.insert(0, ", ".join(config_manager.get("CLICK_KEYWORDS")))
         
         ctk.CTkButton(k_frame, text="Save Keywords", command=self.save_keywords).pack(pady=10)
+        
+        # Test Tools
+        t_frame = ctk.CTkFrame(sett)
+        t_frame.pack(fill="x", padx=10, pady=20)
+        ctk.CTkLabel(t_frame, text="Diagnostics").pack(anchor="w", padx=10, pady=5)
+        ctk.CTkButton(t_frame, text="Run One-Time OCR Test", command=self.test_ocr).pack(fill="x", padx=10, pady=10)
 
     def update_conf(self, val):
         config_manager.set("OCR_CONFIDENCE_THRESHOLD", int(val))
@@ -200,43 +265,55 @@ class App(ctk.CTk):
         config_manager.set("SCAN_INTERVAL", float(val))
 
     def save_keywords(self):
-        text = self.click_kw_entry.get()
-        kws = [k.strip() for k in text.split(",") if k.strip()]
-        config_manager.set("CLICK_KEYWORDS", kws)
-        logger.info("Keywords saved successfully.")
+        try:
+            text = self.click_kw_entry.get()
+            kws = [k.strip() for k in text.split(",") if k.strip()]
+            config_manager.set("CLICK_KEYWORDS", kws)
+            logger.info("Keywords saved successfully.")
+        except Exception as e:
+            logger.error(f"Failed to save keywords: {e}")
 
     def save_target_window(self, event=None):
-        val = self.target_entry.get()
-        config_manager.set("TARGET_WINDOW_TITLE", val)
-        logger.info(f"Target window updated to: {val}")
+        try:
+            val = self.target_entry.get()
+            config_manager.set("TARGET_WINDOW_TITLE", val)
+            logger.info(f"Target window updated to: {val}")
+        except Exception as e:
+            logger.error(f"Failed to update target window: {e}")
 
     def toggle_always_on_top(self):
-        val = self.always_on_top_switch.get()
-        self.attributes('-topmost', val)
-        config_manager.set("ALWAYS_ON_TOP", bool(val))
+        try:
+            val = self.always_on_top_switch.get()
+            self.attributes('-topmost', val)
+            config_manager.set("ALWAYS_ON_TOP", bool(val))
+        except Exception as e:
+            logger.error(f"Failed to toggle Always on Top: {e}")
 
     def toggle_autoclicker(self):
-        if self.running:
-            logger.info("Stopping AutoClicker...")
-            main.stop_event.set()
-            self.running = False
-            self.start_btn.configure(text="Start Loops", fg_color="green")
-        else:
-            logger.info("Starting AutoClicker...")
-            main.stop_event.clear()
-            self.autoclicker_thread = threading.Thread(target=main.main, daemon=True)
-            self.autoclicker_thread.start()
-            self.running = True
-            self.start_btn.configure(text="Stop Loops", fg_color="red")
+        try:
+            if self.running:
+                logger.info("Stopping AutoClicker...")
+                main.stop_event.set()
+                self.running = False
+                self.start_btn.configure(text="Start Loops", fg_color="green")
+            else:
+                logger.info("Starting AutoClicker...")
+                main.stop_event.clear()
+                self.autoclicker_thread = threading.Thread(target=main.main, daemon=True)
+                self.autoclicker_thread.start()
+                self.running = True
+                self.start_btn.configure(text="Stop Loops", fg_color="red")
+        except Exception as e:
+            logger.error(f"Failed to toggle AutoClicker: {e}")
 
     def load_quick_prompts(self):
         default = [{"label": f"Prompt {i+1}", "prompt": ""} for i in range(15)]
-        path = os.path.join(config_manager.base_path, 'quick_prompts.json')
-        if not os.path.exists(path):
-            # Try to load from bundled resources
-            bundled_path = get_resource_path('quick_prompts.json')
-            if os.path.exists(bundled_path):
-                try:
+        try:
+            path = os.path.join(config_manager.base_path, 'quick_prompts.json')
+            if not os.path.exists(path):
+                # Try to load from bundled resources
+                bundled_path = get_resource_path('quick_prompts.json')
+                if os.path.exists(bundled_path):
                     with open(bundled_path, 'r') as f:
                         data = json.load(f)
                         if len(data) < 15: data += default[len(data):]
@@ -244,61 +321,76 @@ class App(ctk.CTk):
                         self.save_quick_prompts() # Persist to external file
                         logger.info(f"Loaded bundled quick prompts from {bundled_path}")
                         return self.quick_prompts
-                except Exception as e:
-                    logger.error(f"Failed to load bundled quick prompts: {e}")
-            return default
-        try:
+                return default
+            
             with open(path, 'r') as f:
                 data = json.load(f)
                 if len(data) < 15: data += default[len(data):]
                 return data[:15]
-        except: return default
+        except Exception as e:
+             logger.error(f"Failed to load quick prompts: {e}")
+             return default
 
     def save_quick_prompts(self):
-        path = os.path.join(config_manager.base_path, 'quick_prompts.json')
-        with open(path, 'w') as f:
-            json.dump(self.quick_prompts, f, indent=4)
+        try:
+            path = os.path.join(config_manager.base_path, 'quick_prompts.json')
+            with open(path, 'w') as f:
+                json.dump(self.quick_prompts, f, indent=4)
+        except Exception as e:
+            logger.error(f"Failed to save quick prompts: {e}")
 
     def edit_prompt(self, index):
-        dialog = ctk.CTkInputDialog(text="Enter new label:", title="Edit Label")
-        new_label = dialog.get_input()
-        if not new_label: return
-        
-        dialog2 = ctk.CTkInputDialog(text="Enter new prompt content:", title="Edit Content")
-        new_prompt = dialog2.get_input()
-        if new_prompt is None: return
-        
-        self.quick_prompts[index] = {"label": new_label, "prompt": new_prompt}
-        self.save_quick_prompts()
-        self.refresh_all_qp_views()
+        try:
+            current_label = self.quick_prompts[index].get("label", "")
+            dialog = InputDialog(text="Enter new label:", title="Edit Label", default_value=current_label)
+            new_label = dialog.get_input()
+            if not new_label: return
+            
+            current_prompt = self.quick_prompts[index].get("prompt", "")
+            dialog2 = InputDialog(text="Enter new prompt content:", title="Edit Content", default_value=current_prompt)
+            new_prompt = dialog2.get_input()
+            if new_prompt is None: return
+            
+            self.quick_prompts[index] = {"label": new_label, "prompt": new_prompt}
+            self.save_quick_prompts()
+            self.refresh_all_qp_views()
+        except Exception as e:
+            logger.error(f"Failed to edit prompt: {e}", exc_info=True)
 
     def add_new_prompt(self):
-        new_index = len(self.quick_prompts)
-        self.quick_prompts.append({"label": f"New Prompt {new_index+1}", "prompt": ""})
-        # We don't save yet, edit_prompt will save if user confirms.
-        # But we need to refresh to show the placeholder if edit is cancelled.
-        self.edit_prompt(new_index)
-        self.refresh_all_qp_views()
+        try:
+            new_index = len(self.quick_prompts)
+            self.quick_prompts.append({"label": f"New Prompt {new_index+1}", "prompt": ""})
+            self.edit_prompt(new_index)
+            self.refresh_all_qp_views()
+        except Exception as e:
+            logger.error(f"Failed to add new prompt: {e}")
 
     def refresh_all_qp_views(self):
-        # Sidebar
-        self.render_quick_prompts(self.sidebar_qp_frame, is_docked=True)
-        # Dashboard
-        for widget in self.tabview.tab("Dashboard").winfo_children():
-            if isinstance(widget, ctk.CTkScrollableFrame) and getattr(widget, "_label", None) and widget._label.cget("text") == "Quick Prompts":
-                self.render_quick_prompts(widget, is_docked=False)
-        # Dock
-        if hasattr(self, 'dock_inner_frame'):
-            self.render_quick_prompts(self.dock_inner_frame, is_docked=True)
+        try:
+            # Sidebar
+            self.render_quick_prompts(self.sidebar_qp_frame, is_docked=True)
+            # Dashboard
+            for widget in self.tabview.tab("Dashboard").winfo_children():
+                if isinstance(widget, ctk.CTkScrollableFrame) and getattr(widget, "_label", None) and widget._label.cget("text") == "Quick Prompts":
+                    self.render_quick_prompts(widget, is_docked=False)
+            # Dock
+            if hasattr(self, 'dock_inner_frame'):
+                self.render_quick_prompts(self.dock_inner_frame, is_docked=True)
+        except Exception as e:
+            logger.error(f"Failed to refresh QP views: {e}")
 
     def send_quick_prompt(self, index):
-        logger.info(f"Quick prompt button {index+1} clicked")
-        prompt = self.quick_prompts[index]['prompt']
-        if not prompt:
-            logger.warning("Empty prompt!")
-            return
-        logger.info(f"Sending quick prompt: {prompt[:50]}...")
-        threading.Thread(target=self.run_workflow, args=(prompt,), daemon=True).start()
+        try:
+            logger.info(f"Quick prompt button {index+1} clicked")
+            prompt = self.quick_prompts[index]['prompt']
+            if not prompt:
+                logger.warning("Empty prompt!")
+                return
+            logger.info(f"Sending quick prompt: {prompt[:50]}...")
+            threading.Thread(target=self.run_workflow, args=(prompt,), daemon=True).start()
+        except Exception as e:
+            logger.error(f"Failed to send quick prompt: {e}")
 
     def start_workflow_thread(self):
         logger.info("=== Run Workflow button clicked ===")
@@ -554,6 +646,31 @@ class App(ctk.CTk):
             logger.error(f"Error in autohide loop: {e}")
             
         self.autohide_job = self.after(150, self.check_autohide)
+
+    def clear_logs(self):
+        self.log_area.configure(state='normal')
+        self.log_area.delete("1.0", "end")
+        self.log_area.configure(state='disabled')
+        logger.info("Logs cleared.")
+
+    def test_ocr(self):
+        def _run_test():
+            logger.info("=== Starting OCR Diagnostics ===")
+            try:
+                # Force a scan
+                matches = scan_for_keywords(config_manager.get("CLICK_KEYWORDS", []), config_manager.get("TYPE_KEYWORDS", []))
+                logger.info(f"Scan finished. Found {len(matches)} candidate(s).")
+                for i, m in enumerate(matches):
+                    logger.info(f" {i+1}. Found '{m['keyword']}' (type={m['type']})")
+                    logger.info(f"    Text: '{m['found_text']}' | Conf: {m['conf']}")
+                    logger.info(f"    Box: {m['box']}")
+                if not matches:
+                    logger.info("No keywords matched current screen content.")
+            except Exception as e:
+                logger.error(f"OCR Test Failed: {e}", exc_info=True)
+            logger.info("=== End OCR Diagnostics ===")
+        
+        threading.Thread(target=_run_test, daemon=True).start()
 
 if __name__ == "__main__":
     app = App()

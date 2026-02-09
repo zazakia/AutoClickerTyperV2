@@ -10,22 +10,27 @@ def setup_logger():
     logger = logging.getLogger("AutoClicker")
     logger.setLevel(config.LOG_VERBOSITY)
 
+    # Formatter
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+
     # Console Handler
     c_handler = logging.StreamHandler(sys.stdout)
     c_handler.setLevel(config.LOG_VERBOSITY)
+    c_handler.setFormatter(formatter)
+    logger.addHandler(c_handler)
 
     # File Handler
-    log_path = os.path.join(config_manager.base_path, 'execution.log')
-    f_handler = logging.FileHandler(log_path)
-    f_handler.setLevel(config.LOG_VERBOSITY)
-
-    # Formatter
-    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-    c_handler.setFormatter(formatter)
-    f_handler.setFormatter(formatter)
-
-    logger.addHandler(c_handler)
-    logger.addHandler(f_handler)
+    try:
+        log_file = os.path.join(config_manager.base_path, "autoclicker.log")
+        f_handler = logging.FileHandler(log_file)
+        f_handler.setLevel(config.LOG_VERBOSITY)
+        f_handler.setFormatter(formatter)
+        logger.addHandler(f_handler)
+    except Exception as e:
+        # Fallback to console only if file logging fails (e.g. permission error)
+        # Set console handler to WARNING level to ensure critical errors are still shown
+        c_handler.setLevel(logging.WARNING)
+        logger.warning(f"Failed to setup log file handler: {e}. Logging to console only.")
 
     return logger
 

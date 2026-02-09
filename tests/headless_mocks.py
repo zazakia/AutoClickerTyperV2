@@ -14,6 +14,10 @@ class MockCTk:
     def after(self, ms, func):
         # For testing, we might want to call it immediately or ignore
         pass
+    
+    def winfo_screenwidth(self): return 1920
+    def winfo_screenheight(self): return 1080
+    def bind(self, seq, func): pass
 
 class MockCTkFrame:
     def __init__(self, master, *args, **kwargs):
@@ -22,6 +26,8 @@ class MockCTkFrame:
     def pack(self, *args, **kwargs): pass
     def grid_columnconfigure(self, *args, **kwargs): pass
     def grid_rowconfigure(self, *args, **kwargs): pass
+    def bind(self, seq, func): pass
+    def winfo_children(self): return []
 
 class MockCTkLabel:
     def __init__(self, master, text="", font=None, **kwargs):
@@ -29,6 +35,7 @@ class MockCTkLabel:
     def grid(self, *args, **kwargs): pass
     def pack(self, *args, **kwargs): pass
     def configure(self, *args, **kwargs): pass
+    def bind(self, seq, func): pass
 
 class MockCTkButton:
     def __init__(self, master, text="", command=None, **kwargs):
@@ -86,6 +93,9 @@ class MockCTkTextbox:
     def configure(self, *args, **kwargs): pass
     def see(self, idx): pass
     def delete(self, start, end): self._text = ""
+    def after(self, ms, func):
+        # Execute immediately for testing purposes
+        func()
 
 class MockCTkSlider:
     def __init__(self, master, command=None, **kwargs):

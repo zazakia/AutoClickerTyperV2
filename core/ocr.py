@@ -25,66 +25,34 @@ else:
 
 
 
+import mss
+
+from core.exceptions import OCRError
+
+# ...
+
 def capture_screen(region=None):
     """Captures the screen or a specific region (x, y, w, h)."""
-    return pyautogui.screenshot(region=region)
-
-def get_target_region():
-    """
-    Returns the (x, y, w, h) of the target window if configured and found.
-    Returns (0, 0, 0, 0) if no target window is configured or if window not found.
-    Excludes the app's own window from being targeted.
-    """
-    target_title = config_manager.get("TARGET_WINDOW_TITLE")
-    app_title = config_manager.get("APP_TITLE")
-    
-    if not target_title:
-        logger.debug("No target window configured. Skipping scan.")
-        return (0, 0, 0, 0)
-    
     try:
-        # Filter windows by title
-        all_matches = gw.getWindowsWithTitle(target_title)
-        
-        # Filter out the app's own window by exactly comparing title if possible,
-        # or checking against our known ID/handle if we had it.
-        # Here we filter by title.
-        windows = [w for w in all_matches if w.title != app_title]
-        
-        if windows:
-            # Pick the first matching window that is NOT our app
-            win = windows[0]
-            if win.width > 0 and win.height > 0:
-                 return (win.left, win.top, win.width, win.height)
-        else:
-            logger.warning(f"Target window '{target_title}' not found (or only app's own window matched).")
-            return (0, 0, 0, 0) 
+        with mss.mss() as sct:
+            if region:
+                x, y, w, h = region
+                monitor = {"top": int(y), "left": int(x), "width": int(w), "height": int(h)}
+                sct_img = sct.grab(monitor)
+            else:
+                # Grab primary monitor if no region specified
+                monitor = sct.monitors[1]
+                sct_img = sct.grab(monitor)
+            
+            # Convert to PIL Image (RGB)
+            img = Image.frombytes("RGB", sct_img.size, sct_img.bgra, "raw", "BGRX")
+            return img
     except Exception as e:
-        logger.error(f"Error finding window: {e}")
-        return (0, 0, 0, 0)
-    
-    return (0, 0, 0, 0)
+        logger.error(f"Screen capture failed: {e}")
+        # Critical error if we can't see screen
+        raise OCRError(f"Screen capture failed: {e}")
 
-def is_box_in_app_window(box, app_window_bounds):
-    """
-    Checks if a bounding box (x, y, w, h) in screen coordinates 
-    overlaps with the app's window bounds.
-    """
-    if not app_window_bounds:
-        return False
-    
-    bx, by, bw, bh = box
-    ax, ay, aw, ah = app_window_bounds
-    
-    # Target center point
-    cx, cy = bx + bw//2, by + bh//2
-    
-    # Check if center of target is inside app window
-    if ax <= cx <= ax + aw and ay <= cy <= ay + ah:
-        return True
-    
-    return False
-
+# ...
 
 def detect_blue_regions(screenshot):
     """
@@ -114,7 +82,10 @@ def detect_blue_regions(screenshot):
         return mask
     except Exception as e:
         logger.error(f"Blue region detection failed: {e}")
-        return None
+        # Non-critical? If filter fails, we can return None to fallback to full scan?
+        # But user requested error handling. Let's log and return None (soft fail) or raise?
+        # Since fallback exists in scan_for_keywords, returning None is safer for app continuity.
+        raise OCRError(f"Blue region detection failed: {e}")
 
 def is_on_blue_background(box, blue_mask, region_offset=(0, 0)):
     """
@@ -162,6 +133,43 @@ def is_on_blue_background(box, blue_mask, region_offset=(0, 0)):
     except Exception as e:
         logger.error(f"Error checking blue background: {e}")
         return False
+
+def get_target_region():
+    """
+    Returns the (x, y, w, h) region of the target window.
+    Returns None if no target window is configured.
+    Returns (0,0,0,0) if target window is configured but not found.
+    """
+    title = config_manager.get("TARGET_WINDOW_TITLE")
+    if not title:
+        return None
+    
+    try:
+        # Partial match
+        wins = gw.getWindowsWithTitle(title)
+        if wins:
+            # Use the first one that matches
+            for w in wins:
+                if title.lower() in w.title.lower():
+                    return (w.left, w.top, w.width, w.height)
+        logger.warning(f"Target window '{title}' not found.")
+        return (0, 0, 0, 0)
+    except Exception as e:
+        logger.error(f"Error finding target window: {e}")
+        return (0, 0, 0, 0)
+
+def is_box_in_app_window(box, app_bounds):
+    """Checks if the center of a box is within the application's own window."""
+    if not app_bounds:
+        return False
+    
+    x, y, w, h = box
+    ax, ay, aw, ah = app_bounds
+    
+    center_x = x + w / 2
+    center_y = y + h / 2
+    
+    return (ax <= center_x <= ax + aw) and (ay <= center_y <= ay + ah)
 
 def scan_for_keywords(target_keywords_click, target_keywords_type):
     """

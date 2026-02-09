@@ -35,6 +35,25 @@ def check_requirements():
     
     return True
 
+def preserve_user_config():
+    """Sync user config from dist back to root before cleaning if it's newer"""
+    print("\nPreserving user configuration from dist/...")
+    config_files = ['quick_prompts.json', 'config.json']
+    
+    for f in config_files:
+        dist_f = Path('dist') / f
+        root_f = Path(f)
+        
+        if dist_f.exists():
+            # If root doesn't exist, or dist is newer, sync back
+            if not root_f.exists() or dist_f.stat().st_mtime > root_f.stat().st_mtime:
+                print(f"  -> Syncing {f} back to root (newer version found in dist/)")
+                shutil.copy2(dist_f, root_f)
+            else:
+                print(f"  ✓ {f} in root is up to date or newer.")
+        else:
+            print(f"  No existing {f} in dist/ to preserve.")
+
 def clean_build_artifacts():
     """Remove previous build artifacts"""
     print("\nCleaning previous build artifacts...")
@@ -108,6 +127,9 @@ def main():
     if not check_requirements():
         print("\n❌ Build requirements not met. Please fix the issues above.")
         sys.exit(1)
+    
+    # Step 1.5: Preserve user config from previous build
+    preserve_user_config()
     
     # Step 2: Clean previous builds
     clean_build_artifacts()
