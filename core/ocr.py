@@ -418,38 +418,37 @@ def _add_proximity_matches(matches, all_segments):
     max_dist = config_manager.get("PROXIMITY_MAX_DISTANCE", 300)
     direction = config_manager.get("PROXIMITY_DIRECTION", "BOTH").upper()
     
-    current_matches = list(matches) # Avoid modifying while iterating
-    
-    for m in current_matches:
-        # Check if any anchor is a partial match to the keyword or found text
+    # We want to find anchors within all_segments, not just the pre-matched matches
+    # This ensures we find proximity targets even if the anchor itself wasn't "clicked"
+    for text, box, conf in all_segments:
         is_anchor = False
         for a in anchors:
             if fuzz:
-                if fuzz.partial_ratio(a.lower(), m['keyword'].lower()) >= 90:
+                if fuzz.partial_ratio(a.lower(), text.lower()) >= 90:
                     is_anchor = True
                     break
-            elif a.lower() in m['keyword'].lower():
+            elif a.lower() in text.lower():
                 is_anchor = True
                 break
         
         if is_anchor:
-            ax, ay, aw, ah = m['box']
+            ax, ay, aw, ah = box
             ac_y = ay + ah/2
             
-            for text, box, conf in all_segments:
-                tx, ty, tw, th = box
+            for t_text, t_box, t_conf in all_segments:
+                tx, ty, tw, th = t_box
                 tc_y = ty + th/2
                 
                 # Check if it's the same box
                 if tx == ax and ty == ay: continue
                 
                 # Vertical overlap check (same line)
-                if abs(ac_y - tc_y) > (ah + th) / 2: continue
+                if abs(ac_y - tc_y) > (ah + th): continue # Be more lenient with line height
                 
                 # Horizontal distance check and direction filter
                 dist = -1
-                is_right = tx > (ax + aw)
-                is_left = (tx + tw) < ax
+                is_right = tx > (ax + aw / 2) # Center-based check
+                is_left = (tx + tw) < (ax + aw / 2)
                 
                 if direction == "LEFT":
                     if is_left:
@@ -469,19 +468,19 @@ def _add_proximity_matches(matches, all_segments):
                     # Avoid duplicates
                     is_dup = False
                     for existing in matches:
-                        if existing['box'] == box:
+                        if existing['box'] == t_box:
                             is_dup = True
                             break
                     if is_dup: continue
                     
                     matches.append({
-                        'keyword': f"Proximity({m['keyword']})",
-                        'found_text': text,
+                        'keyword': f"Proximity({text})",
+                        'found_text': t_text,
                         'type': 'CLICK',
-                        'box': box,
-                        'conf': conf
+                        'box': t_box,
+                        'conf': t_conf
                     })
-                    logger.info(f"Proximity Match: Found '{text}' near '{m['keyword']}' ({direction}) at {box}")
+                    logger.info(f"Proximity Match: Found '{t_text}' near '{text}' ({direction}) at {t_box}")
 
 def process_text_match(text, text_lower, conf, abs_box, target_keywords_click, target_keywords_type, matches, app_bounds=None):
     """Refactored matching logic used by both scan paths."""
