@@ -14,7 +14,9 @@ CLICK_KEYWORDS = [
     "OK",
     "Confirm",
     "Continue",
-    "Expand"
+    "Expand",
+    "El",
+    "Bell"
 ]
 
 # Keywords to TYPE
@@ -57,3 +59,8 @@ BLUE_HSV_UPPER = [130, 255, 255]  # Upper bound for blue color
 
 # Minimum overlap percentage between text box and blue region (0.0 to 1.0)
 COLOR_OVERLAP_THRESHOLD = 0.5
+
+# Neutral color detection (Grey/White/Black)
+ENABLE_NEUTRAL_FILTER = True
+NEUTRAL_HSV_LOWER = [0, 0, 40]
+NEUTRAL_HSV_UPPER = [180, 50, 200]
