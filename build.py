@@ -155,7 +155,7 @@ def main():
     print("\n" + "=" * 60)
     print("✓ BUILD COMPLETE!")
     print("=" * 60)
-    print("\nYour executable is ready at: dist/ZapwebPromptAssist.exe")
+    print("\nYour executable is ready at: dist/AutoClickerTyper.exe")
     print("\nNext steps:")
     print("  1. Test the executable on this machine")
     print("  2. Create installer with Inno Setup (see installer.iss)")

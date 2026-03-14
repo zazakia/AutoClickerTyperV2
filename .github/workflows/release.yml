@@ -78,14 +78,13 @@ jobs:
         echo "VERSION=$version" >> $env:GITHUB_OUTPUT
       shell: powershell
     
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Release
+      uses: softprops/action-gh-release@v2
+      if: startsWith(github.ref, 'refs/tags/')
       with:
-        tag_name: ${{ github.ref_name }}
-        release_name: AutoClickerTyper ${{ github.ref_name }}
+        files: |
+          dist/AutoClickerTyper.exe
+          installer_output/AutoClickerTyper_Setup_v${{ steps.get_version.outputs.VERSION }}.exe
         body: |
           ## AutoClickerTyper Release ${{ github.ref_name }}
           
@@ -110,26 +109,8 @@ jobs:
           Windows Defender may show warnings for unsigned executables. This is normal for open-source software without code signing certificates.
         draft: false
         prerelease: false
-    
-    - name: Upload Standalone Executable
-      uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./dist/AutoClickerTyper.exe
-        asset_name: AutoClickerTyper.exe
-        asset_content_type: application/vnd.microsoft.portable-executable
-    
-    - name: Upload Installer
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./installer_output/AutoClickerTyper_Setup_v${{ steps.get_version.outputs.VERSION }}.exe
-        asset_name: AutoClickerTyper_Setup_v${{ steps.get_version.outputs.VERSION }}.exe
-        asset_content_type: application/vnd.microsoft.portable-executable
     
     - name: Upload build artifacts (for debugging)
       uses: actions/upload-artifact@v4
