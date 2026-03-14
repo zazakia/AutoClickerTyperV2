@@ -63,3 +63,10 @@ desktop.ini
 *.tmp
 *.bak
 *.cache
+
+# Debug and generated files
+crop_*.png
+debug_*
+diagnostic_*
+read_titles.py
+verify_proximity.py

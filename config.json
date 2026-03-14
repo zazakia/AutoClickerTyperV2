@@ -3,15 +3,13 @@
     "CLICK_KEYWORDS": [
         "Accept",
         "Allow",
-        "Allow Always",
         "Proceed",
-        "Yes",
-        "OK",
         "Confirm",
-        "Continue",
         "Expand",
-        "Run",
-        "+"
+        "Bell",
+        "bell",
+        "El",
+        "ll"
     ],
     "TYPE_KEYWORDS": [
         "proceed"
@@ -33,7 +31,29 @@
         255
     ],
     "COLOR_OVERLAP_THRESHOLD": 0.5,
+    "ENABLE_NEUTRAL_FILTER": true,
+    "NEUTRAL_HSV_LOWER": [
+        0,
+        0,
+        40
+    ],
+    "NEUTRAL_HSV_UPPER": [
+        180,
+        50,
+        200
+    ],
     "DEFAULT_SUFFIX": "Proceed",
     "APP_TITLE": "Zapweb.app Prompt Assist and AutoClicker",
+    "PROXIMITY_CLICKING_ENABLED": true,
+    "PROXIMITY_DIRECTION": "LEFT",
+    "ANCHOR_KEYWORDS": [
+        "Bell",
+        "bell",
+        "El",
+        "ll"
+    ],
+    "PROXIMITY_MAX_DISTANCE": 300,
+    "TEMPLATE_MATCHING_THRESHOLD": 0.8,
+    "TEMPLATES": [],
     "TEST_KEY": "TEST_VALUE"
 }

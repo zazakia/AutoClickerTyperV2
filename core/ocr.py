@@ -6,7 +6,7 @@ import pytesseract
 import os
 from PIL import Image
 from contextlib import suppress
-from core.config_manager import config_manager
+from core.config_manager import config_manager, get_resource_path
 from utils.logger import logger
 import pygetwindow as gw
 
@@ -14,7 +14,10 @@ import pygetwindow as gw
 OCR_ALIASES = {
     "conten": "Confirm",
     "alow": "Allow",
-    "acce": "Accept"
+    "acce": "Accept",
+    "expand <": "Expand",
+    "expand<": "Expand",
+    "expand (": "Expand",
 }
 
 # Try importing thefuzz, handle if not installed (though it should be)
@@ -96,51 +99,56 @@ def detect_blue_regions(screenshot):
         # Since fallback exists in scan_for_keywords, returning None is safer for app continuity.
         raise OCRError(f"Blue region detection failed: {e}")
 
-def is_on_blue_background(box, blue_mask, region_offset=(0, 0)):
+def detect_neutral_regions(screenshot):
     """
-    Checks if a text bounding box overlaps with blue regions.
-    
-    Args:
-        box: (x, y, w, h) - absolute screen coordinates of text
-        blue_mask: Binary mask of blue regions
-        region_offset: (offset_x, offset_y) - offset if scanning a window region
-    
-    Returns:
-        True if the text box has sufficient overlap with blue regions
+    Detects neutral-colored regions (grey, white) in the screenshot.
     """
-    if blue_mask is None:
-        return True  # If color filtering is disabled, allow all
+    if not config_manager.get("ENABLE_NEUTRAL_FILTER", False):
+        return None
+    
+    try:
+        img_cv = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
+        hsv = cv2.cvtColor(img_cv, cv2.COLOR_BGR2HSV)
+        
+        lower_neutral = np.array(config_manager.get("NEUTRAL_HSV_LOWER", [0, 0, 40]))
+        upper_neutral = np.array(config_manager.get("NEUTRAL_HSV_UPPER", [180, 50, 200]))
+        mask = cv2.inRange(hsv, lower_neutral, upper_neutral)
+        
+        kernel = np.ones((5, 5), np.uint8)
+        mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+        mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
+        
+        return mask
+    except Exception as e:
+        logger.error(f"Neutral region detection failed: {e}")
+        return None
+
+def is_on_colored_background(box, combined_mask, region_offset=(0, 0)):
+    """
+    Checks if a text bounding box overlaps with detected colored regions.
+    """
+    if combined_mask is None:
+        return True
     
     try:
         x, y, w, h = box
         offset_x, offset_y = region_offset
-        
-        # Convert absolute coordinates to mask coordinates
         mask_x = x - offset_x
         mask_y = y - offset_y
         
-        # Ensure coordinates are within mask bounds
-        if mask_x < 0 or mask_y < 0:
-            return False
-        if mask_x + w > blue_mask.shape[1] or mask_y + h > blue_mask.shape[0]:
-            return False
+        if mask_x < 0 or mask_y < 0: return False
+        if mask_x + w > combined_mask.shape[1] or mask_y + h > combined_mask.shape[0]: return False
         
-        # Extract the region of interest from the mask
-        roi = blue_mask[mask_y:mask_y + h, mask_x:mask_x + w]
-        
-        # Calculate the percentage of blue pixels in the ROI
+        roi = combined_mask[mask_y:mask_y + h, mask_x:mask_x + w]
         total_pixels = w * h
-        if total_pixels == 0:
-            return False
+        if total_pixels == 0: return False
         
-        blue_pixels = np.count_nonzero(roi)
-        overlap_ratio = blue_pixels / total_pixels
-        
-        # Check if overlap meets threshold
+        colored_pixels = np.count_nonzero(roi)
+        overlap_ratio = colored_pixels / total_pixels
         threshold = config_manager.get("COLOR_OVERLAP_THRESHOLD", 0.5)
         return overlap_ratio >= threshold
     except Exception as e:
-        logger.error(f"Error checking blue background: {e}")
+        logger.error(f"Error checking colored background: {e}")
         return False
 
 def get_target_region():
@@ -201,9 +209,20 @@ def scan_for_keywords(target_keywords_click, target_keywords_type):
     # Region offset for coordinate mapping (0,0 if full screen)
     offset_x, offset_y = (region[0], region[1]) if region else (0, 0)
     
-    # Detect blue regions if color filtering is enabled
+    # Detect regions
     enable_color = config_manager.get("ENABLE_COLOR_FILTER", True)
-    blue_mask = detect_blue_regions(screenshot)
+    enable_neutral = config_manager.get("ENABLE_NEUTRAL_FILTER", False)
+    
+    blue_mask = detect_blue_regions(screenshot) if enable_color else None
+    neutral_mask = detect_neutral_regions(screenshot) if enable_neutral else None
+    
+    combined_mask = None
+    if blue_mask is not None and neutral_mask is not None:
+        combined_mask = cv2.bitwise_or(blue_mask, neutral_mask)
+    elif blue_mask is not None:
+        combined_mask = blue_mask
+    elif neutral_mask is not None:
+        combined_mask = neutral_mask
     
     # Get app window bounds to avoid self-clicking
     app_bounds = None
@@ -213,14 +232,15 @@ def scan_for_keywords(target_keywords_click, target_keywords_type):
             awins = gw.getWindowsWithTitle(app_title)
             if awins:
                 awin = awins[0]
+                awin = awins[0]
                 app_bounds = (awin.left, awin.top, awin.width, awin.height)
 
     matches = []
+    all_seen_segments = [] # List of (text, box, conf)
 
-
-    if enable_color and blue_mask is not None:
-        # Find contours of blue regions
-        contours, _ = cv2.findContours(blue_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    if combined_mask is not None:
+        # Find contours of detected regions
+        contours, _ = cv2.findContours(combined_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         
         for idx, cnt in enumerate(contours):
             x, y, w, h = cv2.boundingRect(cnt)
@@ -283,7 +303,9 @@ def scan_for_keywords(target_keywords_click, target_keywords_type):
 
 
                     # Use the bounding box of the entire region (not just one word)
+                    # Use the bounding box of the entire region (not just one word)
                     full_abs_box = (offset_x + x, offset_y + y, w, h)
+                    all_seen_segments.append((full_region_text, full_abs_box, 100))
                     process_text_match(full_region_text, full_region_text.lower(), 100, full_abs_box, 
                                        target_keywords_click, target_keywords_type, matches, app_bounds)
 
@@ -309,6 +331,7 @@ def scan_for_keywords(target_keywords_click, target_keywords_type):
                 abs_h = data['height'][i] // 3
 
                 abs_box = (abs_x, abs_y, abs_w, abs_h)
+                all_seen_segments.append((text, abs_box, conf))
                 # Check keywords
                 process_text_match(text, text_lower, conf, abs_box, target_keywords_click, target_keywords_type, matches, app_bounds)
 
@@ -335,11 +358,129 @@ def scan_for_keywords(target_keywords_click, target_keywords_type):
             abs_w = data['width'][i]
             abs_h = data['height'][i]
             abs_box = (abs_x, abs_y, abs_w, abs_h)
+            all_seen_segments.append((text, abs_box, conf))
             
             process_text_match(text, text_lower, conf, abs_box, target_keywords_click, target_keywords_type, matches, app_bounds)
 
 
+    # --- Template Matching ---
+    template_paths = config_manager.get("TEMPLATES", [])
+    threshold = config_manager.get("TEMPLATE_MATCHING_THRESHOLD", 0.8)
+    
+    if template_paths:
+        for t_path in template_paths:
+            abs_t_path = get_resource_path(t_path)
+            if not os.path.exists(abs_t_path):
+                logger.warning(f"Template not found: {abs_t_path}")
+                continue
+                
+            template = cv2.imread(abs_t_path)
+            if template is None: continue
+            
+            # Match template
+            res = cv2.matchTemplate(img_np, template, cv2.TM_CCOEFF_NORMED)
+            locs = np.where(res >= threshold)
+            
+            t_h, t_w = template.shape[:2]
+            for pt in zip(*locs[::-1]): # Switch x and y
+                # Filter duplicates (e.g. within 10px)
+                is_dup = False
+                for m in matches:
+                    if m['type'] == 'CLICK' and abs(m['box'][0] - (offset_x + pt[0])) < 10 and abs(m['box'][1] - (offset_y + pt[1])) < 10:
+                        is_dup = True
+                        break
+                if is_dup: continue
+                
+                abs_box = (offset_x + pt[0], offset_y + pt[1], t_w, t_h)
+                
+                # Safety check
+                if app_bounds and is_box_in_app_window(abs_box, app_bounds):
+                    continue
+                
+                matches.append({
+                    'keyword': os.path.basename(t_path),
+                    'found_text': f"Template: {os.path.basename(t_path)}",
+                    'type': 'CLICK',
+                    'box': abs_box,
+                    'conf': float(res[pt[1], pt[0]]) * 100
+                })
+                logger.info(f"Found template match: {t_path} at {abs_box}")
+
+    # --- Proximity Matching ---
+    if config_manager.get("PROXIMITY_CLICKING_ENABLED", False):
+        _add_proximity_matches(matches, all_seen_segments)
+
     return matches
+
+def _add_proximity_matches(matches, all_segments):
+    """Adds matches for text near anchor keywords/templates."""
+    anchors = config_manager.get("ANCHOR_KEYWORDS", ["El", "Bell", "bell_icon.png"])
+    max_dist = config_manager.get("PROXIMITY_MAX_DISTANCE", 300)
+    direction = config_manager.get("PROXIMITY_DIRECTION", "BOTH").upper()
+    
+    # We want to find anchors within all_segments, not just the pre-matched matches
+    # This ensures we find proximity targets even if the anchor itself wasn't "clicked"
+    for text, box, conf in all_segments:
+        is_anchor = False
+        for a in anchors:
+            if fuzz:
+                if fuzz.partial_ratio(a.lower(), text.lower()) >= 90:
+                    is_anchor = True
+                    break
+            elif a.lower() in text.lower():
+                is_anchor = True
+                break
+        
+        if is_anchor:
+            ax, ay, aw, ah = box
+            ac_y = ay + ah/2
+            
+            for t_text, t_box, t_conf in all_segments:
+                tx, ty, tw, th = t_box
+                tc_y = ty + th/2
+                
+                # Check if it's the same box
+                if tx == ax and ty == ay: continue
+                
+                # Vertical overlap check (same line)
+                if abs(ac_y - tc_y) > (ah + th): continue # Be more lenient with line height
+                
+                # Horizontal distance check and direction filter
+                dist = -1
+                is_right = tx > (ax + aw / 2) # Center-based check
+                is_left = (tx + tw) < (ax + aw / 2)
+                
+                if direction == "LEFT":
+                    if is_left:
+                        dist = ax - (tx + tw)
+                elif direction == "RIGHT":
+                    if is_right:
+                        dist = tx - (ax + aw)
+                else: # BOTH or unspecified
+                    if is_right:
+                        dist = tx - (ax + aw)
+                    elif is_left:
+                        dist = ax - (tx + tw)
+                    else: # Overlapping or inside
+                        dist = 0
+                
+                if dist >= 0 and dist < max_dist:
+                    # Avoid duplicates
+                    is_dup = False
+                    for existing in matches:
+                        if existing['box'] == t_box:
+                            is_dup = True
+                            break
+                    if is_dup: continue
+                    
+                    matches.append({
+                        'keyword': f"Proximity({text})",
+                        'found_text': t_text,
+                        'type': 'CLICK',
+                        'box': t_box,
+                        'conf': t_conf
+                    })
+                    logger.info(f"Proximity Match: Found '{t_text}' near '{text}' ({direction}) at {t_box}")
 
 def process_text_match(text, text_lower, conf, abs_box, target_keywords_click, target_keywords_type, matches, app_bounds=None):
     """Refactored matching logic used by both scan paths."""
@@ -358,12 +499,12 @@ def process_text_match(text, text_lower, conf, abs_box, target_keywords_click, t
     for k in target_keywords_click:
         match_found = False
         if fuzz:
-            # Using partial_ratio or lower threshold for short keywords / symbols
-            ratio = fuzz.ratio(text_lower, k.lower())
+            # Use partial_ratio so that keywords like "Expand" match OCR reads like "Expand <"
+            ratio = fuzz.partial_ratio(text_lower, k.lower())
             # For symbols like '+', exact contains check might be safer
             if k in ['+', '-'] and k in text_lower:
                 match_found = True
-            elif ratio > 80: # Relaxed from 90 to 80
+            elif ratio >= 90: # partial_ratio is more lenient; use >= 90 to stay accurate
                 match_found = True
         elif text_lower == k.lower() or (k in ['+', '-'] and k in text_lower):
             match_found = True

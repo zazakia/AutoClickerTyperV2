@@ -554,7 +554,7 @@ class App(ctk.CTk):
             self.screen_height = self.winfo_screenheight()
             
             # Resize and Move
-            x_pos = self.screen_width - self.dock_width
+            x_pos = 0
             self.geometry(f"{self.dock_width}x{self.screen_height}+{x_pos}+0")
             self.attributes('-topmost', True)
             self.overrideredirect(True) # Remove title bar for cleaner look
@@ -601,14 +601,14 @@ class App(ctk.CTk):
     def expand_dock(self):
         if not self.dock_is_expanded:
             logger.info("Auto-hide: Expanding dock")
-            self.geometry(f"{self.dock_width}x{self.screen_height}+{self.screen_width - self.dock_width}+0")
+            self.geometry(f"{self.dock_width}x{self.screen_height}+0+0")
             self.attributes('-alpha', 1.0)
             self.dock_is_expanded = True
 
     def collapse_dock(self):
         if self.dock_is_expanded:
             logger.info("Auto-hide: Collapsing dock")
-            self.geometry(f"{self.dock_hidden_width}x{self.screen_height}+{self.screen_width - self.dock_hidden_width}+0")
+            self.geometry(f"{self.dock_hidden_width}x{self.screen_height}+0+0")
             self.attributes('-alpha', 0.05) # Slightly visible strip
             self.dock_is_expanded = False
 
@@ -625,25 +625,24 @@ class App(ctk.CTk):
             
             # Logic: If mouse is inside the zone where the dock would be, 
             # we definitely don't want it to collapse.
-            if mx >= dock_x_start and mx <= self.screen_width:
+            if mx >= 0 and mx <= self.dock_width:
                 self.just_docked = False
 
             if not self.just_docked:
                 # thresholds for showing (mouse at very edge)
                 # and hiding (mouse moved significantly away)
-                show_threshold = self.screen_width - 5
+                show_threshold = 5
                 
-                # We hide if mouse is far to the left OR if it's moved to another monitor on the right
-                # (mx > self.screen_width + 10)
-                hide_threshold_left = dock_x_start - 60
+                # We hide if mouse is far to the right
+                hide_threshold_right = self.dock_width + 60
                 
                 if not self.dock_is_expanded:
-                    # When collapsed, show if mouse is at the right edge
-                    if mx >= show_threshold and mx <= self.screen_width + 20: 
+                    # When collapsed, show if mouse is at the left edge
+                    if mx <= show_threshold: 
                         self.expand_dock()
                 else:
-                    # When expanded, hide if mouse is far left or moved off-screen to the right
-                    if mx < hide_threshold_left or mx > self.screen_width + 50:
+                    # When expanded, hide if mouse is far right
+                    if mx > hide_threshold_right:
                         self.collapse_dock()
             
         except Exception as e:

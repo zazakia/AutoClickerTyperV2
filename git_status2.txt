@@ -1,0 +1,287 @@
+On branch master
+Your branch and 'origin/master' have diverged,
+and have 1 and 2 different commits each, respectively.
+  (use "git pull" if you want to integrate the remote branch with yours)
+
+You have unmerged paths.
+  (fix conflicts and run "git commit")
+  (use "git merge --abort" to abort the merge)
+
+Changes to be committed:
+	modified:   config.json
+	modified:   config.py
+	modified:   core/config_manager.py
+	modified:   core/ocr.py
+	new file:   crop_100.png
+	new file:   crop_101.png
+	new file:   crop_102.png
+	new file:   crop_103.png
+	new file:   crop_104.png
+	new file:   crop_105.png
+	new file:   crop_106.png
+	new file:   crop_107.png
+	new file:   crop_108.png
+	new file:   crop_109.png
+	new file:   crop_110.png
+	new file:   crop_111.png
+	new file:   crop_112.png
+	new file:   crop_113.png
+	new file:   crop_114.png
+	new file:   crop_115.png
+	new file:   crop_116.png
+	new file:   crop_117.png
+	new file:   crop_118.png
+	new file:   crop_119.png
+	new file:   crop_120.png
+	new file:   crop_121.png
+	new file:   crop_122.png
+	new file:   crop_123.png
+	new file:   crop_124.png
+	new file:   crop_125.png
+	new file:   crop_126.png
+	new file:   crop_127.png
+	new file:   crop_128.png
+	new file:   crop_129.png
+	new file:   crop_130.png
+	new file:   crop_131.png
+	new file:   crop_132.png
+	new file:   crop_133.png
+	new file:   crop_134.png
+	new file:   crop_135.png
+	new file:   crop_136.png
+	new file:   crop_137.png
+	new file:   crop_138.png
+	new file:   crop_139.png
+	new file:   crop_140.png
+	new file:   crop_141.png
+	new file:   crop_142.png
+	new file:   crop_143.png
+	new file:   crop_144.png
+	new file:   crop_145.png
+	new file:   crop_146.png
+	new file:   crop_147.png
+	new file:   crop_148.png
+	new file:   crop_149.png
+	new file:   crop_150.png
+	new file:   crop_151.png
+	new file:   crop_152.png
+	new file:   crop_153.png
+	new file:   crop_154.png
+	new file:   crop_155.png
+	new file:   crop_156.png
+	new file:   crop_157.png
+	new file:   crop_158.png
+	new file:   crop_159.png
+	new file:   crop_160.png
+	new file:   crop_161.png
+	new file:   crop_162.png
+	new file:   crop_163.png
+	new file:   crop_164.png
+	new file:   crop_165.png
+	new file:   crop_166.png
+	new file:   crop_167.png
+	new file:   crop_168.png
+	new file:   crop_169.png
+	new file:   crop_171.png
+	new file:   crop_173.png
+	new file:   crop_174.png
+	new file:   crop_175.png
+	new file:   crop_176.png
+	new file:   crop_177.png
+	new file:   crop_178.png
+	new file:   crop_179.png
+	new file:   crop_180.png
+	new file:   crop_181.png
+	new file:   crop_182.png
+	new file:   crop_183.png
+	new file:   crop_184.png
+	new file:   crop_186.png
+	new file:   crop_187.png
+	new file:   crop_188.png
+	new file:   crop_189.png
+	new file:   crop_190.png
+	new file:   crop_192.png
+	new file:   crop_193.png
+	new file:   crop_194.png
+	new file:   crop_195.png
+	new file:   crop_196.png
+	new file:   crop_197.png
+	new file:   crop_198.png
+	new file:   crop_199.png
+	new file:   crop_200.png
+	new file:   crop_201.png
+	new file:   crop_202.png
+	new file:   crop_203.png
+	new file:   crop_204.png
+	new file:   crop_205.png
+	new file:   crop_206.png
+	new file:   crop_207.png
+	new file:   crop_208.png
+	new file:   crop_209.png
+	new file:   crop_210.png
+	new file:   crop_211.png
+	new file:   crop_214.png
+	new file:   crop_215.png
+	new file:   crop_216.png
+	new file:   crop_217.png
+	new file:   crop_219.png
+	new file:   crop_223.png
+	new file:   crop_224.png
+	new file:   crop_225.png
+	new file:   crop_226.png
+	new file:   crop_228.png
+	new file:   crop_231.png
+	new file:   crop_233.png
+	new file:   crop_234.png
+	new file:   crop_235.png
+	new file:   crop_236.png
+	new file:   crop_237.png
+	new file:   crop_238.png
+	new file:   crop_239.png
+	new file:   crop_241.png
+	new file:   crop_242.png
+	new file:   crop_243.png
+	new file:   crop_244.png
+	new file:   crop_247.png
+	new file:   crop_249.png
+	new file:   crop_250.png
+	new file:   crop_251.png
+	new file:   crop_252.png
+	new file:   crop_256.png
+	new file:   crop_260.png
+	new file:   crop_262.png
+	new file:   crop_264.png
+	new file:   crop_266.png
+	new file:   crop_268.png
+	new file:   crop_270.png
+	new file:   crop_271.png
+	new file:   crop_274.png
+	new file:   crop_275.png
+	new file:   crop_288.png
+	new file:   crop_294.png
+	modified:   crop_34.png
+	modified:   crop_35.png
+	modified:   crop_36.png
+	new file:   crop_37.png
+	new file:   crop_39.png
+	new file:   crop_396.png
+	modified:   crop_40.png
+	new file:   crop_41.png
+	new file:   crop_410.png
+	new file:   crop_42.png
+	new file:   crop_43.png
+	new file:   crop_432.png
+	modified:   crop_45.png
+	new file:   crop_46.png
+	modified:   crop_49.png
+	modified:   crop_50.png
+	new file:   crop_53.png
+	modified:   crop_59.png
+	new file:   crop_61.png
+	new file:   crop_63.png
+	modified:   crop_64.png
+	new file:   crop_65.png
+	new file:   crop_66.png
+	new file:   crop_67.png
+	new file:   crop_68.png
+	modified:   crop_69.png
+	new file:   crop_70.png
+	modified:   crop_71.png
+	new file:   crop_72.png
+	new file:   crop_73.png
+	new file:   crop_74.png
+	new file:   crop_75.png
+	new file:   crop_76.png
+	new file:   crop_77.png
+	new file:   crop_78.png
+	new file:   crop_79.png
+	new file:   crop_80.png
+	new file:   crop_81.png
+	new file:   crop_82.png
+	new file:   crop_83.png
+	new file:   crop_84.png
+	new file:   crop_85.png
+	new file:   crop_86.png
+	modified:   crop_87.png
+	new file:   crop_88.png
+	new file:   crop_89.png
+	new file:   crop_90.png
+	new file:   crop_91.png
+	new file:   crop_92.png
+	new file:   crop_93.png
+	new file:   crop_94.png
+	new file:   crop_95.png
+	new file:   crop_96.png
+	new file:   crop_97.png
+	new file:   crop_98.png
+	new file:   crop_99.png
+	new file:   debug_current_full.png
+	new file:   debug_current_screen.py
+	new file:   debug_manager_crop.png
+	new file:   debug_manager_ocr.json
+	new file:   debug_manager_window.py
+	modified:   debug_mask.png
+	new file:   debug_ocr_results.json
+	new file:   diagnostic_crop.py
+	new file:   diagnostic_hsv.py
+	new file:   diagnostic_upscaled.png
+	modified:   gui.py
+	modified:   main.py
+	new file:   read_titles.py
+	new file:   verify_proximity.py
+
+Unmerged paths:
+  (use "git add <file>..." to mark resolution)
+	both modified:   crop_0.png
+	both modified:   crop_1.png
+	both modified:   crop_10.png
+	both modified:   crop_11.png
+	both modified:   crop_12.png
+	both modified:   crop_13.png
+	both modified:   crop_14.png
+	both modified:   crop_15.png
+	both modified:   crop_16.png
+	both modified:   crop_17.png
+	both modified:   crop_18.png
+	both modified:   crop_19.png
+	both modified:   crop_2.png
+	both modified:   crop_20.png
+	both modified:   crop_21.png
+	both modified:   crop_22.png
+	both modified:   crop_23.png
+	both modified:   crop_24.png
+	both modified:   crop_25.png
+	both modified:   crop_26.png
+	both modified:   crop_27.png
+	both modified:   crop_28.png
+	both modified:   crop_29.png
+	both modified:   crop_3.png
+	both modified:   crop_30.png
+	both modified:   crop_31.png
+	both modified:   crop_32.png
+	both modified:   crop_33.png
+	both added:      crop_38.png
+	both modified:   crop_4.png
+	both modified:   crop_44.png
+	both modified:   crop_47.png
+	both modified:   crop_48.png
+	both modified:   crop_5.png
+	both added:      crop_51.png
+	both modified:   crop_52.png
+	both added:      crop_54.png
+	both added:      crop_55.png
+	both modified:   crop_56.png
+	both modified:   crop_57.png
+	both modified:   crop_58.png
+	both modified:   crop_6.png
+	both added:      crop_60.png
+	both modified:   crop_62.png
+	both modified:   crop_7.png
+	both modified:   crop_8.png
+	both modified:   crop_9.png
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	git_status.txt
+	git_status2.txt
+
