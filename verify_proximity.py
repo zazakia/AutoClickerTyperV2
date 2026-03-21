@@ -12,20 +12,19 @@ def verify_and_click_proximity():
     logger.setLevel(logging.DEBUG)
     logger.info("Starting Proximity Click Verification...")
     
+    import pygetwindow as gw
+    import time
+    
     # 1. Configuration
     config_manager.set("TARGET_WINDOW_TITLE", "Manager")
-    config_manager.set("ENABLE_COLOR_FILTER", False)
-    config_manager.set("ENABLE_NEUTRAL_FILTER", False)
     config_manager.set("OCR_CONFIDENCE_THRESHOLD", 30)
     config_manager.set("PROXIMITY_CLICKING_ENABLED", True)
     config_manager.set("PROXIMITY_DIRECTION", "LEFT")
-    config_manager.set("ANCHOR_KEYWORDS", ["Bell", "bell", "©"])
-    config_manager.set("CLICK_KEYWORDS", ["Accept", "Allow", "Proceed", "Confirm", "Expand", "Bell", "bell", "©"])
+    config_manager.set("ANCHOR_KEYWORDS", ["Co.", "Co", "©", "bell"])
+    config_manager.set("CLICK_KEYWORDS", ["Android"])
     
-    DPI_SCALE = 1.25 # Physical / Logical
+    DPI_SCALE = 1.25
     
-    import pygetwindow as gw
-    import time
     wins = gw.getWindowsWithTitle("Manager")
     target_win = None
     for w in wins:
@@ -34,23 +33,30 @@ def verify_and_click_proximity():
             break
             
     if target_win:
-        logger.info(f"Activating window: {target_win.title}")
+        logger.info(f"Targeting window: {target_win.title}")
         try:
+            if target_win.isMinimized: target_win.restore()
             target_win.activate()
             time.sleep(2.0)
-            logger.info(f"Active window title after activation: {gw.getActiveWindow().title}")
+            logger.info(f"Active window: {gw.getActiveWindow().title}")
         except Exception as e:
             logger.warning(f"Activation failed: {e}")
-    else:
-        logger.warning("Target window 'Manager' not found.")
-
-    logger.info("Scanning for bell anchor and proximity matches...")
+            
+    logger.info("Scanning for proximity match...")
     from core.ocr import get_target_region
     region = get_target_region()
     logger.info(f"Targeting window region: {region}")
     
     # 2. Scan
-    matches_raw, all_segments = scan_for_keywords(config_manager.get("CLICK_KEYWORDS"), [], debug_segments=True)
+    anchors = config_manager.get("ANCHOR_KEYWORDS")
+    matches_raw, all_segments = scan_for_keywords(config_manager.get("CLICK_KEYWORDS"), anchors, debug_segments=True)
+    
+    # Save debug image
+    from core.ocr import get_target_region, capture_screen
+    region = get_target_region()
+    screenshot = capture_screen(region=region)
+    screenshot.save("debug_screen.png")
+    logger.info("Saved debug_screen.png")
     
     # Dump all segments to see what OCR saw
     with open("all_segments_verify.json", "w") as f:

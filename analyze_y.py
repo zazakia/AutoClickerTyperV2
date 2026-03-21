@@ -12,4 +12,4 @@ def analyze_y(path, target_y, tolerance=20):
         print(f"  {s['text']} at {s['box']} conf={s['conf']}")
 
 if __name__ == "__main__":
-    analyze_y("all_segments_verify.json", 143)
+    analyze_y("all_segments_verify.json", 216)

@@ -465,6 +465,7 @@ def _add_proximity_matches(matches, all_segments):
                 break
         
         if is_anchor:
+            logger.debug(f"Potential Anchor Found: '{text}' at {box}")
             ax, ay, aw, ah = box
             ac_y = ay + ah/2
             
@@ -476,7 +477,8 @@ def _add_proximity_matches(matches, all_segments):
                 if tx == ax and ty == ay: continue
                 
                 # Vertical overlap check (same line)
-                if abs(ac_y - tc_y) > (ah + th): continue # Be more lenient with line height
+                y_diff = abs(ac_y - tc_y)
+                if y_diff > (ah + th): continue 
                 
                 # Horizontal distance check and direction filter
                 dist = -1
@@ -497,11 +499,14 @@ def _add_proximity_matches(matches, all_segments):
                     else: # Overlapping or inside
                         dist = 0
                 
+                if dist >= 0:
+                    logger.debug(f"  Proximity candidate: '{t_text}' dist={dist} direction_match={dist < max_dist}")
+                
                 if dist >= 0 and dist < max_dist:
                     # Avoid duplicates
                     is_dup = False
                     for existing in matches:
-                        if existing['box'] == t_box:
+                        if existing['box'] == t_box and existing['keyword'] == f"Proximity({text})":
                             is_dup = True
                             break
                     if is_dup: continue

@@ -1,14 +1,7 @@
 {
     "TARGET_WINDOW_TITLE": "Manager",
     "CLICK_KEYWORDS": [
-        "Accept",
-        "Allow",
-        "Proceed",
-        "Confirm",
-        "Expand",
-        "Bell",
-        "bell",
-        "\u00a9"
+        "Android"
     ],
     "TYPE_KEYWORDS": [
         "proceed"
@@ -18,7 +11,7 @@
     "MAX_RETRY_ATTEMPTS": 3,
     "ACTION_DELAY": 0.05,
     "ALWAYS_ON_TOP": true,
-    "ENABLE_COLOR_FILTER": false,
+    "ENABLE_COLOR_FILTER": true,
     "BLUE_HSV_LOWER": [
         100,
         50,
@@ -30,7 +23,7 @@
         255
     ],
     "COLOR_OVERLAP_THRESHOLD": 0.5,
-    "ENABLE_NEUTRAL_FILTER": false,
+    "ENABLE_NEUTRAL_FILTER": true,
     "NEUTRAL_HSV_LOWER": [
         0,
         0,
@@ -46,11 +39,12 @@
     "PROXIMITY_CLICKING_ENABLED": true,
     "PROXIMITY_DIRECTION": "LEFT",
     "ANCHOR_KEYWORDS": [
-        "Bell",
-        "bell",
-        "\u00a9"
+        "Co.",
+        "Co",
+        "\u00a9",
+        "bell"
     ],
-    "PROXIMITY_MAX_DISTANCE": 300,
+    "PROXIMITY_MAX_DISTANCE": 150,
     "TEMPLATE_MATCHING_THRESHOLD": 0.8,
     "TEMPLATES": [],
     "TEST_KEY": "TEST_VALUE"
