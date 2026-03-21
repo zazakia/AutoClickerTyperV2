@@ -8,18 +8,17 @@
         "Expand",
         "Bell",
         "bell",
-        "El",
-        "ll"
+        "\u00a9"
     ],
     "TYPE_KEYWORDS": [
         "proceed"
     ],
-    "OCR_CONFIDENCE_THRESHOLD": 50,
+    "OCR_CONFIDENCE_THRESHOLD": 30,
     "SCAN_INTERVAL": 0.2,
     "MAX_RETRY_ATTEMPTS": 3,
     "ACTION_DELAY": 0.05,
     "ALWAYS_ON_TOP": true,
-    "ENABLE_COLOR_FILTER": true,
+    "ENABLE_COLOR_FILTER": false,
     "BLUE_HSV_LOWER": [
         100,
         50,
@@ -31,7 +30,7 @@
         255
     ],
     "COLOR_OVERLAP_THRESHOLD": 0.5,
-    "ENABLE_NEUTRAL_FILTER": true,
+    "ENABLE_NEUTRAL_FILTER": false,
     "NEUTRAL_HSV_LOWER": [
         0,
         0,
@@ -49,8 +48,7 @@
     "ANCHOR_KEYWORDS": [
         "Bell",
         "bell",
-        "El",
-        "ll"
+        "\u00a9"
     ],
     "PROXIMITY_MAX_DISTANCE": 300,
     "TEMPLATE_MATCHING_THRESHOLD": 0.8,

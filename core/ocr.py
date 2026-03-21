@@ -18,6 +18,8 @@ OCR_ALIASES = {
     "expand <": "Expand",
     "expand<": "Expand",
     "expand (": "Expand",
+    "expand [": "Expand",
+    "expand{": "Expand",
 }
 
 # Try importing thefuzz, handle if not installed (though it should be)
@@ -162,15 +164,33 @@ def get_target_region():
         return None
     
     try:
-        # Partial match
         wins = gw.getWindowsWithTitle(title)
-        if wins:
-            # Use the first one that matches
-            for w in wins:
-                if title.lower() in w.title.lower():
-                    return (w.left, w.top, w.width, w.height)
+        logger.info(f"Found {len(wins)} windows matching '{title}'")
+        
+        candidates = []
+        for i, w in enumerate(wins):
+            logger.info(f"  Candidate {i}: '{w.title}' at {w.left}, {w.top}, {w.width}x{w.height} Visible={w.visible}")
+            if w.title == title:
+                candidates.append(w)
+        
+        if candidates:
+            # Prefer the one that is visible and not at 0,0 if multiple
+            best = candidates[0]
+            for c in candidates:
+                if c.visible and (c.left != 0 or c.top != 0):
+                    best = c
+                    break
+            logger.info(f"Selected Best Match: '{best.title}' at {best.left}, {best.top}")
+            return (best.left, best.top, best.width, best.height)
+        
+        # Fallback to partial if no exact
+        for w in wins:
+            if title.lower() in w.title.lower() and w.title != "Program Manager":
+                logger.info(f"Selected Partial Match: '{w.title}' at {w.left}, {w.top}")
+                return (w.left, w.top, w.width, w.height)
+
         logger.warning(f"Target window '{title}' not found.")
-        return (0, 0, 0, 0)
+        return None
     except Exception as e:
         logger.error(f"Error finding target window: {e}")
         return (0, 0, 0, 0)
@@ -188,7 +208,7 @@ def is_box_in_app_window(box, app_bounds):
     
     return (ax <= center_x <= ax + aw) and (ay <= center_y <= ay + ah)
 
-def scan_for_keywords(target_keywords_click, target_keywords_type):
+def scan_for_keywords(target_keywords_click, target_keywords_type, debug_segments=False):
     """
     Scans the screen (or target window) for keywords.
     Optimized: If blue filter is enabled, it scans blue regions individually for better speed.
@@ -245,7 +265,7 @@ def scan_for_keywords(target_keywords_click, target_keywords_type):
         for idx, cnt in enumerate(contours):
             x, y, w, h = cv2.boundingRect(cnt)
             # Skip noise or tiny regions - buttons are usually larger
-            if w < 25 or h < 15:
+            if w < 10 or h < 10:
                 continue
 
             
@@ -382,34 +402,42 @@ def scan_for_keywords(target_keywords_click, target_keywords_type):
             locs = np.where(res >= threshold)
             
             t_h, t_w = template.shape[:2]
-            for pt in zip(*locs[::-1]): # Switch x and y
-                # Filter duplicates (e.g. within 10px)
+            
+            # Efficiently collect best matches using non-max suppression principle
+            found_locs = []
+            for pt in zip(*locs[::-1]):
+                abs_box = (offset_x + pt[0], offset_y + pt[1], t_w, t_h)
+                
+                # Check for existing template matches in this region
                 is_dup = False
-                for m in matches:
-                    if m['type'] == 'CLICK' and abs(m['box'][0] - (offset_x + pt[0])) < 10 and abs(m['box'][1] - (offset_y + pt[1])) < 10:
+                for fx, fy, fw, fh, fs in found_locs:
+                    if abs(fx - abs_box[0]) < t_w and abs(fy - abs_box[1]) < t_h:
                         is_dup = True
                         break
                 if is_dup: continue
                 
-                abs_box = (offset_x + pt[0], offset_y + pt[1], t_w, t_h)
-                
-                # Safety check
+                # Safety check for app window
                 if app_bounds and is_box_in_app_window(abs_box, app_bounds):
                     continue
+                
+                score = float(res[pt[1], pt[0]]) * 100
+                found_locs.append((*abs_box, score))
                 
                 matches.append({
                     'keyword': os.path.basename(t_path),
                     'found_text': f"Template: {os.path.basename(t_path)}",
                     'type': 'CLICK',
                     'box': abs_box,
-                    'conf': float(res[pt[1], pt[0]]) * 100
+                    'conf': score
                 })
-                logger.info(f"Found template match: {t_path} at {abs_box}")
+                logger.info(f"Found template match: {t_path} at {abs_box} (Score: {score:.1f})")
 
     # --- Proximity Matching ---
     if config_manager.get("PROXIMITY_CLICKING_ENABLED", False):
         _add_proximity_matches(matches, all_seen_segments)
 
+    if debug_segments:
+        return matches, all_seen_segments
     return matches
 
 def _add_proximity_matches(matches, all_segments):
@@ -422,12 +450,17 @@ def _add_proximity_matches(matches, all_segments):
     # This ensures we find proximity targets even if the anchor itself wasn't "clicked"
     for text, box, conf in all_segments:
         is_anchor = False
+        text_lower = text.lower()
         for a in anchors:
-            if fuzz:
-                if fuzz.partial_ratio(a.lower(), text.lower()) >= 90:
+            a_lower = a.lower()
+            if text_lower == a_lower:
+                is_anchor = True
+                break
+            if fuzz and len(text_lower) > 1 and len(a_lower) > 1:
+                if fuzz.partial_ratio(a_lower, text_lower) >= 90:
                     is_anchor = True
                     break
-            elif a.lower() in text.lower():
+            elif len(a_lower) > 2 and a_lower in text_lower:
                 is_anchor = True
                 break
         
@@ -486,7 +519,6 @@ def process_text_match(text, text_lower, conf, abs_box, target_keywords_click, t
     """Refactored matching logic used by both scan paths."""
     # Safety: check if this coordinate is within our own app window
     if app_bounds and is_box_in_app_window(abs_box, app_bounds):
-        # logger.debug(f"Ignoring keyword '{text}' as it is within the app's own window.")
         return matches
 
     # Apply aliases
@@ -497,17 +529,39 @@ def process_text_match(text, text_lower, conf, abs_box, target_keywords_click, t
     
     # Check CLICK keywords
     for k in target_keywords_click:
+        k_lower = k.lower()
         match_found = False
-        if fuzz:
-            # Use partial_ratio so that keywords like "Expand" match OCR reads like "Expand <"
-            ratio = fuzz.partial_ratio(text_lower, k.lower())
-            # For symbols like '+', exact contains check might be safer
-            if k in ['+', '-'] and k in text_lower:
-                match_found = True
-            elif ratio >= 90: # partial_ratio is more lenient; use >= 90 to stay accurate
-                match_found = True
-        elif text_lower == k.lower() or (k in ['+', '-'] and k in text_lower):
+        match_score = conf # Default score is current confidence
+        
+        # Exact match first
+        if text_lower == k_lower:
             match_found = True
+            match_score = conf * 1.0 # Perfect match
+        elif k in ['+', '-'] and k in text_lower:
+            match_found = True
+            match_score = conf * 1.0
+        elif fuzz and len(text_lower) >= 2 and len(k_lower) >= 2:
+            # Use partial_ratio to handle things like "Expand <" matching "Expand"
+            p_ratio = fuzz.partial_ratio(text_lower, k_lower)
+            # Use full ratio to weight the confidence
+            f_ratio = fuzz.ratio(text_lower, k_lower)
+            
+            # Substring protection: if keyword is much longer than found text, skip
+            # e.g. "and" shouldn't match "expand" with high confidence
+            if len(k_lower) > len(text_lower) + 3:
+                continue
+
+            if p_ratio >= 98: 
+                match_found = True
+                # Weight confidence by how well it matches overall
+                match_score = conf * (f_ratio / 100.0)
+                # Ensure it doesn't drop too low for partial matches that are actually good
+                if p_ratio == 100:
+                    match_score = max(match_score, conf * 0.9)
+        elif k_lower in text_lower and len(k_lower) > 3:
+            if len(k_lower) > len(text_lower) + 3: continue
+            match_found = True
+            match_score = conf * 0.8 # Lower score for simple contains
 
         if match_found:
             matches.append({
@@ -515,19 +569,19 @@ def process_text_match(text, text_lower, conf, abs_box, target_keywords_click, t
                 'found_text': text,
                 'type': 'CLICK',
                 'box': abs_box,
-                'conf': conf
+                'conf': match_score
             })
-            logger.debug(f"Found '{k}' (text='{text}') at {abs_box}")
+            logger.debug(f"Found '{k}' (text='{text}') at {abs_box} | Weighted Conf: {match_score:.1f}")
 
-    
     # Check TYPE keywords
     for k in target_keywords_type:
+        k_lower = k.lower()
         match_found = False
         if fuzz:
-            ratio = fuzz.ratio(text_lower, k.lower())
+            ratio = fuzz.ratio(text_lower, k_lower)
             if ratio > 90:
                 match_found = True
-        elif text_lower == k.lower():
+        elif text_lower == k_lower:
             match_found = True
         
         if match_found:

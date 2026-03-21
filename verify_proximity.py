@@ -1,26 +1,66 @@
 import time
 import sys
 import os
+import json
 from core.config_manager import config_manager
 from core.ocr import scan_for_keywords
 from core.actions import perform_click
 from utils.logger import logger
+import logging
 
 def verify_and_click_proximity():
+    logger.setLevel(logging.DEBUG)
     logger.info("Starting Proximity Click Verification...")
     
     # 1. Configuration
     config_manager.set("TARGET_WINDOW_TITLE", "Manager")
+    config_manager.set("ENABLE_COLOR_FILTER", False)
+    config_manager.set("ENABLE_NEUTRAL_FILTER", False)
+    config_manager.set("OCR_CONFIDENCE_THRESHOLD", 30)
     config_manager.set("PROXIMITY_CLICKING_ENABLED", True)
     config_manager.set("PROXIMITY_DIRECTION", "LEFT")
-    config_manager.set("ANCHOR_KEYWORDS", ["Bell", "bell", "El", "ll"])
-    config_manager.set("CLICK_KEYWORDS", ["Accept", "Allow", "Proceed", "Confirm", "Expand", "Bell", "bell", "El", "ll"])
+    config_manager.set("ANCHOR_KEYWORDS", ["Bell", "bell", "©"])
+    config_manager.set("CLICK_KEYWORDS", ["Accept", "Allow", "Proceed", "Confirm", "Expand", "Bell", "bell", "©"])
     
+    DPI_SCALE = 1.25 # Physical / Logical
+    
+    import pygetwindow as gw
+    import time
+    wins = gw.getWindowsWithTitle("Manager")
+    target_win = None
+    for w in wins:
+        if w.title == "Manager":
+            target_win = w
+            break
+            
+    if target_win:
+        logger.info(f"Activating window: {target_win.title}")
+        try:
+            target_win.activate()
+            time.sleep(2.0)
+            logger.info(f"Active window title after activation: {gw.getActiveWindow().title}")
+        except Exception as e:
+            logger.warning(f"Activation failed: {e}")
+    else:
+        logger.warning("Target window 'Manager' not found.")
+
     logger.info("Scanning for bell anchor and proximity matches...")
+    from core.ocr import get_target_region
+    region = get_target_region()
+    logger.info(f"Targeting window region: {region}")
     
     # 2. Scan
-    # We pass empty type_keywords to focus only on search/click
-    matches = scan_for_keywords(config_manager.get("CLICK_KEYWORDS"), [])
+    matches_raw, all_segments = scan_for_keywords(config_manager.get("CLICK_KEYWORDS"), [], debug_segments=True)
+    
+    # Dump all segments to see what OCR saw
+    with open("all_segments_verify.json", "w") as f:
+        json.dump([{"text": s[0], "box": s[1], "conf": s[2]} for s in all_segments], f, indent=4)
+    # Filter matches to ignore sidebar (x > 1500)
+    matches = [m for m in matches_raw if m['box'][0] < 1500]
+    
+    # Debug logging
+    for m in matches:
+        logger.info(f"MATCH: {m['keyword']} at {m['box']} text='{m.get('found_text', '')}'")
     
     if not matches:
         logger.warning("No matches found in 'Manager' window.")
@@ -54,8 +94,18 @@ def verify_and_click_proximity():
         logger.info(f"Targeting specific match: '{target['found_text']}'")
         
     # 5. Execute Click
-    logger.info(f"Clicking target at {target['box']}...")
-    perform_click(target['box'])
+    logger.info(f"Clicking target at {target['box']} (Physical)...")
+    
+    # Scale physical to logical for pyautogui
+    logical_box = [
+        int(target['box'][0] / DPI_SCALE),
+        int(target['box'][1] / DPI_SCALE),
+        int(target['box'][2] / DPI_SCALE),
+        int(target['box'][3] / DPI_SCALE)
+    ]
+    logger.info(f"Scaled to logical box: {logical_box}")
+    
+    perform_click(logical_box)
     logger.info("Click performed successfully.")
     return True
 
