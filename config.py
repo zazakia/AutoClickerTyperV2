@@ -54,13 +54,16 @@ ENABLE_COLOR_FILTER = True
 
 # HSV color range for detecting blue buttons
 # HSV ranges: Hue (0-180), Saturation (0-255), Value (0-255)
-BLUE_HSV_LOWER = [100, 50, 50]   # Lower bound for blue color
-BLUE_HSV_UPPER = [130, 255, 255]  # Upper bound for blue color
+BLUE_HSV_LOWER = [90, 40, 40]   # Lower bound for blue color
+BLUE_HSV_UPPER = [140, 255, 255]  # Upper bound for blue color
 
 # Minimum overlap percentage between text box and blue region (0.0 to 1.0)
-COLOR_OVERLAP_THRESHOLD = 0.5
+COLOR_OVERLAP_THRESHOLD = 0.3
 
 # Neutral color detection (Grey/White/Black)
 ENABLE_NEUTRAL_FILTER = True
 NEUTRAL_HSV_LOWER = [0, 0, 40]
 NEUTRAL_HSV_UPPER = [180, 50, 200]
+
+DEBUG_MODE = False
+CLICK_ALL_MATCHES = True

@@ -13,8 +13,9 @@ def run_test_scenario():
     # 1. Start Test Harness (GUI)
     # We use subprocess.Popen to run it in background
     start_log_pos = 0
-    if os.path.exists("execution.log"):
-        with open("execution.log", "r") as f:
+    log_name = "autoclicker.log"
+    if os.path.exists(log_name):
+        with open(log_name, "r") as f:
             f.seek(0, 2) # Seek to end
             start_log_pos = f.tell()
         
@@ -61,12 +62,13 @@ def run_test_scenario():
     b_out.close()
     
     # 5. Analysis
-    # We can check execution.log for "Action Verified"
-    if os.path.exists("execution.log"):
-        with open("execution.log", "r") as f:
+    # We can check autoclicker.log for "Action Verified"
+    if os.path.exists(log_name):
+        with open(log_name, "r") as f:
             f.seek(start_log_pos)
             logs = f.read()
-            success_count = logs.count("Action Verified: Keyword disappeared")
+            # New format: "Action Verified: Success"
+            success_count = logs.count("Action Verified: Success")
             logger.info(f"Found {success_count} verified actions in the NEW log entries.")
             
             if success_count > 0:
@@ -74,7 +76,7 @@ def run_test_scenario():
             else:
                 logger.info("TEST RESULT: FAIL (No verified actions)")
     else:
-        logger.error("No execution log found.")
+        logger.error(f"No log found at {log_name}")
 
 if __name__ == "__main__":
     run_test_scenario()

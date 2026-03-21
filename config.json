@@ -7,30 +7,28 @@
         "Confirm",
         "Expand",
         "Bell",
-        "bell",
-        "El",
-        "ll"
+        "run"
     ],
     "TYPE_KEYWORDS": [
         "proceed"
     ],
-    "OCR_CONFIDENCE_THRESHOLD": 50,
-    "SCAN_INTERVAL": 0.2,
+    "OCR_CONFIDENCE_THRESHOLD": 74,
+    "SCAN_INTERVAL": 0.6192052980132451,
     "MAX_RETRY_ATTEMPTS": 3,
     "ACTION_DELAY": 0.05,
     "ALWAYS_ON_TOP": true,
     "ENABLE_COLOR_FILTER": true,
     "BLUE_HSV_LOWER": [
-        100,
-        50,
-        50
+        90,
+        40,
+        40
     ],
     "BLUE_HSV_UPPER": [
-        130,
+        140,
         255,
         255
     ],
-    "COLOR_OVERLAP_THRESHOLD": 0.5,
+    "COLOR_OVERLAP_THRESHOLD": 0.3,
     "ENABLE_NEUTRAL_FILTER": true,
     "NEUTRAL_HSV_LOWER": [
         0,
@@ -44,6 +42,8 @@
     ],
     "DEFAULT_SUFFIX": "Proceed",
     "APP_TITLE": "Zapweb.app Prompt Assist and AutoClicker",
+    "DEBUG_MODE": true,
+    "CLICK_ALL_MATCHES": false,
     "PROXIMITY_CLICKING_ENABLED": true,
     "PROXIMITY_DIRECTION": "LEFT",
     "ANCHOR_KEYWORDS": [

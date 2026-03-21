@@ -4,11 +4,20 @@ import numpy as np
 import pyautogui
 import pytesseract
 import os
+import ctypes
 from PIL import Image
 from contextlib import suppress
 from core.config_manager import config_manager, get_resource_path
 from utils.logger import logger
 import pygetwindow as gw
+
+# DPI Awareness for Windows
+if os.name == 'nt':
+    try:
+        import ctypes
+        ctypes.windll.shcore.SetProcessDpiAwareness(2)
+    except Exception as e:
+        print(f"Failed to set DPI awareness: {e}")
 
 # Known OCR misreads
 OCR_ALIASES = {
@@ -188,13 +197,13 @@ def is_box_in_app_window(box, app_bounds):
     
     return (ax <= center_x <= ax + aw) and (ay <= center_y <= ay + ah)
 
-def scan_for_keywords(target_keywords_click, target_keywords_type):
+def scan_for_keywords(target_keywords_click, target_keywords_type, override_region=None):
     """
     Scans the screen (or target window) for keywords.
     Optimized: If blue filter is enabled, it scans blue regions individually for better speed.
     Returns a list of dicts: {'keyword': str, 'type': 'CLICK'|'TYPE', 'box': (x, y, w, h), 'conf': float}
     """
-    region = get_target_region()
+    region = override_region if override_region else get_target_region()
     
     # Handle case where window wasn't found - don't scan full screen if restricted
     if region == (0, 0, 0, 0):
@@ -262,15 +271,32 @@ def scan_for_keywords(target_keywords_click, target_keywords_type):
                 # --- Preprocessing for better OCR ---
                 # 1. Grayscale
                 gray = cv2.cvtColor(crop, cv2.COLOR_RGB2GRAY)
-                # 2. Binarization
-                # We'll try to handle both black-on-white and white-on-black by checking mean brightness
-                # But typically buttons are white text on blue/dark.
-                _, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
                 
-                # 3. Upscale 3x (Better for small symbols like +)
+                # 2. CLAHE (Contrast Limited Adaptive Histogram Equalization)
+                clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
+                enhanced = clahe.apply(gray)
+
+                # 3. Binarization (Try Otsu on both standard and inverted)
+                _, thresh_inv = cv2.threshold(enhanced, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+                _, thresh_std = cv2.threshold(enhanced, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+                
+                # Check which threshold gives cleaner text (simple heuristic: less edge noise inside)
+                # Usually text buttons are white on dark (meaning thresh_std captures background as black and text as white)
+                # But since we use OTSU it will split. We'll stick to thresh_inv if we assume white text on dark bg,
+                # but let's process both for robust scanning later if needed. For now we stick to a blended approach or standard inv.
+                # In most cases, button backgrounds are detected by color mask, so text is white.
+                thresh = thresh_inv
+                if np.mean(enhanced) > 127:
+                    # Light background, use standard binary for black text
+                    thresh = thresh_std
+                else:
+                    # Dark background, use inverted binary for white text
+                    thresh = thresh_inv
+
+                # 4. Upscale 3x (Better for small symbols like +)
                 upscaled = cv2.resize(thresh, (0,0), fx=3, fy=3, interpolation=cv2.INTER_CUBIC)
                 
-                # 4. Lightly denoise and sharpen
+                # 5. Lightly denoise and sharpen
                 upscaled = cv2.medianBlur(upscaled, 3)
 
                 
@@ -292,8 +318,9 @@ def scan_for_keywords(target_keywords_click, target_keywords_type):
                     data = pytesseract.image_to_data(upscaled, config=config_str, output_type=pytesseract.Output.DICT)
                     full_region_text = " ".join([t.strip() for t in data['text'] if t.strip()]).replace("|", "").strip()
 
-                # Debug: Save ALL crops
-                cv2.imwrite(f"crop_{idx}.png", upscaled)
+                # Save debug crop only if enabled
+                if config_manager.get("DEBUG_MODE", False):
+                    cv2.imwrite(f"crop_{idx}.png", upscaled)
 
                 if full_region_text:
                     logger.debug(f"DEBUG: Contour {idx} Text: '{full_region_text}' at ({x}, {y})")

@@ -4,26 +4,37 @@ from core.config_manager import config_manager
 from utils.logger import logger
 from core.exceptions import OCRError
 
-def verify_action(expected_keyword, original_box, timeout=2.0):
+def verify_action(expected_keyword, original_box, timeout=1.0):
     """
     Verifies that the action succeeded by checking if the specific button 
-    at the original location is GONE.
+    at the original location is GONE. Timeout reduced to 1.0s.
+    Uses targeted region scan for speed and precision.
     """
     start_time = time.time()
+    
+    # Calculate targeted region: original box + 50px padding on all sides
+    ox, oy, ow, oh = original_box
+    target_region = (
+        max(0, ox - 50), 
+        max(0, oy - 50), 
+        ow + 100, 
+        oh + 100
+    )
+    
     while time.time() - start_time < timeout:
         try:
-            # We only care if the *exact same* button is still there.
+            # Targeted scan only in the sub-region where the button was
             matches = scan_for_keywords(
                 config_manager.get("CLICK_KEYWORDS", []), 
-                config_manager.get("TYPE_KEYWORDS", [])
+                config_manager.get("TYPE_KEYWORDS", []),
+                override_region=target_region
             )
             
             # Check for overlap with original_box in the new matches
             still_present = False
             for m in matches:
-                # If we find the same keyword in roughly the same spot, not done yet
                 if m['keyword'] == expected_keyword:
-                    # check overlap
+                    # check overlap with original coordinates
                     if boxes_overlap(original_box, m['box']):
                         still_present = True
                         break
@@ -38,9 +49,9 @@ def verify_action(expected_keyword, original_box, timeout=2.0):
         except Exception as e:
             logger.warning(f"Verification error: {e}")
 
-        time.sleep(0.3)
+        time.sleep(0.2) # Faster polling for targeted scan
         
-    msg = f"Verification Warning: '{expected_keyword}' may still be present after {timeout}s."
+    msg = f"Verification Warning: '{expected_keyword}' still detected at original location."
     logger.warning(msg)
     return False, msg
 

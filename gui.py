@@ -252,11 +252,30 @@ class App(ctk.CTk):
         
         ctk.CTkButton(k_frame, text="Save Keywords", command=self.save_keywords).pack(pady=10)
         
+        # Toggles
+        tog_frame = ctk.CTkFrame(sett)
+        tog_frame.pack(fill="x", padx=10, pady=5)
+        
+        self.debug_var = ctk.BooleanVar(value=config_manager.get("DEBUG_MODE", False))
+        self.debug_cb = ctk.CTkCheckBox(tog_frame, text="Debug Mode (Save ROI)", variable=self.debug_var, command=self.update_debug)
+        self.debug_cb.pack(side="left", padx=10, pady=5)
+        
+        self.click_all_var = ctk.BooleanVar(value=config_manager.get("CLICK_ALL_MATCHES", True))
+        self.click_all_cb = ctk.CTkCheckBox(tog_frame, text="Click All Matches", variable=self.click_all_var, command=self.update_click_all)
+        self.click_all_cb.pack(side="left", padx=10, pady=5)
+
         # Test Tools
         t_frame = ctk.CTkFrame(sett)
         t_frame.pack(fill="x", padx=10, pady=20)
         ctk.CTkLabel(t_frame, text="Diagnostics").pack(anchor="w", padx=10, pady=5)
         ctk.CTkButton(t_frame, text="Run One-Time OCR Test", command=self.test_ocr).pack(fill="x", padx=10, pady=10)
+
+    def update_debug(self):
+        config_manager.set("DEBUG_MODE", self.debug_var.get())
+
+    def update_click_all(self):
+        config_manager.set("CLICK_ALL_MATCHES", self.click_all_var.get())
+
 
     def update_conf(self, val):
         config_manager.set("OCR_CONFIDENCE_THRESHOLD", int(val))

@@ -33,7 +33,7 @@ class ConfigManager:
     
     DEFAULT_CONFIG = {
         "TARGET_WINDOW_TITLE": "",
-        "CLICK_KEYWORDS": ["Accept", "Allow", "Allow Always", "Proceed", "Yes", "OK", "Confirm", "Continue", "Expand"],
+        "CLICK_KEYWORDS": ["Accept", "Allow", "Allow Always", "Proceed", "Yes", "OK", "Confirm", "Continue", "Expand", "Bell", "bell", "El", "ll"],
         "TYPE_KEYWORDS": ["proceed"],
         "OCR_CONFIDENCE_THRESHOLD": 60,
         "SCAN_INTERVAL": 0.5,
@@ -41,14 +41,16 @@ class ConfigManager:
         "ACTION_DELAY": 0.1,
         "ALWAYS_ON_TOP": True,
         "ENABLE_COLOR_FILTER": True,
-        "BLUE_HSV_LOWER": [100, 50, 50],
-        "BLUE_HSV_UPPER": [130, 255, 255],
-        "COLOR_OVERLAP_THRESHOLD": 0.5,
+        "BLUE_HSV_LOWER": [90, 40, 40],
+        "BLUE_HSV_UPPER": [140, 255, 255],
+        "COLOR_OVERLAP_THRESHOLD": 0.3,
         "ENABLE_NEUTRAL_FILTER": True,
         "NEUTRAL_HSV_LOWER": [0, 0, 40],
         "NEUTRAL_HSV_UPPER": [180, 50, 200],
         "DEFAULT_SUFFIX": "Proceed",
-        "APP_TITLE": "Zapweb.app Prompt Assist and AutoClicker"
+        "APP_TITLE": "Zapweb.app Prompt Assist and AutoClicker",
+        "DEBUG_MODE": False,
+        "CLICK_ALL_MATCHES": True
     }
 
 
