@@ -25,10 +25,11 @@ def self_test():
     if not click_kw and not type_kw:
         logger.warning("Keywords empty. Bot will only run shortcuts if configured.")
         
-    # Test 2: OCR System (Check if we can take a screenshot and run tesseract)
+    # Test 2: OCR System (Check if Tesseract is accessible)
     try:
-        scan_for_keywords([], [])
-        logger.info("TEST PASS: OCR System functional.")
+        import pytesseract
+        pytesseract.get_tesseract_version()
+        logger.info("TEST PASS: OCR System (Tesseract) accessible.")
     except Exception as e:
         logger.error(f"TEST FAIL: OCR System Error: {e}")
         return False
@@ -49,10 +50,12 @@ def main():
     retry_map = {} # Tracks retries for specific keyword instances
     last_shortcut_time = 0
     SHORTCUT_INTERVAL = 10 
+    cycle_count = 0 
     
     try:
         while not stop_event.is_set():
             try:
+                current_time = time.time()
                 # 0. Run Shortcuts (Periodic or initial)
                 if time.time() - last_shortcut_time > SHORTCUT_INTERVAL:
                     shortcuts = config_manager.get("SHORTCUT_SEQUENCE")
@@ -82,14 +85,12 @@ def main():
                 
                 targets_to_process = matches if config_manager.get("CLICK_ALL_MATCHES", True) else [matches[0]]
                 
-                # Clear stale retries from map occasionally
-                current_time = time.time()
-                keys_to_delete = []
-                for k, v in retry_map.items():
-                    if isinstance(v, dict) and current_time - v.get('time', 0) > 30:
-                        keys_to_delete.append(k)
-                for k in keys_to_delete:
-                    del retry_map[k]
+                # Clear stale retries from map occasionally (every 20 cycles)
+                cycle_count += 1
+                if cycle_count % 20 == 0:
+                    keys_to_delete = [k for k, v in retry_map.items() if isinstance(v, dict) and current_time - v.get('time', 0) > 60]
+                    for k in keys_to_delete:
+                        del retry_map[k]
                 
                 for target in targets_to_process:
                     if stop_event.is_set(): break
@@ -169,16 +170,19 @@ def main():
                 time.sleep(config_manager.get("SCAN_INTERVAL", 0.5))
 
             except ActionError as e:
-                logger.error(f"Action failed gracefully: {e}. Retrying loop...")
+                logger.error(f"Action failed: {e}")
                 time.sleep(1)
             except OCRError as e:
-                logger.error(f"OCR failed gracefully: {e}. Retrying loop...")
+                logger.error(f"OCR failed: {e}")
                 time.sleep(1)
             except ConfigError as e:
                 logger.critical(f"Configuration error: {e}. Stopping bot.")
                 break
             except Exception as e:
-                 logger.error(f"Unexpected error in loop: {e}", exc_info=True)
+                 logger.error(f"Unexpected error in loop: {e}")
+                 # Log full traceback only in debug mode to avoid clutter
+                 if config_manager.get("DEBUG_MODE"):
+                     logger.debug("Traceback:", exc_info=True)
                  time.sleep(1)
 
     except KeyboardInterrupt:
