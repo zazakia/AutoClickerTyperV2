@@ -66,6 +66,7 @@ def main():
                         time.sleep(1.0) # Wait for UI to settle
 
                 # 1. Scan
+                scan_start_time = time.time()
                 logger.debug("Scanning screen...")
                 matches = scan_for_keywords(config_manager.get("CLICK_KEYWORDS", []), config_manager.get("TYPE_KEYWORDS", []))
                 
@@ -79,88 +80,92 @@ def main():
                 # 2. Decision Engine
                 matches.sort(key=lambda x: x['conf'], reverse=True)
                 
-                target = matches[0]
-                keyword = target['keyword']
-                action_type = target['type']
-                box = target['box']
+                targets_to_process = matches if config_manager.get("CLICK_ALL_MATCHES", True) else [matches[0]]
                 
-                # Proximity matches target permanent UI text that never disappears,
-                # so they should not go through the disappear-based retry/verify system.
-                is_proximity = keyword.startswith("Proximity(")
-
-                # Anchor keywords (Bell, El, etc.) serve as proximity anchors only.
-                # They should never be clicked directly - instead, look for proximity matches.
-                anchor_keywords = config_manager.get("ANCHOR_KEYWORDS", [])
-                is_anchor_only = keyword in anchor_keywords and not is_proximity
-
-                if is_anchor_only:
-                    # Find a non-anchor, non-Bell match; prefer proximity matches
-                    alt_target = None
-                    for m in matches:
-                        if m['keyword'] not in anchor_keywords or m['keyword'].startswith("Proximity("):
-                            alt_target = m
-                            break
-                    if alt_target is None:
-                        # No clickable targets yet, wait for proximity matches to appear
-                        logger.debug(f"Anchor '{keyword}' found. Waiting for proximity matches...")
-                        time.sleep(config_manager.get("SCAN_INTERVAL", 0.5))
-                        continue
-                    # Use the alternative target
-                    target = alt_target
+                # Clear stale retries from map occasionally
+                current_time = time.time()
+                keys_to_delete = []
+                for k, v in retry_map.items():
+                    if isinstance(v, dict) and current_time - v.get('time', 0) > 30:
+                        keys_to_delete.append(k)
+                for k in keys_to_delete:
+                    del retry_map[k]
+                
+                for target in targets_to_process:
+                    if stop_event.is_set(): break
+                    
                     keyword = target['keyword']
                     action_type = target['type']
                     box = target['box']
+                    
+                    # Proximity matches target permanent UI text that never disappears,
+                    # so they should not go through the disappear-based retry/verify system.
                     is_proximity = keyword.startswith("Proximity(")
 
-                # Check Retry Limits (skip for proximity matches)
-                rx, ry = int(box[0] // 5) * 5, int(box[1] // 5) * 5
-                retry_key = f"{keyword}_{rx}_{ry}"
-                
-                current_retries = retry_map.get(retry_key, 0)
-                if not is_proximity and current_retries >= config_manager.get("MAX_RETRY_ATTEMPTS", 3):
-                    logger.warning(f"Max retries reached for '{keyword}' at ({rx},{ry}). Skipping temporarily.")
-                    time.sleep(config_manager.get("SCAN_INTERVAL", 0.5) * 2)
-                    continue
+                    # Anchor keywords (Bell, El, etc.) serve as proximity anchors only.
+                    # They should never be clicked directly - instead, look for proximity matches.
+                    anchor_keywords = config_manager.get("ANCHOR_KEYWORDS", [])
+                    is_anchor_only = keyword in anchor_keywords and not is_proximity
 
-                logger.info(f"Engaging Target: {keyword} ({action_type})")
-                
-                # 3. Action
-                success = False
-                if action_type == 'CLICK':
-                    coords = perform_click(box)
-                    success = True 
-                elif action_type == 'TYPE':
-                    success = perform_type(keyword, box)
-                
-                if not success:
-                    logger.error("Action execution failed (False returned).")
-                    continue
+                    if is_anchor_only:
+                        logger.debug(f"Skipping anchor '{keyword}'...")
+                        continue
 
-                # 4. Verification (skip for proximity matches - target text is permanent UI)
-                if is_proximity:
-                    verified = True
-                    reason = "Proximity match - verification skipped"
-                    retry_map[retry_key] = 0  # Always reset so it can be clicked next scan too
-                else:
-                    verified, reason = verify_action(keyword, box)
+                    # Check Retry Limits (skip for proximity matches)
+                    # Use a coarser 20px grid to group slight OCR box jitter
+                    rx, ry = int(box[0] // 20) * 20, int(box[1] // 20) * 20
+                    retry_key = f"{keyword}_{rx}_{ry}"
+                    
+                    retry_data = retry_map.get(retry_key, {'count': 0, 'time': current_time})
+                    current_retries = retry_data['count']
+                    
+                    if not is_proximity and current_retries >= config_manager.get("MAX_RETRY_ATTEMPTS", 3):
+                        logger.warning(f"Max retries reached for '{keyword}' at ({rx},{ry}). Skipping temporarily.")
+                        continue
+
+                    logger.info(f"Engaging Target: {keyword} ({action_type})")
+                    
+                    # 3. Action
+                    success = False
+                    if action_type == 'CLICK':
+                        coords = perform_click(box)
+                        success = True 
+                    elif action_type == 'TYPE':
+                        success = perform_type(keyword, box)
+                    
+                    if not success:
+                        logger.error("Action execution failed (False returned).")
+                        continue
+
+                    # 4. Verification (skip for proximity matches - target text is permanent UI)
+                    if is_proximity:
+                        verified = True
+                        reason = "Proximity match - verification skipped"
+                        retry_map[retry_key] = {'count': 0, 'time': current_time}
+                    else:
+                        verified, reason = verify_action(keyword, box)
+                    
+                    # 5. Logging & Feedback
+                    log_action(
+                        action_type=action_type,
+                        keyword=keyword,
+                        coordinates=box,
+                        verification_result="PASS" if verified else "FAIL",
+                        retry_count=current_retries,
+                        completion_pct="N/A"
+                    )
+                    
+                    if verified:
+                        logger.info(f"Action Verified: Success{' (proximity - skipped verify)' if is_proximity else ''}")
+                        retry_map[retry_key] = {'count': 0, 'time': current_time}
+                    else:
+                        logger.warning(f"Verification Failed: Object still present")
+                        retry_map[retry_key] = {'count': current_retries + 1, 'time': current_time}
+                    
+                    time.sleep(config_manager.get("ACTION_DELAY", 0.1))
                 
-                # 5. Logging & Feedback
-                log_action(
-                    action_type=action_type,
-                    keyword=keyword,
-                    coordinates=box,
-                    verification_result="PASS" if verified else "FAIL",
-                    retry_count=current_retries,
-                    completion_pct="N/A"
-                )
-                
-                if verified:
-                    logger.info(f"Action Verified: Success{' (proximity - skipped verify)' if is_proximity else ''}")
-                    retry_map[retry_key] = 0 # Reset retries on success
-                else:
-                    logger.warning(f"Verification Failed: Object still present")
-                    retry_map[retry_key] = current_retries + 1
-                
+                cycle_time = time.time() - scan_start_time
+                logger.info(f"Scan cycle completed in {cycle_time:.2f}s")
                 time.sleep(config_manager.get("SCAN_INTERVAL", 0.5))
 
             except ActionError as e:

@@ -10,6 +10,14 @@ from core.config_manager import config_manager, get_resource_path
 from utils.logger import logger
 import pygetwindow as gw
 
+# DPI Awareness for Windows
+if os.name == 'nt':
+    try:
+        import ctypes
+        ctypes.windll.shcore.SetProcessDpiAwareness(2)
+    except Exception as e:
+        print(f"Failed to set DPI awareness: {e}")
+
 # Known OCR misreads
 OCR_ALIASES = {
     "conten": "Confirm",
@@ -208,13 +216,13 @@ def is_box_in_app_window(box, app_bounds):
     
     return (ax <= center_x <= ax + aw) and (ay <= center_y <= ay + ah)
 
-def scan_for_keywords(target_keywords_click, target_keywords_type, debug_segments=False):
+def scan_for_keywords(target_keywords_click, target_keywords_type, override_region=None, debug_segments=False):
     """
     Scans the screen (or target window) for keywords.
     Optimized: If blue filter is enabled, it scans blue regions individually for better speed.
     Returns a list of dicts: {'keyword': str, 'type': 'CLICK'|'TYPE', 'box': (x, y, w, h), 'conf': float}
     """
-    region = get_target_region()
+    region = override_region if override_region else get_target_region()
     
     # Handle case where window wasn't found - don't scan full screen if restricted
     if region == (0, 0, 0, 0):
@@ -252,7 +260,6 @@ def scan_for_keywords(target_keywords_click, target_keywords_type, debug_segment
             awins = gw.getWindowsWithTitle(app_title)
             if awins:
                 awin = awins[0]
-                awin = awins[0]
                 app_bounds = (awin.left, awin.top, awin.width, awin.height)
 
     matches = []
@@ -282,15 +289,32 @@ def scan_for_keywords(target_keywords_click, target_keywords_type, debug_segment
                 # --- Preprocessing for better OCR ---
                 # 1. Grayscale
                 gray = cv2.cvtColor(crop, cv2.COLOR_RGB2GRAY)
-                # 2. Binarization
-                # We'll try to handle both black-on-white and white-on-black by checking mean brightness
-                # But typically buttons are white text on blue/dark.
-                _, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
                 
-                # 3. Upscale 3x (Better for small symbols like +)
+                # 2. CLAHE (Contrast Limited Adaptive Histogram Equalization)
+                clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
+                enhanced = clahe.apply(gray)
+
+                # 3. Binarization (Try Otsu on both standard and inverted)
+                _, thresh_inv = cv2.threshold(enhanced, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+                _, thresh_std = cv2.threshold(enhanced, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+                
+                # Check which threshold gives cleaner text (simple heuristic: less edge noise inside)
+                # Usually text buttons are white on dark (meaning thresh_std captures background as black and text as white)
+                # But since we use OTSU it will split. We'll stick to thresh_inv if we assume white text on dark bg,
+                # but let's process both for robust scanning later if needed. For now we stick to a blended approach or standard inv.
+                # In most cases, button backgrounds are detected by color mask, so text is white.
+                thresh = thresh_inv
+                if np.mean(enhanced) > 127:
+                    # Light background, use standard binary for black text
+                    thresh = thresh_std
+                else:
+                    # Dark background, use inverted binary for white text
+                    thresh = thresh_inv
+
+                # 4. Upscale 3x (Better for small symbols like +)
                 upscaled = cv2.resize(thresh, (0,0), fx=3, fy=3, interpolation=cv2.INTER_CUBIC)
                 
-                # 4. Lightly denoise and sharpen
+                # 5. Lightly denoise and sharpen
                 upscaled = cv2.medianBlur(upscaled, 3)
 
                 
@@ -312,8 +336,9 @@ def scan_for_keywords(target_keywords_click, target_keywords_type, debug_segment
                     data = pytesseract.image_to_data(upscaled, config=config_str, output_type=pytesseract.Output.DICT)
                     full_region_text = " ".join([t.strip() for t in data['text'] if t.strip()]).replace("|", "").strip()
 
-                # Debug: Save ALL crops
-                cv2.imwrite(f"crop_{idx}.png", upscaled)
+                # Save debug crop only if enabled
+                if config_manager.get("DEBUG_MODE", False):
+                    cv2.imwrite(f"crop_{idx}.png", upscaled)
 
                 if full_region_text:
                     logger.debug(f"DEBUG: Contour {idx} Text: '{full_region_text}' at ({x}, {y})")
@@ -441,17 +466,20 @@ def scan_for_keywords(target_keywords_click, target_keywords_type, debug_segment
     return matches
 
 def _add_proximity_matches(matches, all_segments):
-    """Adds matches for text near anchor keywords/templates."""
-    anchors = config_manager.get("ANCHOR_KEYWORDS", ["El", "Bell", "bell_icon.png"])
+    """Adds matches for text near anchor keywords/templates using optimized spatial grouping."""
+    anchors_cfg = config_manager.get("ANCHOR_KEYWORDS", ["El", "Bell", "bell_icon.png"])
     max_dist = config_manager.get("PROXIMITY_MAX_DISTANCE", 300)
     direction = config_manager.get("PROXIMITY_DIRECTION", "BOTH").upper()
     
-    # We want to find anchors within all_segments, not just the pre-matched matches
-    # This ensures we find proximity targets even if the anchor itself wasn't "clicked"
+    if not all_segments:
+        return
+
+    # 1. Identify all anchors first
+    anchor_boxes = []
     for text, box, conf in all_segments:
         is_anchor = False
         text_lower = text.lower()
-        for a in anchors:
+        for a in anchors_cfg:
             a_lower = a.lower()
             if text_lower == a_lower:
                 is_anchor = True
@@ -465,60 +493,70 @@ def _add_proximity_matches(matches, all_segments):
                 break
         
         if is_anchor:
-            logger.debug(f"Potential Anchor Found: '{text}' at {box}")
-            ax, ay, aw, ah = box
-            ac_y = ay + ah/2
+            anchor_boxes.append((text, box, conf))
+
+    if not anchor_boxes:
+        return
+
+    # 2. Group all segments by Y-coordinate (using a small margin for "same line")
+    # Margin is roughly the average height of a segment, or a fixed value like 15px
+    line_map = {}
+    for text, box, conf in all_segments:
+        x, y, w, h = box
+        center_y = y + h / 2
+        line_key = int(center_y // 15) # Group into 15px vertical buckets
+        for k in range(line_key - 1, line_key + 2): # Check adjacent buckets too
+            if k not in line_map: line_map[k] = []
+            line_map[k].append((text, box, conf))
+
+    # 3. For each anchor, only check segments in the same or adjacent Y-buckets
+    for a_text, a_box, a_conf in anchor_boxes:
+        logger.debug(f"Anchor found: '{a_text}' at {a_box}")
+        ax, ay, aw, ah = a_box
+        ac_y = ay + ah / 2
+        line_key = int(ac_y // 15)
+        
+        # Get candidates from relevant buckets
+        candidates = line_map.get(line_key, [])
+        
+        for t_text, t_box, t_conf in candidates:
+            tx, ty, tw, th = t_box
+            tc_y = ty + th / 2
             
-            for t_text, t_box, t_conf in all_segments:
-                tx, ty, tw, th = t_box
-                tc_y = ty + th/2
+            # Skip if same box
+            if tx == ax and ty == ay: continue
+            
+            # Double check vertical overlap (same line)
+            y_diff = abs(ac_y - tc_y)
+            if y_diff > (ah + th): continue 
+            
+            # Horizontal distance check
+            dist = -1
+            is_right = tx > (ax + aw / 2)
+            is_left = (tx + tw) < (ax + aw / 2)
+            
+            if direction == "LEFT":
+                if is_left: dist = ax - (tx + tw)
+            elif direction == "RIGHT":
+                if is_right: dist = tx - (ax + aw)
+            else: # BOTH
+                if is_right: dist = tx - (ax + aw)
+                elif is_left: dist = ax - (tx + tw)
+                else: dist = 0
+            
+            if 0 <= dist < max_dist:
+                # Avoid duplicates
+                is_dup = any(existing['box'] == t_box and existing['keyword'] == f"Proximity({a_text})" for existing in matches)
+                if is_dup: continue
                 
-                # Check if it's the same box
-                if tx == ax and ty == ay: continue
-                
-                # Vertical overlap check (same line)
-                y_diff = abs(ac_y - tc_y)
-                if y_diff > (ah + th): continue 
-                
-                # Horizontal distance check and direction filter
-                dist = -1
-                is_right = tx > (ax + aw / 2) # Center-based check
-                is_left = (tx + tw) < (ax + aw / 2)
-                
-                if direction == "LEFT":
-                    if is_left:
-                        dist = ax - (tx + tw)
-                elif direction == "RIGHT":
-                    if is_right:
-                        dist = tx - (ax + aw)
-                else: # BOTH or unspecified
-                    if is_right:
-                        dist = tx - (ax + aw)
-                    elif is_left:
-                        dist = ax - (tx + tw)
-                    else: # Overlapping or inside
-                        dist = 0
-                
-                if dist >= 0:
-                    logger.debug(f"  Proximity candidate: '{t_text}' dist={dist} direction_match={dist < max_dist}")
-                
-                if dist >= 0 and dist < max_dist:
-                    # Avoid duplicates
-                    is_dup = False
-                    for existing in matches:
-                        if existing['box'] == t_box and existing['keyword'] == f"Proximity({text})":
-                            is_dup = True
-                            break
-                    if is_dup: continue
-                    
-                    matches.append({
-                        'keyword': f"Proximity({text})",
-                        'found_text': t_text,
-                        'type': 'CLICK',
-                        'box': t_box,
-                        'conf': t_conf
-                    })
-                    logger.info(f"Proximity Match: Found '{t_text}' near '{text}' ({direction}) at {t_box}")
+                matches.append({
+                    'keyword': f"Proximity({a_text})",
+                    'found_text': t_text,
+                    'type': 'CLICK',
+                    'box': t_box,
+                    'conf': t_conf
+                })
+                logger.info(f"Proximity Match: '{t_text}' near '{a_text}' at {t_box}")
 
 def process_text_match(text, text_lower, conf, abs_box, target_keywords_click, target_keywords_type, matches, app_bounds=None):
     """Refactored matching logic used by both scan paths."""
