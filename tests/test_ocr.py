@@ -36,17 +36,18 @@ class TestOCR(unittest.TestCase):
 
     @patch('core.ocr.config_manager')
     @patch('core.ocr.cv2')
-    def test_detect_blue_regions_failure(self, mock_cv2, mock_config):
-        mock_config.get.return_value = True # Enable filter
+    def test_get_color_masks_failure(self, mock_cv2, mock_config):
+        mock_config.get.side_effect = lambda k, d=None: True if k == "ENABLE_COLOR_FILTER" else []
         mock_cv2.cvtColor.side_effect = Exception("CV2 Error")
         
-        from core.ocr import detect_blue_regions
+        from core.ocr import get_color_masks
         
         # Mock image
         mock_img = MagicMock()
         
-        with self.assertRaises(OCRError):
-            detect_blue_regions(mock_img)
+        # Now it catches exception and returns None
+        result = get_color_masks(mock_img)
+        self.assertIsNone(result)
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,7 +1,7 @@
 [
     {
-        "label": "Run app",
-        "prompt": "Run app"
+        "label": "Build 7 quick Workflow prompts Button that I can save and edit the prompt to send",
+        "prompt": "Build 7 quick Workflow prompts Button that I can save and edit the prompt to send"
     },
     {
         "label": "Proceed",
@@ -48,15 +48,19 @@
         "prompt": "Next task proceed"
     },
     {
-        "label": "Prompt 13",
-        "prompt": ""
+        "label": "run app  then run test and verify then take snapshots as proof that everything is working then fix issues found",
+        "prompt": "run app  then run test and verify then take snapshots as proof that everything is working then fix issues found"
     },
     {
-        "label": "Prompt 14",
-        "prompt": ""
+        "label": "run app in chrome",
+        "prompt": "run app in chrome"
     },
     {
-        "label": "Prompt 15",
-        "prompt": ""
+        "label": "flutter build apk --release\n",
+        "prompt": "flutter build apk --release\n"
+    },
+    {
+        "label": "flutter run",
+        "prompt": "flutter run"
     }
 ]

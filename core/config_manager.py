@@ -33,7 +33,9 @@ class ConfigManager:
     
     DEFAULT_CONFIG = {
         "TARGET_WINDOW_TITLE": "",
-        "CLICK_KEYWORDS": ["Accept", "Allow", "Allow Always", "Proceed", "Yes", "OK", "Confirm", "Continue", "Expand", "Bell", "bell", "El", "ll"],
+        "TARGET_WINDOW_REGEX": ".*Antigravity.*",
+        "MULTI_WINDOW_MODE": False,
+        "CLICK_KEYWORDS": ["Accept", "Allow", "Allow Always", "Proceed", "Yes", "OK", "Confirm", "Continue", "Expand", "Bell", "bell", "El", "ll", "Run", "Approve"],
         "TYPE_KEYWORDS": ["proceed"],
         "OCR_CONFIDENCE_THRESHOLD": 60,
         "SCAN_INTERVAL": 0.5,
@@ -41,16 +43,28 @@ class ConfigManager:
         "ACTION_DELAY": 0.1,
         "ALWAYS_ON_TOP": True,
         "ENABLE_COLOR_FILTER": True,
-        "BLUE_HSV_LOWER": [90, 40, 40],
-        "BLUE_HSV_UPPER": [140, 255, 255],
+        "BUTTON_COLOR_PROFILES": [
+            {"name": "blue", "lower": [90, 40, 40], "upper": [140, 255, 255]},
+            {"name": "green", "lower": [40, 50, 50], "upper": [80, 255, 255]},
+            {"name": "red1", "lower": [0, 50, 50], "upper": [10, 255, 255]},
+            {"name": "red2", "lower": [170, 50, 50], "upper": [180, 255, 255]},
+            {"name": "neutral", "lower": [0, 0, 40], "upper": [180, 50, 200]}
+        ],
+        "KEYWORD_COLOR_PROFILES": {
+            "Run": ["blue", "green", "red1", "red2"],
+            "Approve": ["blue", "green", "red1", "red2"],
+            "Accept": ["blue", "green"],
+            "Confirm": ["blue", "neutral"],
+            "Expand": ["neutral"]
+        },
         "COLOR_OVERLAP_THRESHOLD": 0.3,
-        "ENABLE_NEUTRAL_FILTER": True,
-        "NEUTRAL_HSV_LOWER": [0, 0, 40],
-        "NEUTRAL_HSV_UPPER": [180, 50, 200],
         "DEFAULT_SUFFIX": "Proceed",
         "APP_TITLE": "Zapweb.app Prompt Assist and AutoClicker",
         "DEBUG_MODE": False,
-        "CLICK_ALL_MATCHES": True
+        "CLICK_ALL_MATCHES": True,
+        "SCAN_PARALLELISM": 4,
+        "CLICK_DEDUP_ENABLED": True,
+        "CLICK_VERIFY_PIXEL": True
     }
 
 

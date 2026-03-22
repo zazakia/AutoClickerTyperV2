@@ -3,14 +3,23 @@ import sys
 import pyautogui
 import threading
 from core.config_manager import config_manager
-from core.ocr import scan_for_keywords
-from core.actions import perform_click, perform_type, perform_shortcut
+from core.ocr import scan_for_keywords, get_target_region
+from core.actions import perform_click, perform_type, perform_shortcut, scroll_all_scrollbars
 from core.verification import verify_action
 from utils.logger import logger, log_action
 from core.exceptions import ActionError, OCRError, ConfigError
 
 # Global stop event for GUI control
 stop_event = threading.Event()
+
+# Global Stats for GUI feedback
+stats = {
+    "scans": 0,
+    "matches": 0,
+    "clicks": 0,
+    "avg_speed": 0.0,
+    "total_scan_time": 0.0
+}
 
 def self_test():
     """
@@ -47,14 +56,16 @@ def main():
     logger.info("Starting Continuous Execution Loop...")
     
     retry_map = {} # Tracks retries for specific keyword instances
-    last_shortcut_time = 0
+    last_shortcut_time = float(0)
     SHORTCUT_INTERVAL = 10 
+    last_scroll_time = float(0)
     
     try:
         while not stop_event.is_set():
             try:
                 # 0. Run Shortcuts (Periodic or initial)
-                if time.time() - last_shortcut_time > SHORTCUT_INTERVAL:
+                current_time = time.time()
+                if current_time - last_shortcut_time > SHORTCUT_INTERVAL:
                     shortcuts = config_manager.get("SHORTCUT_SEQUENCE")
                     if shortcuts:
                         logger.info("Running Workflow Shortcuts...")
@@ -65,10 +76,27 @@ def main():
                         last_shortcut_time = time.time()
                         time.sleep(1.0) # Wait for UI to settle
 
-                # 1. Scan
+                # 1. Scroll All Scrollbars (Periodic)
+                if config_manager.get("AUTO_SCROLL_ENABLED", True):
+                    SCROLL_INTERVAL = config_manager.get("SCROLL_INTERVAL", 5.0)
+                    if current_time - last_scroll_time > SCROLL_INTERVAL:
+                        logger.debug("Checking for scrollbars...")
+                        if scroll_all_scrollbars():
+                            last_scroll_time = time.time()
+                            time.sleep(0.5) # Wait for UI to settle after scrolling
+                        else:
+                            last_scroll_time = time.time()
+
+                # 2. Scan
                 scan_start_time = time.time()
                 logger.debug("Scanning screen...")
+                
+                # Multi-window support (could be added here, currently sticking to existing behavior but adding dedup)
                 matches = scan_for_keywords(config_manager.get("CLICK_KEYWORDS", []), config_manager.get("TYPE_KEYWORDS", []))
+                
+                # Update Stats
+                stats["scans"] += 1
+                stats["matches"] += len(matches)
                 
                 if not matches:
                     logger.debug("No target keywords detected. Waiting...")
@@ -89,7 +117,10 @@ def main():
                     if isinstance(v, dict) and current_time - v.get('time', 0) > 30:
                         keys_to_delete.append(k)
                 for k in keys_to_delete:
-                    del retry_map[k]
+                    retry_map.pop(k, None)
+                
+                # Deduplication map for THIS cycle
+                already_clicked_this_cycle = set()
                 
                 for target in targets_to_process:
                     if stop_event.is_set(): break
@@ -122,13 +153,22 @@ def main():
                     if not is_proximity and current_retries >= config_manager.get("MAX_RETRY_ATTEMPTS", 3):
                         logger.warning(f"Max retries reached for '{keyword}' at ({rx},{ry}). Skipping temporarily.")
                         continue
+                        
+                    # Deduplication check
+                    if config_manager.get("CLICK_DEDUP_ENABLED", True):
+                        if retry_key in already_clicked_this_cycle:
+                            logger.debug(f"Skipping duplicate target in this cycle: {keyword} at ({rx},{ry})")
+                            continue
+                        already_clicked_this_cycle.add(retry_key)
 
                     logger.info(f"Engaging Target: {keyword} ({action_type})")
                     
                     # 3. Action
                     success = False
                     if action_type == 'CLICK':
-                        coords = perform_click(box)
+                        click_types = config_manager.get("KEYWORD_CLICK_TYPES", {})
+                        click_type = click_types.get(keyword, "single")
+                        coords = perform_click(box, click_type=click_type)
                         success = True 
                     elif action_type == 'TYPE':
                         success = perform_type(keyword, box)
@@ -157,6 +197,7 @@ def main():
                     
                     if verified:
                         logger.info(f"Action Verified: Success{' (proximity - skipped verify)' if is_proximity else ''}")
+                        stats["clicks"] += 1
                         retry_map[retry_key] = {'count': 0, 'time': current_time}
                     else:
                         logger.warning(f"Verification Failed: Object still present")
@@ -164,8 +205,12 @@ def main():
                     
                     time.sleep(config_manager.get("ACTION_DELAY", 0.1))
                 
-                cycle_time = time.time() - scan_start_time
-                logger.info(f"Scan cycle completed in {cycle_time:.2f}s")
+                # Scan summary
+                duration = time.time() - scan_start_time
+                stats["total_scan_time"] += duration
+                if stats["scans"] > 0: # Avoid division by zero if somehow scans is 0
+                    stats["avg_speed"] = stats["total_scan_time"] / stats["scans"]
+                logger.info(f"Scan cycle completed in {duration:.2f}s")
                 time.sleep(config_manager.get("SCAN_INTERVAL", 0.5))
 
             except ActionError as e:

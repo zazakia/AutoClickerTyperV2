@@ -169,6 +169,14 @@ class App(ctk.CTk):
         # State
         self.autoclicker_thread = None
         self.running = False
+        self.stats = {
+            "scans": 0,
+            "matches": 0,
+            "clicks": 0,
+            "avg_speed": 0.0,
+            "total_time": 0.0
+        }
+        self.update_stats_id = None
 
     def setup_dashboard(self):
         dash = self.tabview.tab("Dashboard")
@@ -180,34 +188,62 @@ class App(ctk.CTk):
         wf_frame.grid_columnconfigure(1, weight=1)
         
         ctk.CTkLabel(wf_frame, text="Target Window:", font=ctk.CTkFont(weight="bold")).grid(row=0, column=0, padx=10, pady=5, sticky="w")
-        self.target_entry = ctk.CTkEntry(wf_frame)
-        self.target_entry.grid(row=0, column=1, padx=10, pady=5, sticky="ew")
-        self.target_entry.insert(0, config_manager.get("TARGET_WINDOW_TITLE", "Manager"))
-        self.target_entry.bind("<FocusOut>", self.save_target_window)
         
-        ctk.CTkLabel(wf_frame, text="Prompt:", font=ctk.CTkFont(weight="bold")).grid(row=1, column=0, padx=10, pady=5, sticky="nw")
+        target_controls = ctk.CTkFrame(wf_frame, fg_color="transparent")
+        target_controls.grid(row=0, column=1, padx=10, pady=5, sticky="ew")
+        target_controls.grid_columnconfigure(0, weight=1)
+
+        self.target_label = ctk.CTkLabel(target_controls, text=config_manager.get("TARGET_WINDOW_TITLE", "None"), anchor="w")
+        self.target_label.grid(row=0, column=0, sticky="ew")
+        
+        self.pick_btn = ctk.CTkButton(target_controls, text="Pick", width=60, command=self.pick_window)
+        self.pick_btn.grid(row=0, column=1, padx=(5, 0))
+
+        self.regex_entry = ctk.CTkEntry(wf_frame, placeholder_text="Regex Title Pattern...")
+        self.regex_entry.grid(row=1, column=1, padx=10, pady=(0, 5), sticky="ew")
+        self.regex_entry.insert(0, config_manager.get("TARGET_WINDOW_REGEX", ""))
+        self.regex_entry.bind("<FocusOut>", self.save_regex_pattern)
+        
+        ctk.CTkLabel(wf_frame, text="Prompt:", font=ctk.CTkFont(weight="bold")).grid(row=2, column=0, padx=10, pady=5, sticky="nw")
         self.prompt_text = ctk.CTkTextbox(wf_frame, height=80)
-        self.prompt_text.grid(row=1, column=1, padx=10, pady=5, sticky="ew")
+        self.prompt_text.grid(row=2, column=1, padx=10, pady=5, sticky="ew")
         
-        ctk.CTkLabel(wf_frame, text="Suffix:", font=ctk.CTkFont(weight="bold")).grid(row=2, column=0, padx=10, pady=5, sticky="w")
+        ctk.CTkLabel(wf_frame, text="Suffix:", font=ctk.CTkFont(weight="bold")).grid(row=3, column=0, padx=10, pady=5, sticky="w")
         self.suffix_entry = ctk.CTkEntry(wf_frame)
-        self.suffix_entry.grid(row=2, column=1, padx=10, pady=5, sticky="ew")
+        self.suffix_entry.grid(row=3, column=1, padx=10, pady=5, sticky="ew")
         self.suffix_entry.insert(0, config_manager.get("DEFAULT_SUFFIX", "Proceed"))
         
         self.run_wf_btn = ctk.CTkButton(wf_frame, text="Run Workflow (Focus -> Type -> Send)", command=self.start_workflow_thread)
-        self.run_wf_btn.grid(row=3, column=1, padx=10, pady=10, sticky="ew")
+        self.run_wf_btn.grid(row=4, column=1, padx=10, pady=10, sticky="ew")
+
+        # --- Stats Section ---
+        self.stats_frame = ctk.CTkFrame(dash)
+        self.stats_frame.grid(row=1, column=0, padx=10, pady=5, sticky="ew")
+        self.stats_frame.grid_columnconfigure((0,1,2,3), weight=1)
+        
+        self.scan_count_lbl = ctk.CTkLabel(self.stats_frame, text="Scans: 0", font=ctk.CTkFont(size=11))
+        self.scan_count_lbl.grid(row=0, column=0, pady=5)
+        
+        self.match_count_lbl = ctk.CTkLabel(self.stats_frame, text="Matches: 0", font=ctk.CTkFont(size=11))
+        self.match_count_lbl.grid(row=0, column=1, pady=5)
+        
+        self.click_count_lbl = ctk.CTkLabel(self.stats_frame, text="Clicks: 0", font=ctk.CTkFont(size=11))
+        self.click_count_lbl.grid(row=0, column=2, pady=5)
+
+        self.speed_lbl = ctk.CTkLabel(self.stats_frame, text="Avg: 0.0s", font=ctk.CTkFont(size=11))
+        self.speed_lbl.grid(row=0, column=3, pady=5)
         
         # --- Quick Prompts (Using Scrollable Frame) ---
-        qp_frame = ctk.CTkScrollableFrame(dash, label_text="Quick Prompts", height=200)
-        qp_frame.grid(row=1, column=0, padx=10, pady=10, sticky="ew")
+        qp_frame = ctk.CTkScrollableFrame(dash, label_text="Quick Prompts", height=150)
+        qp_frame.grid(row=2, column=0, padx=10, pady=5, sticky="ew")
         
         # Use Helper to render buttons
         self.render_quick_prompts(qp_frame, is_docked=False)
 
         # --- Logs ---
         log_frame = ctk.CTkFrame(dash)
-        log_frame.grid(row=2, column=0, padx=10, pady=10, sticky="nsew")
-        dash.grid_rowconfigure(2, weight=1)
+        log_frame.grid(row=3, column=0, padx=10, pady=10, sticky="nsew")
+        dash.grid_rowconfigure(3, weight=1)
         
         # Log Header
         log_head = ctk.CTkFrame(log_frame, fg_color="transparent")
@@ -229,40 +265,70 @@ class App(ctk.CTk):
         # OCR Confidence
         c_frame = ctk.CTkFrame(sett)
         c_frame.pack(fill="x", padx=10, pady=5)
-        ctk.CTkLabel(c_frame, text="OCR Confidence Threshold").pack(side="left", padx=10)
-        self.conf_slider = ctk.CTkSlider(c_frame, from_=0, to=100, command=self.update_conf)
+        
+        c_top = ctk.CTkFrame(c_frame, fg_color="transparent")
+        c_top.pack(fill="x", padx=10, pady=(5,0))
+        ctk.CTkLabel(c_top, text="OCR Confidence Threshold", font=ctk.CTkFont(weight="bold")).pack(side="left")
+        self.conf_slider = ctk.CTkSlider(c_top, from_=0, to=100, command=self.update_conf)
         self.conf_slider.set(config_manager.get("OCR_CONFIDENCE_THRESHOLD"))
         self.conf_slider.pack(side="right", padx=10, fill="x", expand=True)
+        
+        ctk.CTkLabel(c_frame, text="Sets text detection sensitivity. Lower values (e.g. 40) find more text but may have errors. Higher values (e.g. 80) are safer but might miss some buttons.", 
+                     font=ctk.CTkFont(size=11), text_color="gray70", wraplength=600, justify="left", anchor="w").pack(fill="x", padx=10, pady=(0,5))
         
         # Scan Interval
         s_frame = ctk.CTkFrame(sett)
         s_frame.pack(fill="x", padx=10, pady=5)
-        ctk.CTkLabel(s_frame, text="Scan Interval (s)").pack(side="left", padx=10)
-        self.scan_slider = ctk.CTkSlider(s_frame, from_=0.1, to=5.0, command=self.update_scan)
+        
+        s_top = ctk.CTkFrame(s_frame, fg_color="transparent")
+        s_top.pack(fill="x", padx=10, pady=(5,0))
+        ctk.CTkLabel(s_top, text="Scan Interval (seconds)", font=ctk.CTkFont(weight="bold")).pack(side="left")
+        self.scan_slider = ctk.CTkSlider(s_top, from_=0.1, to=5.0, command=self.update_scan)
         self.scan_slider.set(config_manager.get("SCAN_INTERVAL"))
         self.scan_slider.pack(side="right", padx=10, fill="x", expand=True)
         
+        ctk.CTkLabel(s_frame, text="How frequently the bot scans your screen. Lower values react faster to new buttons but use more CPU power. Recommended: 0.3s to 1.0s.", 
+                     font=ctk.CTkFont(size=11), text_color="gray70", wraplength=600, justify="left", anchor="w").pack(fill="x", padx=10, pady=(0,5))
+        
         # Keywords
         k_frame = ctk.CTkFrame(sett)
-        k_frame.pack(fill="both", padx=10, pady=5, expand=True)
-        ctk.CTkLabel(k_frame, text="Click Keywords (comma separated)").pack(anchor="w", padx=10)
+        k_frame.pack(fill="x", padx=10, pady=5)
+        ctk.CTkLabel(k_frame, text="Click Keywords (comma separated)", font=ctk.CTkFont(weight="bold")).pack(anchor="w", padx=10, pady=(5,0))
+        
+        ctk.CTkLabel(k_frame, text="The bot detects and clicks buttons containing any of these words. Separate multiple words with commas. Example: Accept, OK, Confirm.", 
+                     font=ctk.CTkFont(size=11), text_color="gray70", wraplength=600, justify="left", anchor="w").pack(fill="x", padx=10, pady=(0,5))
+        
         self.click_kw_entry = ctk.CTkEntry(k_frame)
         self.click_kw_entry.pack(fill="x", padx=10, pady=5)
         self.click_kw_entry.insert(0, ", ".join(config_manager.get("CLICK_KEYWORDS")))
         
-        ctk.CTkButton(k_frame, text="Save Keywords", command=self.save_keywords).pack(pady=10)
+        ctk.CTkButton(k_frame, text="Apply Keywords", command=self.save_keywords).pack(pady=5)
+
+        # Color Profiles
+        cp_frame = ctk.CTkFrame(sett)
+        cp_frame.pack(fill="both", padx=10, pady=5, expand=True)
+        ctk.CTkLabel(cp_frame, text="Active Color Profiles (Visual)").pack(anchor="w", padx=10, pady=5)
+        self.cp_list_frame = ctk.CTkScrollableFrame(cp_frame, height=120)
+        self.cp_list_frame.pack(fill="both", expand=True, padx=5, pady=5)
+        self.render_color_profiles()
         
         # Toggles
-        tog_frame = ctk.CTkFrame(sett)
+        tog_frame = ctk.CTkScrollableFrame(sett, height=100, label_text="Behavior Toggles")
         tog_frame.pack(fill="x", padx=10, pady=5)
         
+        # Debug Mode
         self.debug_var = ctk.BooleanVar(value=config_manager.get("DEBUG_MODE", False))
-        self.debug_cb = ctk.CTkCheckBox(tog_frame, text="Debug Mode (Save ROI)", variable=self.debug_var, command=self.update_debug)
-        self.debug_cb.pack(side="left", padx=10, pady=5)
+        self.debug_cb = ctk.CTkCheckBox(tog_frame, text="Debug Mode (Troubleshooting)", variable=self.debug_var, command=self.update_debug)
+        self.debug_cb.pack(anchor="w", padx=10, pady=5)
+        ctk.CTkLabel(tog_frame, text="Saves temporary screen snapshots filter images to the app folder. Enable this if buttons aren't being detected correctly.", 
+                     font=ctk.CTkFont(size=11), text_color="gray70", wraplength=550, justify="left", anchor="w").pack(fill="x", padx=35, pady=(0,10))
         
+        # Click All
         self.click_all_var = ctk.BooleanVar(value=config_manager.get("CLICK_ALL_MATCHES", True))
         self.click_all_cb = ctk.CTkCheckBox(tog_frame, text="Click All Matches", variable=self.click_all_var, command=self.update_click_all)
-        self.click_all_cb.pack(side="left", padx=10, pady=5)
+        self.click_all_cb.pack(anchor="w", padx=10, pady=5)
+        ctk.CTkLabel(tog_frame, text="If multiple matching buttons appear together (e.g. multiple alerts), the bot will try to click each one individually.", 
+                     font=ctk.CTkFont(size=11), text_color="gray70", wraplength=550, justify="left", anchor="w").pack(fill="x", padx=35, pady=(0,10))
 
         # Test Tools
         t_frame = ctk.CTkFrame(sett)
@@ -324,6 +390,82 @@ class App(ctk.CTk):
                 self.start_btn.configure(text="Stop Loops", fg_color="red")
         except Exception as e:
             logger.error(f"Failed to toggle AutoClicker: {e}")
+
+    def pick_window(self):
+        """Allows user to pick a target window from a list of active windows."""
+        try:
+            titles = [t for t in gw.getAllTitles() if t.strip()]
+            titles = sorted(list(set(titles))) # unique and sorted
+            
+            # Simple dialog with scrollable list
+            dlg = ctk.CTkToplevel(self)
+            dlg.title("Pick Target Window")
+            dlg.geometry("400x500")
+            dlg.attributes("-topmost", True)
+            dlg.grab_set()
+            
+            sf = ctk.CTkScrollableFrame(dlg)
+            sf.pack(fill="both", expand=True, padx=10, pady=10)
+            
+            def select(title):
+                config_manager.set("TARGET_WINDOW_TITLE", title)
+                self.target_label.configure(text=title)
+                logger.info(f"Picked window: {title}")
+                dlg.destroy()
+            
+            for t in titles:
+                btn = ctk.CTkButton(sf, text=t, anchor="w", fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"), command=lambda val=t: select(val))
+                btn.pack(fill="x", pady=1)
+                
+        except Exception as e:
+            logger.error(f"Error opening window picker: {e}")
+
+    def save_regex_pattern(self, event=None):
+        try:
+            val = self.regex_entry.get()
+            config_manager.set("TARGET_WINDOW_REGEX", val)
+            logger.info(f"Target Regex updated to: {val}")
+        except Exception as e:
+            logger.error(f"Failed to update regex pattern: {e}")
+
+    def render_color_profiles(self):
+        """Renders the list of color profiles with visual boxes."""
+        for w in self.cp_list_frame.winfo_children():
+            w.destroy()
+            
+        profiles = config_manager.get("BUTTON_COLOR_PROFILES", {})
+        for name, data in profiles.items():
+            row = ctk.CTkFrame(self.cp_list_frame, fg_color="transparent")
+            row.pack(fill="x", pady=2)
+            
+            ctk.CTkLabel(row, text=name, width=80, anchor="w").pack(side="left", padx=5)
+            
+            # Show a simple color swatch if possible (rough approximation from HSV)
+            # For now just list the ranges
+            low = data.get("low", [0,0,0])
+            high = data.get("high", [180,255,255])
+            ctk.CTkLabel(row, text=f"HSV: {low} - {high}", font=("Consolas", 10)).pack(side="left", padx=5)
+
+    def start_stats_timer(self):
+        if self.update_stats_id:
+            self.after_cancel(self.update_stats_id)
+        self.update_stats_ui()
+
+    def update_stats_ui(self):
+        """Polls main.stats or similar to update the UI labels."""
+        try:
+            # We need main.py to expose stats. Let's assume it does or we collect them here.
+            # For simplicity, we'll pull from main.py's global stats if we add them there.
+            import main
+            if hasattr(main, 'stats'):
+                s = main.stats
+                self.scan_count_lbl.configure(text=f"Scans: {s.get('scans', 0)}")
+                self.match_count_lbl.configure(text=f"Matches: {s.get('matches', 0)}")
+                self.click_count_lbl.configure(text=f"Clicks: {s.get('clicks', 0)}")
+                self.speed_lbl.configure(text=f"Avg: {s.get('avg_speed', 0.0):.2f}s")
+        except:
+            pass
+        self.update_stats_id = self.after(1000, self.update_stats_ui)
 
     def load_quick_prompts(self):
         default = [{"label": f"Prompt {i+1}", "prompt": ""} for i in range(15)]
@@ -425,29 +567,34 @@ class App(ctk.CTk):
 
     def run_workflow(self, prompt_text):
         logger.info("=== Starting Workflow Execution ===")
-        target = self.target_entry.get()
+        # Get target from label or regex
+        target = config_manager.get("TARGET_WINDOW_TITLE")
+        pattern = config_manager.get("TARGET_WINDOW_REGEX")
         suffix = self.suffix_entry.get()
         
-        if not target:
-            logger.error("No target window set. Please enter a window title.")
+        if not target and not pattern:
+            logger.error("No target window or regex pattern set.")
             return
 
-        logger.info(f"Targeting window: '{target}'")
+        logger.info(f"Targeting window matching: '{pattern or target}'")
         try:
-            all_matches = gw.getWindowsWithTitle(target)
-            app_title = config_manager.get("APP_TITLE")
-            wins = [w for w in all_matches if w.title != app_title]
+            import re
+            win = None
+            if pattern:
+                for w in gw.getAllWindows():
+                    if re.search(pattern, w.title, re.IGNORECASE):
+                        win = w
+                        break
+            elif target:
+                all_matches = gw.getWindowsWithTitle(target)
+                app_title = config_manager.get("APP_TITLE")
+                wins = [w for w in all_matches if w.title != app_title]
+                if wins: win = wins[0]
             
-            if not wins:
-
-                logger.error(f"Window '{target}' not found. Available windows:")
-                all_wins = gw.getAllTitles()
-                for w in all_wins[:10]:  # Show first 10 windows
-                    if w.strip():
-                        logger.info(f"  - {w}")
+            if not win:
+                logger.error(f"Window matching '{pattern or target}' not found.")
                 return
             
-            win = wins[0]
             logger.info(f"Found window: {win.title}")
             
             if not win.isActive:
@@ -696,4 +843,5 @@ class App(ctk.CTk):
 
 if __name__ == "__main__":
     app = App()
+    app.start_stats_timer()
     app.mainloop()

@@ -1,4 +1,3 @@
-
 import cv2
 import numpy as np
 import pyautogui
@@ -7,6 +6,7 @@ import os
 import ctypes
 from PIL import Image
 from contextlib import suppress
+import concurrent.futures
 from core.config_manager import config_manager, get_resource_path
 from utils.logger import logger
 import pygetwindow as gw
@@ -74,63 +74,55 @@ def capture_screen(region=None):
 
 # ...
 
-def detect_blue_regions(screenshot):
+def get_color_masks(screenshot):
     """
-    Detects blue-colored regions in the screenshot using HSV color space.
-    Returns a binary mask where blue regions are white (255) and others are black (0).
+    Detects regions based on configured color profiles.
+    Returns a dictionary of mask arrays keyed by profile name.
     """
     if not config_manager.get("ENABLE_COLOR_FILTER", True):
         return None
     
     try:
-        # Convert PIL Image to OpenCV format (BGR)
-        img_cv = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
-        
-        # Convert to HSV color space
-        hsv = cv2.cvtColor(img_cv, cv2.COLOR_BGR2HSV)
-        
-        # Create mask for blue color range
-        lower_blue = np.array(config_manager.get("BLUE_HSV_LOWER", [100, 50, 50]))
-        upper_blue = np.array(config_manager.get("BLUE_HSV_UPPER", [130, 255, 255]))
-        mask = cv2.inRange(hsv, lower_blue, upper_blue)
-        
-        # Apply morphological operations
-        kernel = np.ones((5, 5), np.uint8)
-        mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
-        mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
-        
-        return mask
-
-    except Exception as e:
-        logger.error(f"Blue region detection failed: {e}")
-        # Non-critical? If filter fails, we can return None to fallback to full scan?
-        # But user requested error handling. Let's log and return None (soft fail) or raise?
-        # Since fallback exists in scan_for_keywords, returning None is safer for app continuity.
-        raise OCRError(f"Blue region detection failed: {e}")
-
-def detect_neutral_regions(screenshot):
-    """
-    Detects neutral-colored regions (grey, white) in the screenshot.
-    """
-    if not config_manager.get("ENABLE_NEUTRAL_FILTER", False):
-        return None
-    
-    try:
         img_cv = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
         hsv = cv2.cvtColor(img_cv, cv2.COLOR_BGR2HSV)
         
-        lower_neutral = np.array(config_manager.get("NEUTRAL_HSV_LOWER", [0, 0, 40]))
-        upper_neutral = np.array(config_manager.get("NEUTRAL_HSV_UPPER", [180, 50, 200]))
-        mask = cv2.inRange(hsv, lower_neutral, upper_neutral)
-        
+        profiles = config_manager.get("BUTTON_COLOR_PROFILES", [])
+        if not profiles:
+            return None
+            
+        masks = {}
         kernel = np.ones((5, 5), np.uint8)
-        mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
-        mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
         
-        return mask
+        # Flexibility for formats
+        if isinstance(profiles, list):
+            for p in profiles:
+                try:
+                    name = p.get("name", "unknown")
+                    lower = np.array(p.get("lower", p.get("low", [0, 0, 0])))
+                    upper = np.array(p.get("upper", p.get("high", [180, 255, 255])))
+                    mask = cv2.inRange(hsv, lower, upper)
+                    mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+                    mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel) # Added this line back from original
+                    masks[name] = mask
+                except Exception as e:
+                    logger.warning(f"Skipping malformed profile {p}: {e}")
+        elif isinstance(profiles, dict):
+            for name, p in profiles.items():
+                try:
+                    lower = np.array(p.get("low", p.get("lower", [0, 0, 0])))
+                    upper = np.array(p.get("high", p.get("upper", [180, 255, 255])))
+                    mask = cv2.inRange(hsv, lower, upper)
+                    mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+                    mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel) # Added this line back from original
+                    masks[name] = mask
+                except Exception as e:
+                    logger.warning(f"Skipping malformed profile {name}: {e}")
+        
+        return masks if masks else None
     except Exception as e:
-        logger.error(f"Neutral region detection failed: {e}")
+        logger.error(f"Color mask generation failed: {e}")
         return None
+
 
 def is_on_colored_background(box, combined_mask, region_offset=(0, 0)):
     """
@@ -166,19 +158,26 @@ def get_target_region():
     Returns None if no target window is configured.
     Returns (0,0,0,0) if target window is configured but not found.
     """
-    title = config_manager.get("TARGET_WINDOW_TITLE")
-    if not title:
+    import re
+    title_pattern = config_manager.get("TARGET_WINDOW_REGEX", "")
+    title = config_manager.get("TARGET_WINDOW_TITLE", "")
+    
+    if not title_pattern and not title:
         return None
     
     try:
-        # Partial match
-        wins = gw.getWindowsWithTitle(title)
-        if wins:
-            # Use the first one that matches
-            for w in wins:
-                if title.lower() in w.title.lower():
+        if title_pattern:
+            all_wins = gw.getAllWindows()
+            for w in all_wins:
+                if re.search(title_pattern, w.title, re.IGNORECASE):
                     return (w.left, w.top, w.width, w.height)
-        logger.warning(f"Target window '{title}' not found.")
+        else:
+            wins = gw.getWindowsWithTitle(title)
+            if wins:
+                for w in wins:
+                    if title.lower() in w.title.lower():
+                        return (w.left, w.top, w.width, w.height)
+        logger.warning(f"Target window matching '{title_pattern or title}' not found.")
         return (0, 0, 0, 0)
     except Exception as e:
         logger.error(f"Error finding target window: {e}")
@@ -210,28 +209,24 @@ def scan_for_keywords(target_keywords_click, target_keywords_type, override_regi
         return []
 
     screenshot = capture_screen(region=region)
-    print(f"DEBUG: capture_screen returned: {type(screenshot)} of size {screenshot.size if hasattr(screenshot, 'size') else 'N/A'}")
+    logger.debug(f"capture_screen returned: {type(screenshot)} of size {screenshot.size if hasattr(screenshot, 'size') else 'N/A'}")
     img_np = np.array(screenshot)
-    print(f"DEBUG: img_np shape: {img_np.shape}")
+    logger.debug(f"img_np shape: {img_np.shape}")
 
     
     # Region offset for coordinate mapping (0,0 if full screen)
     offset_x, offset_y = (region[0], region[1]) if region else (0, 0)
     
     # Detect regions
-    enable_color = config_manager.get("ENABLE_COLOR_FILTER", True)
-    enable_neutral = config_manager.get("ENABLE_NEUTRAL_FILTER", False)
-    
-    blue_mask = detect_blue_regions(screenshot) if enable_color else None
-    neutral_mask = detect_neutral_regions(screenshot) if enable_neutral else None
-    
+    color_masks = get_color_masks(screenshot)
     combined_mask = None
-    if blue_mask is not None and neutral_mask is not None:
-        combined_mask = cv2.bitwise_or(blue_mask, neutral_mask)
-    elif blue_mask is not None:
-        combined_mask = blue_mask
-    elif neutral_mask is not None:
-        combined_mask = neutral_mask
+    if color_masks:
+        for m in color_masks.values():
+            if combined_mask is None:
+                combined_mask = m
+            else:
+                combined_mask = cv2.bitwise_or(combined_mask, m)
+
     
     # Get app window bounds to avoid self-clicking
     app_bounds = None
@@ -251,12 +246,16 @@ def scan_for_keywords(target_keywords_click, target_keywords_type, override_regi
         # Find contours of detected regions
         contours, _ = cv2.findContours(combined_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         
-        for idx, cnt in enumerate(contours):
+        def process_contour(cnt, idx):
+            local_segments = []
+            local_matches = []
             x, y, w, h = cv2.boundingRect(cnt)
-            # Skip noise or tiny regions - buttons are usually larger
+            # Skip noise or tiny regions
             if w < 25 or h < 15:
-                continue
+                return local_segments, local_matches
 
+            # Determine dominant color profile for this contour
+            # This is optional optimization, for now we just use the combined mask
             
             # Pad the region slightly for better OCR
             pad = 5
@@ -269,98 +268,89 @@ def scan_for_keywords(target_keywords_click, target_keywords_type, override_regi
             
             try:
                 # --- Preprocessing for better OCR ---
-                # 1. Grayscale
                 gray = cv2.cvtColor(crop, cv2.COLOR_RGB2GRAY)
-                
-                # 2. CLAHE (Contrast Limited Adaptive Histogram Equalization)
                 clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
                 enhanced = clahe.apply(gray)
 
-                # 3. Binarization (Try Otsu on both standard and inverted)
                 _, thresh_inv = cv2.threshold(enhanced, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
                 _, thresh_std = cv2.threshold(enhanced, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
                 
-                # Check which threshold gives cleaner text (simple heuristic: less edge noise inside)
-                # Usually text buttons are white on dark (meaning thresh_std captures background as black and text as white)
-                # But since we use OTSU it will split. We'll stick to thresh_inv if we assume white text on dark bg,
-                # but let's process both for robust scanning later if needed. For now we stick to a blended approach or standard inv.
-                # In most cases, button backgrounds are detected by color mask, so text is white.
                 thresh = thresh_inv
                 if np.mean(enhanced) > 127:
-                    # Light background, use standard binary for black text
                     thresh = thresh_std
                 else:
-                    # Dark background, use inverted binary for white text
                     thresh = thresh_inv
 
-                # 4. Upscale 3x (Better for small symbols like +)
                 upscaled = cv2.resize(thresh, (0,0), fx=3, fy=3, interpolation=cv2.INTER_CUBIC)
-                
-                # 5. Lightly denoise and sharpen
                 upscaled = cv2.medianBlur(upscaled, 3)
 
+                # Smarter PSM Selection based on aspect ratio
+                aspect_ratio = w / h
+                if aspect_ratio >= 3.0:
+                    config_str = '--psm 7' # Single line
+                elif aspect_ratio >= 1.0:
+                    config_str = '--psm 8' # Single word
+                else:
+                    config_str = '--psm 10' # Single char/symbol
                 
-                # Run OCR on the upscaled crop with a tiered PSM strategy
-                # 1. PSM 7 (Single Line)
-                config_str = '--psm 7'
                 data = pytesseract.image_to_data(upscaled, config=config_str, output_type=pytesseract.Output.DICT)
                 full_region_text = " ".join([t.strip() for t in data['text'] if t.strip()]).replace("|", "").strip()
                 
-                if not full_region_text:
-                    # 2. PSM 8 (Single Word) - Often better for short button text
-                    config_str = '--psm 8'
-                    data = pytesseract.image_to_data(upscaled, config=config_str, output_type=pytesseract.Output.DICT)
+                if not full_region_text and aspect_ratio >= 1.0:
+                    # Fallback to single char if it was a square-ish thing that failed
+                    data = pytesseract.image_to_data(upscaled, config='--psm 10', output_type=pytesseract.Output.DICT)
                     full_region_text = " ".join([t.strip() for t in data['text'] if t.strip()]).replace("|", "").strip()
 
-                if not full_region_text:
-                    # 3. PSM 10 (Single Character) - Fallback for symbols like +
-                    config_str = '--psm 10'
-                    data = pytesseract.image_to_data(upscaled, config=config_str, output_type=pytesseract.Output.DICT)
-                    full_region_text = " ".join([t.strip() for t in data['text'] if t.strip()]).replace("|", "").strip()
-
-                # Save debug crop only if enabled
                 if config_manager.get("DEBUG_MODE", False):
                     cv2.imwrite(f"crop_{idx}.png", upscaled)
 
                 if full_region_text:
-                    logger.debug(f"DEBUG: Contour {idx} Text: '{full_region_text}' at ({x}, {y})")
-                    # Use the bounding box of the entire region (not just one word)
-
-
-
-
-                    # Use the bounding box of the entire region (not just one word)
-                    # Use the bounding box of the entire region (not just one word)
+                    logger.debug(f"Contour {idx} Text: '{full_region_text}' at ({x}, {y})")
                     full_abs_box = (offset_x + x, offset_y + y, w, h)
-                    all_seen_segments.append((full_region_text, full_abs_box, 100))
+                    local_segments.append((full_region_text, full_abs_box, 100))
+                    # Check keyword to color profile logic
                     process_text_match(full_region_text, full_region_text.lower(), 100, full_abs_box, 
-                                       target_keywords_click, target_keywords_type, matches, app_bounds)
+                                       target_keywords_click, target_keywords_type, local_matches, app_bounds)
 
             except Exception as e:
                 logger.error(f"OCR Failed on region: {e}")
-                continue
 
-            n_boxes = len(data['text'])
-            for i in range(n_boxes):
-                text = data['text'][i].strip()
-                conf = int(data['conf'][i])
-                
-                if not text or conf < config_manager.get("OCR_CONFIDENCE_THRESHOLD", 60):
-                    continue
-                
-                text_lower = text.lower()
-                
-                # Calculate ABSOLUTE screen coordinates
-                # Adjusted for 3x upscale: data['left'][i] / 3
-                abs_x = offset_x + x_pad + (data['left'][i] // 3)
-                abs_y = offset_y + y_pad + (data['top'][i] // 3)
-                abs_w = data['width'][i] // 3
-                abs_h = data['height'][i] // 3
+            # Also check individual words from data
+            if 'data' in locals():
+                n_boxes = len(data['text'])
+                for i in range(n_boxes):
+                    text = data['text'][i].strip()
+                    conf = int(data['conf'][i])
+                    
+                    if not text or conf < config_manager.get("OCR_CONFIDENCE_THRESHOLD", 60):
+                        continue
+                    
+                    text_lower = text.lower()
+                    abs_x = offset_x + x_pad + (data['left'][i] // 3)
+                    abs_y = offset_y + y_pad + (data['top'][i] // 3)
+                    abs_w = data['width'][i] // 3
+                    abs_h = data['height'][i] // 3
 
-                abs_box = (abs_x, abs_y, abs_w, abs_h)
-                all_seen_segments.append((text, abs_box, conf))
-                # Check keywords
-                process_text_match(text, text_lower, conf, abs_box, target_keywords_click, target_keywords_type, matches, app_bounds)
+                    abs_box = (abs_x, abs_y, abs_w, abs_h)
+                    local_segments.append((text, abs_box, conf))
+                    
+                    # Prevent duplicates if it matched full region
+                    is_dup = any(m['box'] == abs_box and m['keyword'].lower() in text_lower for m in local_matches)
+                    if not is_dup:
+                        process_text_match(text, text_lower, conf, abs_box, target_keywords_click, target_keywords_type, local_matches, app_bounds)
+                        
+            return local_segments, local_matches
+
+        max_workers = config_manager.get("SCAN_PARALLELISM", 4)
+        with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+            futures = [executor.submit(process_contour, cnt, idx) for idx, cnt in enumerate(contours)]
+            for future in concurrent.futures.as_completed(futures):
+                try:
+                    loc_segs, loc_matches = future.result()
+                    all_seen_segments.extend(loc_segs)
+                    matches.extend(loc_matches)
+                except Exception as e:
+                    logger.error(f"Parallel processing error: {e}")
 
     else:
         # Fallback to full screen scan if color filter disabled or failed
@@ -437,6 +427,11 @@ def scan_for_keywords(target_keywords_click, target_keywords_type, override_regi
     if config_manager.get("PROXIMITY_CLICKING_ENABLED", False):
         _add_proximity_matches(matches, all_seen_segments)
 
+    # --- Motion Detection (Animated Targets) ---
+    if config_manager.get("MOTION_DETECTION_ENABLED", True):
+        motion_matches = detect_motion(region)
+        matches.extend(motion_matches)
+
     return matches
 
 def _add_proximity_matches(matches, all_segments):
@@ -508,6 +503,110 @@ def _add_proximity_matches(matches, all_segments):
                         'conf': t_conf
                     })
                     logger.info(f"Proximity Match: Found '{t_text}' near '{text}' ({direction}) at {t_box}")
+
+def detect_motion(region=None):
+    """
+    Detects moving/animated elements (like a spinning 'C' icon).
+    Captures two frames closely in time and computes the absolute difference.
+    """
+    try:
+        # Capture first frame
+        frame1 = np.array(capture_screen(region=region))
+        frame1_gray = cv2.cvtColor(frame1, cv2.COLOR_RGB2GRAY)
+        
+        # Wait a tiny bit (enough for an animation frame to change)
+        import time
+        time.sleep(0.1)
+        
+        # Capture second frame
+        frame2 = np.array(capture_screen(region=region))
+        frame2_gray = cv2.cvtColor(frame2, cv2.COLOR_RGB2GRAY)
+        
+        # Compute absolute difference
+        diff = cv2.absdiff(frame1_gray, frame2_gray)
+        
+        # Threshold to get significant differences
+        _, thresh = cv2.threshold(diff, 25, 255, cv2.THRESH_BINARY)
+        
+        # Dilate to connect broken parts of the animation
+        kernel = np.ones((5,5), np.uint8)
+        dilated = cv2.dilate(thresh, kernel, iterations=2)
+        
+        contours, _ = cv2.findContours(dilated, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        
+        motion_matches = []
+        offset_x, offset_y = (region[0], region[1]) if region else (0, 0)
+        
+        for cnt in contours:
+            x, y, w, h = cv2.boundingRect(cnt)
+            area = w * h
+            
+            # Filter objects: spinning C indicator is usually small/medium, square-ish
+            # Avoid full screen scrolls (huge area) or tiny blinkers (small area)
+            min_area = config_manager.get("MOTION_MIN_AREA", 100)
+            max_area = config_manager.get("MOTION_MAX_AREA", 5000)
+            
+            if min_area < area < max_area:
+                aspect_ratio = float(w) / h if h != 0 else 0
+                if 0.5 < aspect_ratio < 2.0: # Roughly square
+                    abs_box = (offset_x + x, offset_y + y, w, h)
+                    motion_matches.append({
+                        'keyword': 'MotionDetected(C_Icon)',
+                        'found_text': 'Animated Element',
+                        'type': 'CLICK',
+                        'box': abs_box,
+                        'conf': 100.0  # Confident it moved
+                    })
+                    logger.info(f"Motion detected at {abs_box}")
+                    
+        return motion_matches
+
+    except Exception as e:
+        logger.error(f"Motion detection failed: {e}")
+        return []
+
+def detect_scrollbars(region=None):
+    """
+    Finds scrollbar thumbs using templates.
+    """
+    try:
+        screenshot = capture_screen(region=region)
+        img_np = np.array(screenshot)
+        
+        template_name = "scrollbar_thumb.png"
+        abs_t_path = get_resource_path(f"templates/{template_name}")
+        
+        if not os.path.exists(abs_t_path):
+            logger.debug(f"Scrollbar template not found at {abs_t_path}. Ensure it is saved.")
+            return []
+            
+        template = cv2.imread(abs_t_path)
+        if template is None: return []
+        
+        res = cv2.matchTemplate(img_np, template, cv2.TM_CCOEFF_NORMED)
+        threshold = config_manager.get("SCROLLBAR_MATCH_THRESHOLD", 0.7)
+        locs = np.where(res >= threshold)
+        
+        t_h, t_w = template.shape[:2]
+        offset_x, offset_y = (region[0], region[1]) if region else (0, 0)
+        
+        scrollbars = []
+        for pt in zip(*locs[::-1]):
+            # Filter duplicates (very close matches)
+            abs_box = (offset_x + pt[0], offset_y + pt[1], t_w, t_h)
+            is_dup = False
+            for s in scrollbars:
+                if abs(s[0] - abs_box[0]) < 10 and abs(s[1] - abs_box[1]) < 10:
+                    is_dup = True
+                    break
+            if not is_dup:
+                scrollbars.append(abs_box)
+                
+        return scrollbars
+        
+    except Exception as e:
+        logger.error(f"Scrollbar detection failed: {e}")
+        return []
 
 def process_text_match(text, text_lower, conf, abs_box, target_keywords_click, target_keywords_type, matches, app_bounds=None):
     """Refactored matching logic used by both scan paths."""

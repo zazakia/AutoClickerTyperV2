@@ -35,6 +35,7 @@ def run_test_scenario():
     b_out = open("bot_output.log", "w")
     env = os.environ.copy()
     env["TARGET_WINDOW_TITLE"] = "Auto Clicker Test Harness"
+    env["TARGET_WINDOW_REGEX"] = "Auto Clicker Test Harness"
     bot_process = subprocess.Popen([sys.executable, "-u", "main.py"], cwd=os.getcwd(), env=env, stdout=b_out, stderr=b_out)
 
     # 3. Monitor for a duration

@@ -1,5 +1,7 @@
 {
     "TARGET_WINDOW_TITLE": "Manager",
+    "TARGET_WINDOW_REGEX": "Manager",
+    "MULTI_WINDOW_MODE": false,
     "CLICK_KEYWORDS": [
         "Accept",
         "Allow",
@@ -7,17 +9,89 @@
         "Confirm",
         "Expand",
         "Bell",
-        "run"
+        "run",
+        "chat history",
+        "chat"
     ],
     "TYPE_KEYWORDS": [
         "proceed"
     ],
-    "OCR_CONFIDENCE_THRESHOLD": 74,
-    "SCAN_INTERVAL": 0.6192052980132451,
+    "OCR_CONFIDENCE_THRESHOLD": 45,
+    "SCAN_INTERVAL": 0.3163355408388521,
     "MAX_RETRY_ATTEMPTS": 3,
     "ACTION_DELAY": 0.05,
-    "ALWAYS_ON_TOP": true,
+    "ALWAYS_ON_TOP": false,
     "ENABLE_COLOR_FILTER": true,
+    "BUTTON_COLOR_PROFILES": {
+        "blue": {
+            "low": [
+                90,
+                40,
+                40
+            ],
+            "high": [
+                140,
+                255,
+                255
+            ]
+        },
+        "green": {
+            "low": [
+                40,
+                50,
+                50
+            ],
+            "high": [
+                80,
+                255,
+                255
+            ]
+        },
+        "neutral": {
+            "low": [
+                0,
+                0,
+                40
+            ],
+            "high": [
+                180,
+                50,
+                200
+            ]
+        }
+    },
+    "KEYWORD_COLOR_PROFILES": {
+        "Run": [
+            "blue",
+            "green"
+        ],
+        "Approve": [
+            "blue",
+            "green"
+        ],
+        "Accept": [
+            "blue"
+        ],
+        "Confirm": [
+            "blue",
+            "neutral"
+        ],
+        "Expand": [
+            "neutral"
+        ]
+    },
+    "COLOR_OVERLAP_THRESHOLD": 0.3,
+    "DEFAULT_SUFFIX": "Proceed",
+    "APP_TITLE": "Zapweb.app Prompt Assist and AutoClicker",
+    "DEBUG_MODE": true,
+    "CLICK_ALL_MATCHES": true,
+    "SCAN_PARALLELISM": 4,
+    "CLICK_DEDUP_ENABLED": true,
+    "CLICK_VERIFY_PIXEL": true,
+    "KEYWORD_CLICK_TYPES": {
+        "Expand": "double",
+        "Run": "single"
+    },
     "BLUE_HSV_LOWER": [
         90,
         40,
@@ -28,7 +102,6 @@
         255,
         255
     ],
-    "COLOR_OVERLAP_THRESHOLD": 0.3,
     "ENABLE_NEUTRAL_FILTER": true,
     "NEUTRAL_HSV_LOWER": [
         0,
@@ -40,10 +113,6 @@
         50,
         200
     ],
-    "DEFAULT_SUFFIX": "Proceed",
-    "APP_TITLE": "Zapweb.app Prompt Assist and AutoClicker",
-    "DEBUG_MODE": true,
-    "CLICK_ALL_MATCHES": false,
     "PROXIMITY_CLICKING_ENABLED": true,
     "PROXIMITY_DIRECTION": "LEFT",
     "ANCHOR_KEYWORDS": [
@@ -54,6 +123,5 @@
     ],
     "PROXIMITY_MAX_DISTANCE": 300,
     "TEMPLATE_MATCHING_THRESHOLD": 0.8,
-    "TEMPLATES": [],
-    "TEST_KEY": "TEST_VALUE"
+    "TEMPLATES": []
 }
