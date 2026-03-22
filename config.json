@@ -11,7 +11,8 @@
         "Bell",
         "run",
         "chat history",
-        "chat"
+        "chat",
+        "PROCEED"
     ],
     "TYPE_KEYWORDS": [
         "proceed"
@@ -116,12 +117,11 @@
     "PROXIMITY_CLICKING_ENABLED": true,
     "PROXIMITY_DIRECTION": "LEFT",
     "ANCHOR_KEYWORDS": [
-        "Bell",
-        "bell",
-        "El",
-        "ll"
+        "Co.",
+        "\u00a9",
+        "bell"
     ],
-    "PROXIMITY_MAX_DISTANCE": 300,
+    "PROXIMITY_MAX_DISTANCE": 150,
     "TEMPLATE_MATCHING_THRESHOLD": 0.8,
     "TEMPLATES": []
 }

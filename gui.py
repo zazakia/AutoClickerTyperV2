@@ -25,6 +25,11 @@ class TextHandler(logging.Handler):
         msg = self.format(record)
         def append():
             self.text_widget.configure(state='normal')
+            # Limit log size: remove old lines if exceeding 2000
+            line_count = int(self.text_widget.index('end-1c').split('.')[0])
+            if line_count > 2000:
+                self.text_widget.delete('1.0', f'{line_count - 2000}.0')
+            
             self.text_widget.insert(tk.END, msg + '\n')
             self.text_widget.configure(state='disabled')
             self.text_widget.see(tk.END)
@@ -676,29 +681,41 @@ class App(ctk.CTk):
         ctk.CTkButton(tools, text="Undock", command=self.toggle_dock_mode, height=25).pack(pady=2, fill="x")
 
     def render_quick_prompts(self, parent_frame, is_docked=False):
-        # Clear existing
-        for w in parent_frame.winfo_children():
-            w.destroy()
-            
+        """Optimized rendering: Updates existing widgets instead of recreating them."""
+        # Special case: identify if we are clearing or updating
+        current_widgets = parent_frame.winfo_children()
+        
+        # If the number of prompts changed, easier to clear once
+        if len(current_widgets) != len(self.quick_prompts):
+            for w in current_widgets: w.destroy()
+            current_widgets = []
+
         for i, item in enumerate(self.quick_prompts):
             lbl = item['label']
             if not lbl.strip(): lbl = f"Prompt {i+1}"
             
-            # Row container
-            row = ctk.CTkFrame(parent_frame, fg_color="transparent")
-            row.pack(fill="x", pady=2)
-            
-            if is_docked:
-                # Compact view
-                btn = ctk.CTkButton(row, text=lbl, command=lambda idx=i: self.send_quick_prompt(idx), height=35)
-                btn.pack(fill="x")
+            if i < len(current_widgets):
+                # Update existing row
+                row = current_widgets[i]
+                buttons = row.winfo_children()
+                if buttons:
+                    buttons[0].configure(text=lbl, command=lambda idx=i: self.send_quick_prompt(idx))
+                    if not is_docked and len(buttons) > 1:
+                        buttons[1].configure(command=lambda idx=i: self.edit_prompt(idx))
             else:
-                # Dashboard view with Edit
-                btn = ctk.CTkButton(row, text=lbl, command=lambda idx=i: self.send_quick_prompt(idx))
-                btn.pack(side="left", fill="x", expand=True, padx=(0,5))
+                # Create new row
+                row = ctk.CTkFrame(parent_frame, fg_color="transparent")
+                row.pack(fill="x", pady=2)
                 
-                edit = ctk.CTkButton(row, text="Edit", width=50, command=lambda idx=i: self.edit_prompt(idx), fg_color="gray")
-                edit.pack(side="right")
+                if is_docked:
+                    btn = ctk.CTkButton(row, text=lbl, command=lambda idx=i: self.send_quick_prompt(idx), height=35)
+                    btn.pack(fill="x")
+                else:
+                    btn = ctk.CTkButton(row, text=lbl, command=lambda idx=i: self.send_quick_prompt(idx))
+                    btn.pack(side="left", fill="x", expand=True, padx=(0,5))
+                    
+                    edit = ctk.CTkButton(row, text="Edit", width=50, command=lambda idx=i: self.edit_prompt(idx), fg_color="gray")
+                    edit.pack(side="right")
 
     def toggle_dock_mode(self):
         if not self.is_docked:

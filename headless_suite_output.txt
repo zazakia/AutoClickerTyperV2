@@ -1,0 +1,73 @@
+﻿.venv\Scripts\python.exe : ..
+At line:1 char:1
++ .venv\Scripts\python.exe test_headless_suite.py 2>&1 | Out-File -File ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (..:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+----------------------------------------------------------------------
+Ran 2 tests in 0.007s
+
+OK
+.............
+----------------------------------------------------------------------
+Ran 13 tests in 0.010s
+
+OK
+........Failed to parse config from C:\Users\HI\AppData\Local\Temp\tmp54583sbj\config.json: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+.Failed to load config from C:\Users\HI\AppData\Local\Temp\tmptwfz9tgy\config.json: disk read error
+...Failed to save config: Access denied
+......
+----------------------------------------------------------------------
+Ran 18 tests in 0.042s
+
+OK
+..............
+----------------------------------------------------------------------
+Ran 14 tests in 0.301s
+
+OK
+Running headless tests...
+
+[1/6] Running test_blue_detection...
+Testing Blue Button Detection...
+Color filter enabled: True
+HSV Lower: [100, 50, 50]
+HSV Upper: [130, 255, 255]
+Overlap threshold: 0.5
+
+[OK] Blue region detection executed successfully
+Blue button region detected as blue: True [OK]
+Red button region detected as blue: False [OK]
+
+[OK] Test images saved: test_image.png, blue_mask.png
+
+PASS: Blue detection is working correctly!
+PASS
+
+[2/6] Running test_gui_unit...
+
+[3/6] Running test_actions...
+
+[4/6] Running test_config...
+
+[5/6] Running test_verification...
+
+[6/6] Running test_logger...
+2026-03-08 17:52:14,233 - WARNING - Failed to setup log file handler: Access denied. Logging to console only.
+2026-03-08 17:52:14,233 - WARNING - Failed to setup log file handler: Access denied. Logging to console only.
+2026-03-08 17:52:14,233 - WARNING - Failed to setup log file handler: Access denied. Logging to console only.
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.002s
+
+OK
+......................................
+----------------------------------------------------------------------
+Ran 38 tests in 0.018s
+
+OK
+
+[7/6] Running test_ocr...
+
+ALL TESTS PASSED

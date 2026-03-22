@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 from PIL import Image
 import config
-from core.ocr import detect_blue_regions, is_on_blue_background
+from core.ocr import detect_blue_regions, is_on_colored_background
 
 def test_blue_detection():
     """Test the blue region detection with a synthetic image."""
@@ -34,31 +34,31 @@ def test_blue_detection():
     blue_mask = detect_blue_regions(test_pil)
     
     if blue_mask is not None:
-        print("\n✓ Blue region detection executed successfully")
+        print("\n[OK] Blue region detection executed successfully")
         
         # Test blue button region
         blue_box = (50, 100, 100, 50)
-        is_blue = is_on_blue_background(blue_box, blue_mask, (0, 0))
-        print(f"Blue button region detected as blue: {is_blue} {'✓' if is_blue else '✗'}")
+        is_blue = is_on_colored_background(blue_box, blue_mask, (0, 0))
+        print(f"Blue button region detected as blue: {is_blue} {'[OK]' if is_blue else '[FAIL]'}")
         
         # Test red button region
         red_box = (250, 100, 100, 50)
-        is_blue_red = is_on_blue_background(red_box, blue_mask, (0, 0))
-        print(f"Red button region detected as blue: {is_blue_red} {'✓' if not is_blue_red else '✗'}")
+        is_blue_red = is_on_colored_background(red_box, blue_mask, (0, 0))
+        print(f"Red button region detected as blue: {is_blue_red} {'[OK]' if not is_blue_red else '[FAIL]'}")
         
         # Save visualization
         cv2.imwrite('test_image.png', test_img)
         cv2.imwrite('blue_mask.png', blue_mask)
-        print("\n✓ Test images saved: test_image.png, blue_mask.png")
+        print("\n[OK] Test images saved: test_image.png, blue_mask.png")
         
         if is_blue and not is_blue_red:
-            print("\n✅ PASS: Blue detection is working correctly!")
+            print("\nPASS: Blue detection is working correctly!")
             return True
         else:
-            print("\n❌ FAIL: Blue detection is not filtering correctly")
+            print("\nFAIL: Blue detection is not filtering correctly")
             return False
     else:
-        print("\n⚠ Color filtering is disabled")
+        print("\nWARN: Color filtering is disabled")
         return False
 
 if __name__ == "__main__":
