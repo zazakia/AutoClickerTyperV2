@@ -3,7 +3,7 @@ import random
 import threading
 import time
 
-class TestApp:
+class TargetApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Auto Clicker Test Harness")
@@ -70,5 +70,5 @@ class TestApp:
 
 if __name__ == "__main__":
     root = tk.Tk()
-    app = TestApp(root)
+    app = TargetApp(root)
     root.mainloop()

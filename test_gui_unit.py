@@ -26,9 +26,10 @@ class TestAutoClickerGUI(unittest.TestCase):
     def test_workflow_execution(self, mock_scan, mock_sleep, mock_press, mock_write, mock_get_win):
         """Verify that inputs are correctly passed to pyautogui functions"""
         
-        # Setup inputs
-        self.app.target_entry.delete(0, 'end')
-        self.app.target_entry.insert(0, "TestApp")
+        # Setup config state directly since run_workflow reads from config
+        from core.config_manager import config_manager
+        config_manager.set("TARGET_WINDOW_TITLE", "TestApp")
+        config_manager.set("TARGET_WINDOW_REGEX", "")
         
         self.app.suffix_entry.delete(0, 'end')
         self.app.suffix_entry.insert(0, "SUFFIX_CMD")
@@ -71,9 +72,9 @@ class TestAutoClickerGUI(unittest.TestCase):
     def test_workflow_no_window(self, mock_get_win):
         """Verify that nothing happens if window is not found"""
         mock_get_win.return_value = []
-        
-        self.app.target_entry.delete(0, 'end')
-        self.app.target_entry.insert(0, "MissingApp")
+        from core.config_manager import config_manager
+        config_manager.set("TARGET_WINDOW_TITLE", "MissingApp")
+        config_manager.set("TARGET_WINDOW_REGEX", "")
         
         self.app.run_workflow("Test")
         

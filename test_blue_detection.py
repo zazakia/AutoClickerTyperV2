@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 from PIL import Image
 import config
-from core.ocr import detect_blue_regions, is_on_colored_background
+from core.ocr import get_color_masks, is_on_colored_background
 
 def test_blue_detection():
     """Test the blue region detection with a synthetic image."""
@@ -31,7 +31,8 @@ def test_blue_detection():
     test_pil = Image.fromarray(cv2.cvtColor(test_img, cv2.COLOR_BGR2RGB))
     
     # Detect blue regions
-    blue_mask = detect_blue_regions(test_pil)
+    masks = get_color_masks(test_pil)
+    blue_mask = masks.get('blue') if masks else None
     
     if blue_mask is not None:
         print("\n[OK] Blue region detection executed successfully")

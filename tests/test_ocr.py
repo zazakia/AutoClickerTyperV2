@@ -554,5 +554,158 @@ class TestOCRAliases(unittest.TestCase):
         self.assertEqual(OCR_ALIASES['acce'], 'Accept')
 
 
+# ---------------------------------------------------------------------------
+# TestScanForKeywords
+# ---------------------------------------------------------------------------
+
+class TestScanForKeywords(unittest.TestCase):
+    def setUp(self):
+        self.log_patcher = patch('core.ocr.logger')
+        self.mock_logger = self.log_patcher.start()
+
+    def tearDown(self):
+        self.log_patcher.stop()
+
+    @patch('core.ocr.capture_screen')
+    @patch('core.ocr.get_color_masks')
+    @patch('core.ocr.config_manager')
+    @patch('core.ocr.pytesseract')
+    @patch('core.ocr.get_target_region')
+    def test_scan_full_screen_fallback(self, mock_gtr, mock_pyt, mock_cm, mock_gcm, mock_cs):
+        mock_gtr.return_value = (0, 0, 100, 100)
+        mock_gcm.return_value = None  # Force full screen fallback
+        mock_cs.return_value = MagicMock()
+        mock_pyt.Output.DICT = 'dict'
+        
+        # Build fake pytesseract dict
+        mock_pyt.image_to_data.return_value = {
+            'text': ['Hello', 'World', ''],
+            'conf': [90, 40, -1],  # 'World' is below threshold
+            'left': [10, 50, 0],
+            'top': [10, 10, 0],
+            'width': [30, 30, 0],
+            'height': [15, 15, 0]
+        }
+        
+        mock_cm.get.side_effect = lambda k, d=None: 60 if k == "OCR_CONFIDENCE_THRESHOLD" else d
+
+        from core.ocr import scan_for_keywords
+        matches = scan_for_keywords(['Hello'], [], override_region=None)
+        
+        # Only 'Hello' should match
+        self.assertTrue(any(m['keyword'] == 'Hello' for m in matches))
+        # Ensure image_to_data called
+        mock_pyt.image_to_data.assert_called_once()
+
+
+    @patch('core.ocr.capture_screen')
+    @patch('core.ocr.get_color_masks')
+    @patch('core.ocr.config_manager')
+    @patch('core.ocr.pytesseract')
+    @patch('core.ocr.cv2')
+    @patch('core.ocr.get_target_region')
+    def test_scan_with_color_masks(self, mock_gtr, mock_cv2, mock_pyt, mock_cm, mock_gcm, mock_cs):
+        mock_gtr.return_value = (0, 0, 800, 600)
+        # Prevent app tracking MagicMocks
+        mock_cm.get.side_effect = lambda k, d=None: None if k == "APP_TITLE" else d
+
+        # Fake a color mask
+        fake_mask = np.zeros((100, 100), dtype=np.uint8)
+        mock_gcm.return_value = {'BLUE': fake_mask}
+        
+        from PIL import Image
+        mock_cs.return_value = Image.fromarray(np.zeros((100, 100, 3), dtype=np.uint8))
+        
+        mock_cv2.bitwise_or.return_value = fake_mask
+        # Create a tiny contour and a large contour
+        mock_cv2.findContours.return_value = ([np.array([[[0,0]], [[20,0]], [[20,20]], [[0,20]]])], None)
+        mock_cv2.boundingRect.return_value = (10, 10, 50, 50)
+        
+        # Prevent unpacking errors in the preprocessing pipeline
+        mock_cv2.threshold.return_value = (0.0, np.zeros((50, 50), dtype=np.uint8))
+        
+        # Mock pytesseract calls inside contour loop
+        mock_pyt.image_to_data.return_value = {
+            'text': ['Accept'],
+            'conf': [95],
+            'left': [5],
+            'top': [5],
+            'width': [40],
+            'height': [15]
+        }
+        
+        from core.ocr import scan_for_keywords
+        matches = scan_for_keywords(['Accept'], [])
+        
+        # If the contour processing ran, it should find 'Accept'
+        self.assertTrue(len(matches) > 0)
+        self.assertEqual(matches[0]['keyword'], 'Accept')
+
+
+# ---------------------------------------------------------------------------
+# TestDetectScrollbars
+# ---------------------------------------------------------------------------
+
+class TestDetectScrollbars(unittest.TestCase):
+    def setUp(self):
+        self.log_patcher = patch('core.ocr.logger')
+        self.mock_logger = self.log_patcher.start()
+
+    def tearDown(self):
+        self.log_patcher.stop()
+
+    @patch('core.ocr.capture_screen')
+    @patch('core.ocr.config_manager')
+    @patch('core.ocr.cv2')
+    @patch('core.ocr.os.path.exists', return_value=True)
+    def test_detect_scrollbars_success(self, mock_exists, mock_cv2, mock_cm, mock_cs):
+        from PIL import Image
+        mock_cs.return_value = Image.fromarray(np.zeros((100, 100, 3), dtype=np.uint8))
+        
+        mock_cm.get.side_effect = lambda k, d=None: 0.7 if k == "SCROLLBAR_MATCH_THRESHOLD" else d
+        
+        mock_cv2.imread.return_value = np.zeros((20, 10), dtype=np.uint8)
+        # A template match hit
+        mock_cv2.matchTemplate.return_value = np.array([[0.8]])
+        
+        from core.ocr import detect_scrollbars
+        res = detect_scrollbars(region=(0,0,1000,1000))
+        self.assertEqual(len(res), 1)
+        self.assertEqual(res[0], (0, 0, 10, 20))
+
+# ---------------------------------------------------------------------------
+# TestTemplateMatching
+# ---------------------------------------------------------------------------
+
+class TestTemplateMatching(unittest.TestCase):
+    def setUp(self):
+        self.log_patcher = patch('core.ocr.logger')
+        self.mock_logger = self.log_patcher.start()
+
+    def tearDown(self):
+        self.log_patcher.stop()
+
+    @patch('core.ocr.capture_screen')
+    @patch('core.ocr.get_target_region', return_value=(0,0,800,600))
+    @patch('core.ocr.config_manager')
+    @patch('core.ocr.os.path.exists', return_value=True)
+    @patch('core.ocr.cv2')
+    def test_scan_for_keywords_template_match(self, mock_cv2, mock_exists, mock_cm, mock_gtr, mock_cs):
+        # Force config for templates
+        mock_cm.get.side_effect = lambda k, d=None: ["fake.png"] if k == "TEMPLATES" else (0.8 if k == "TEMPLATE_MATCHING_THRESHOLD" else d)
+        
+        from PIL import Image
+        mock_cs.return_value = Image.fromarray(np.zeros((100, 100, 3), dtype=np.uint8))
+        mock_cv2.cvtColor.return_value = np.zeros((100, 100), dtype=np.uint8)
+        mock_cv2.imread.return_value = np.zeros((20, 20), dtype=np.uint8)
+        mock_cv2.matchTemplate.return_value = np.array([[0.1, 0.9, 0.2]]) # A hit!
+        
+        from core.ocr import scan_for_keywords
+        matches = scan_for_keywords(['fake.png'], [])
+        
+        self.assertTrue(len(matches) > 0)
+        self.assertEqual(matches[0]['keyword'], 'fake.png')
+        self.assertEqual(matches[0]['type'], 'CLICK')
+
 if __name__ == '__main__':
     unittest.main()

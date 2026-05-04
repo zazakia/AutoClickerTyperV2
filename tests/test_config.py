@@ -109,6 +109,20 @@ class TestConfigManager(unittest.TestCase):
             cm = ConfigManager()
         self.assertEqual(cm.get('ACTION_DELAY'), 0.99)
 
+    def test_bundled_config_fallback_failure(self):
+        """When bundled config exists but is invalid JSON, fail gracefully and log error."""
+        bundled_path = os.path.join(self.test_dir.name, 'bundled_config_bad.json')
+        with open(bundled_path, 'w') as f:
+            f.write("{invalid: json}")
+
+        with patch('core.config_manager.get_resource_path', return_value=bundled_path), \
+             patch('core.config_manager.logger.error') as mock_log:
+            cm = ConfigManager()
+            # Should have caught exception parsing the invalid bundled config
+            self.assertTrue(mock_log.called)
+            # Falls back to defaults when bundled fails
+            self.assertIn('OCR_CONFIDENCE_THRESHOLD', cm._config)
+
     def test_load_config_io_error_raises_config_error(self):
         """An IOError while opening config raises ConfigError."""
         path = os.path.join(self.test_dir.name, 'config.json')

@@ -1,6 +1,6 @@
 {
-    "TARGET_WINDOW_TITLE": "Manager",
-    "TARGET_WINDOW_REGEX": "Manager",
+    "TARGET_WINDOW_TITLE": "MissingApp",
+    "TARGET_WINDOW_REGEX": "",
     "MULTI_WINDOW_MODE": false,
     "CLICK_KEYWORDS": [
         "Accept",

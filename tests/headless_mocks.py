@@ -11,6 +11,8 @@ class MockCTk:
     def destroy(self): pass
     def mainloop(self): pass
     def attributes(self, *args, **kwargs): pass
+    def update_idletasks(self): pass
+    def update(self): pass
     def after(self, ms, func):
         # For testing, we might want to call it immediately or ignore
         pass
@@ -43,7 +45,13 @@ class MockCTkButton:
         self.command = command
     def grid(self, *args, **kwargs): pass
     def pack(self, *args, **kwargs): pass
-    def configure(self, *args, **kwargs): pass
+    def configure(self, *args, **kwargs):
+        if 'text' in kwargs:
+            self.text = kwargs['text']
+    def cget(self, key):
+        if key == 'text':
+            return self.text
+        return None
 
 class MockCTkSwitch:
     def __init__(self, master, text="", command=None, **kwargs):
@@ -92,6 +100,10 @@ class MockCTkTextbox:
         self._text += text
     def configure(self, *args, **kwargs): pass
     def see(self, idx): pass
+    def index(self, idx_str):
+        # Return a simple mock index value depending on lines of text
+        lines = self._text.count('\n') + 1
+        return f"{lines}.0"
     def delete(self, start, end): self._text = ""
     def after(self, ms, func):
         # Execute immediately for testing purposes
